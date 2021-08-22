@@ -1,0 +1,117 @@
+.BadgeContainer {
+  margin: 0 12px;
+}
+
+.BadgeSmall {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.BadgeLarge {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+.Badge span {
+  background-color: #44b700;
+  box-shadow: 0 0 0 2px #424242;
+}
+
+.Badge span::after {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: ripple 1.2s infinite ease-in-out;
+  border: 1px solid currentColor;
+  content: '';
+}
+
+.Badge img {
+  background-color: #fff;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.Tooltip {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.UserPanelBox {
+  width: 240px;
+  background-color: #111;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 12px;
+  z-index: 3;
+}
+
+.UserPanelBox::before {
+}
+
+.UserPanelHeader {
+  display: flex;
+}
+
+.UserPanelInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.Username {
+  font-size: 16px;
+  line-height: 20px;
+  color: #f5f5f5;
+}
+
+.UserDesc {
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.UserPanelContent {
+  margin: 12px;
+  display: flex;
+  align-items: center;
+  color: #f5f5f5;
+  font-size: 12px;
+  padding: 0 12px;
+}
+
+.UserDot {
+  font-size: 18px;
+  line-height: 18px;
+  padding: 0 10px;
+  color: #777 !important;
+}
+
+.UserPreviewInfo {
+  display: flex;
+  align-items: center;
+}
+
+.UserPreviewInfo svg {
+  font-size: 16px;
+  padding-right: 5px;
+}
+
+.UserPanelFooter {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.UserPanelBtn {
+  padding: 0 !important;
+}

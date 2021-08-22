@@ -1,0 +1,36 @@
+.Header {
+  height: 64px;
+  width: 100%;
+  line-height: 64px;
+  position: fixed;
+  z-index: 7 !important;
+  background-color: black;
+  border-bottom: 1px solid #333;
+  display: flex;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.BackContainer {
+  display: flex;
+}
+
+.InputContainer {
+  width: 100%;
+  display: flex;
+}
+
+.SearchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.Search {
+  width: 100%;
+}
+
+.Search:after {
+  border-bottom-color: white !important;
+}

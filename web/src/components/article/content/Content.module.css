@@ -1,0 +1,116 @@
+.Container {
+  width: 88%;
+  margin: 0 auto;
+  padding: 84px 84px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.AppBarContainer {
+  position: fixed;
+}
+
+.TendingBar {
+  width: 320px;
+  border: 1px solid #333;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+.AppContainer {
+  margin: 20px auto;
+  width: 220px;
+}
+
+.DatePicker {
+  width: 240px;
+  height: 36px;
+}
+
+.SwitchBase {
+  color: #eee;
+}
+
+.TendingBarTitle {
+  margin: 10px auto;
+  color: #bbb;
+  font-size: 16px;
+  font-family: flexo, sans-serif;
+}
+
+.DateBox {
+  display: flex;
+}
+
+.DateBtn {
+  margin-left: 6px !important;
+}
+
+.Content {
+  width: calc(100% - 360px);
+}
+
+.ActionBar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  align-items: flex-end;
+}
+
+.ActionBtn {
+  border-color: #777;
+  margin-right: 5px !important;
+}
+
+.loadingMore {
+  display: flex;
+  font-family: flexo, sans-serif;
+  justify-content: center;
+  font-weight: 400;
+}
+
+.ContainerMini {
+  margin: 0 auto;
+  padding: 84px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.AppTagMini {
+  font-size: 16px;
+  text-align: start;
+}
+
+.DatePickerContainerMini {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 316px;
+  margin: 0 auto 10px;
+}
+
+.DatePickerBtnContainerMini {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 316px;
+  margin: 0 auto 10px;
+}
+
+.LangSwitchContainerMini {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.LangSwitchMini {
+  width: 140px;
+  margin: 0 !important;
+}
+
+.ContentMini {
+  width: 88%;
+  margin: 20px auto 0;
+}

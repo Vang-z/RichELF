@@ -1,0 +1,267 @@
+.MainContainer {
+  width: 88%;
+  margin: 0 auto;
+  padding-top: 84px;
+  display: flex;
+  font-family: flexo, sans-serif;
+}
+
+.MiniMainContainer {
+  width: 100%;
+  flex-direction: column;
+}
+
+.UserInfoContainer {
+  width: 256px;
+  display: flex;
+  flex-direction: column;
+  margin: 18px 32px;
+  flex-shrink: 0;
+}
+
+.MiniUserInfoContainer {
+  width: 90%;
+  margin: 18px auto;
+}
+
+.Avatar {
+  width: 192px !important;
+  height: 192px !important;
+}
+
+.Username {
+  text-align: start;
+  font-size: 28px;
+  line-height: 28px;
+  font-weight: 600;
+  color: #ccc;
+  margin-top: 6px;
+}
+
+.Desc {
+  margin: 12px 0;
+  text-align: start;
+  font-size: 14px;
+  line-height: 14px;
+  color: #aaa;
+}
+
+.EditBtn {
+  color: #aaa !important;
+  background-color: #111 !important;
+  margin-bottom: 12px !important;
+}
+
+.BaseInfo {
+  display: flex;
+  align-items: center;
+  color: #aaa;
+  height: 24px;
+}
+
+.InfoSpan {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.InfoIcon {
+  font-size: 16px !important;
+  margin-right: 6px;
+}
+
+.Dot {
+  margin: 0 6px;
+  font-size: 18px;
+  line-height: 14px;
+  color: #777 !important;
+  position: relative;
+  top: 1px;
+}
+
+.LinkDivider {
+  margin: 12px !important;
+  background-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.LinkInfo {
+  display: flex;
+  align-items: center;
+  color: #aaa;
+  height: 24px;
+  font-size: 14px;
+}
+
+.LinkIcon {
+  margin-right: 6px;
+}
+
+.LinkSpan {
+  color: #aaa;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.LinkSpan:hover {
+  color: #ccc;
+}
+
+.MainContent {
+  flex-grow: 1;
+  padding-left: 24px;
+}
+
+.MiniMainContent {
+  padding: 0;
+  width: 100%;
+}
+
+.Tabs {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.IndicatorColor {
+  background-color: #ddd !important;
+}
+
+.TabSelected {
+  color: #ddd !important;
+  font-weight: 600 !important;
+}
+
+.Content {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  width: 100%;
+}
+
+.ContributionBox {
+  margin-top: 28px;
+}
+
+.ContributionTitle {
+  font-size: 18px;
+  color: #aaa;
+  margin-left: 12px;
+}
+
+.Contributions {
+  display: flex;
+}
+
+.MiniContributions {
+  flex-direction: column;
+  padding: 12px;
+}
+
+.Contribution {
+  width: 50%;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: start;
+  font-family: flexo, sans-serif;
+  box-sizing: border-box;
+  margin: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 5px;
+}
+
+.MiniContribution {
+  width: 100%;
+  margin: 12px 0;
+}
+
+.ContributionMapBox {
+  margin: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 5px;
+}
+
+.ActivityBorder {
+  font-size: 18px;
+  color: #aaa;
+  border: 1px solid #333;
+  border-radius: 5px;
+  margin: 24px 12px 20px;
+  padding: 6px 24px 12px 12px;
+}
+
+.ActivityTitle {
+  padding: 8px 12px;
+  position: relative;
+  bottom: 21px;
+  right: 26px;
+  background-color: #000;
+}
+
+.RepositoriesSearchBox {
+  margin: 16px 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.MainSearchBox {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.MiniMainSearchBox {
+  flex-direction: column-reverse;
+}
+
+.RepositoriesSearch {
+  flex-grow: 1;
+  border-radius: 5px;
+}
+
+
+.RepositoriesSearch div {
+  color: #aaa !important;
+}
+
+.RepositoriesSearch fieldset {
+  border: 1px solid #333 !important;
+}
+
+.SortedBox fieldset {
+  display: flex;
+  margin-left: 12px;
+}
+
+.SortedBox legend {
+  color: #aaa !important;
+  font-size: 12px !important;
+}
+
+.SortedBox input {
+  color: #aaa !important;
+  font-size: 12px !important;
+}
+
+.MiniSortedBox {
+  margin-bottom: 12px;
+}
+
+.SortedBtnBox {
+  margin-left: 0 !important;
+  margin-top: 7px !important;
+}
+
+.SortedBtnBox span {
+  font-size: 12px !important;
+}
+
+.SortedBtn {
+  padding: 0 !important;
+}
+
+.RepositoryPreview {
+  border-top: 1px solid #333;
+}
+
+.LoadingMoreRepository {
+  margin: 12px;
+}

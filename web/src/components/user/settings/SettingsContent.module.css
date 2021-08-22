@@ -1,0 +1,344 @@
+.Container {
+  width: 88%;
+  margin: 0 auto;
+  padding-top: 84px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.SidebarBox {
+  width: 162px;
+  margin-right: 24px;
+}
+
+.SidebarContainer {
+  border-top: 1px solid #333;
+  border-right: 1px solid #333;
+  border-left: 1px solid #333;
+  border-radius: 5px;
+  position: fixed;
+}
+
+.SidebarTitle {
+  margin: 12px;
+  font-size: 18px;
+}
+
+.Tabs {
+  border-top: 1px solid #333;
+}
+
+.IndicatorColor {
+  background-color: #ddd !important;
+  right: unset;
+  left: 0;
+}
+
+.TabSelected {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.TabDisabled {
+  min-height: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+}
+
+.TabTrouble {
+  border-bottom-right-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+  border-width: 1px !important;
+  border-bottom-style: solid !important;
+  border-bottom-color: #333 !important;
+}
+
+.MainContent {
+  flex-grow: 1;
+  text-align: start;
+}
+
+.MainContainer {
+  border: 1px solid #333;
+  padding: 16px 34px 16px 16px;
+  margin-bottom: 32px;
+  box-sizing: border-box;
+}
+
+.MiniMainContainer {
+  padding: 16px;
+}
+
+.MainTitle {
+  font-size: 18px;
+  margin-bottom: 12px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.MainTitle::before {
+  background-color: #ddd;
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 3px;
+}
+
+.PictureContainer {
+  position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.Label {
+  margin-left: 18px;
+  font-size: 14px;
+  line-height: 14px;
+  flex-shrink: 0;
+  width: 88px;
+  text-align: start;
+}
+
+.MiniLabel {
+  width: unset;
+}
+
+.Picture {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  background-color: #999999;
+  border: 3px solid #222;
+  color: #ffffff;
+  border-radius: 50%;
+  margin: 0;
+  overflow: hidden;
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  text-align: start;
+}
+
+.AvatarShade {
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  z-index: 3;
+  opacity: 0;
+}
+
+.AvatarShade svg {
+  width: 32px;
+  height: 32px;
+  margin: auto;
+}
+
+.AvatarShade:hover {
+  background-color: rgba(0, 0, 0, 0.48);
+  opacity: 1;
+}
+
+.PictureSrc {
+  width: 100%;
+}
+
+.PictureInput {
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0 !important;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.InfoContainer {
+  position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  margin-bottom: 18px;
+}
+
+.InfoInput {
+  font-size: 14px !important;
+  width: 100%;
+}
+
+.InfoInput:before {
+  border-bottom-style: solid !important;
+}
+
+.InfoInput:after {
+  border-bottom-color: #ccc !important;
+}
+
+.ButtonContainer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.Button {
+  border: 1px solid #999 !important;
+}
+
+.EditBtn {
+  margin-left: 24px !important;
+  width: 68px;
+}
+
+.AccountInput {
+  color: #fff !important;
+  width: 320px;
+}
+
+.MiniAccountInput {
+  width: unset;
+  flex-grow: 1;
+}
+
+.FillContent {
+  height: calc(100vh - 467px - 58px);
+}
+
+.CropperBox {
+  position: absolute;
+  width: 480px;
+  height: 368px;
+  background: #070707;
+  left: calc(50% - 240px);
+  top: 120px;
+  border: 1px solid #333 !important;
+}
+
+.MiniCropperBox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #070707;
+  left: 0;
+  top: 0;
+  border: none !important;
+}
+
+.CropperBox:focus-visible {
+  outline: none;
+}
+
+.CloseBtn {
+  position: absolute !important;
+  right: 0;
+}
+
+.CropperContainer {
+  position: relative;
+  width: 196px;
+  height: 196px;
+  margin: 24px auto 0;
+}
+
+.MiniCropperContainer {
+  margin: 96px auto 0;
+}
+
+.Controls {
+  margin: 24px;
+}
+
+.SliderContainer {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.SliderLabel {
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.SliderInfo {
+  flex-shrink: 0;
+  margin-left: 36px;
+}
+
+.Slider {
+  color: #fff !important;
+  width: 280px !important;
+}
+
+.MiniSlider {
+  padding: 13px 0 !important;
+}
+
+.ButtonContainer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.AccountModalContainer {
+  position: absolute;
+  width: 360px;
+  background: #070707;
+  left: calc(50% - 180px);
+  top: calc(50% - 220px);
+  border: 1px solid #333 !important;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.MiniAccountModalContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #070707;
+  left: 0;
+  top: 0;
+  border: none !important;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.AccountModalContainer:focus-visible {
+  outline: none;
+}
+
+.AccountModalTitle {
+  font-size: 18px;
+  margin: 36px;
+}
+
+.MiniAccountModalTitle {
+  margin-top: 196px;
+}
+
+.AccountModalInput {
+  margin: 12px 36px !important;
+  font-size: 14px !important;
+}
+
+.AccountModalInput:before {
+  border-bottom-style: solid !important;
+}
+
+.AccountModalInput:after {
+  border-bottom-color: #ccc !important;
+}
+
+.AccountModalBtn {
+  margin: 24px 36px !important;
+}

@@ -1,0 +1,47 @@
+.Tooltip {
+  padding: 10px 16px !important;
+}
+
+.TooltipArrow::before, .Tooltip {
+  background-color: #3d4349 !important;
+}
+
+.ContributionInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ContributionBaseInfo {
+  display: flex;
+  margin-left: 16px;
+}
+
+.MiniContributionBaseInfo {
+  flex-direction: column;
+}
+
+.TotalContributions, .ContinueContributions {
+  display: flex;
+  font-size: 14px;
+  color: #ddd;
+  align-items: center;
+  margin: 0 12px;
+}
+
+.TotalContributions span, .ContinueContributions span {
+  margin-left: 6px;
+}
+
+.ContributionsLabel {
+  font-size: 12px;
+  display: flex;
+  color: #ddd;
+  align-items: center;
+  margin-right: 28px;
+}
+
+.MiniContributionsLabel {
+  position: relative;
+  bottom: 12px;
+}

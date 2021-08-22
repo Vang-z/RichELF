@@ -1,0 +1,55 @@
+.Container {
+  width: 88%;
+  margin: 20px auto 0;
+}
+
+.Tabs {
+  background-color: #000;
+  border: 1px solid #333;
+}
+
+.IndicatorColor {
+  background-color: #ddd !important;
+}
+
+.TabSelected {
+  color: #dddddd !important;
+  font-weight: 600 !important;
+}
+
+.Content {
+  margin-top: 20px;
+}
+
+.ActionBarContainer {
+  display: flex;
+  padding: 16px 0;
+  justify-content: space-between;
+}
+
+.Selector {
+  width: 180px;
+}
+
+.Selector ::selection {
+  background: transparent;
+}
+
+.Selector input {
+  cursor: pointer;
+}
+
+.SelectorPaper {
+  background-color: #222 !important;
+}
+
+.ActionBtn {
+  border-color: #777;
+}
+
+.loadingMore {
+  display: flex;
+  font-family: flexo, sans-serif;
+  justify-content: center;
+  font-weight: 400;
+}

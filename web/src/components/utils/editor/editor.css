@@ -1,0 +1,224 @@
+.tox-tinymce {
+  border: 1px solid rgba(255, 255, 255, 0.48) !important;
+  box-sizing: border-box !important;
+}
+
+.tox-editor-header {
+  border: 1px solid 0 !important;
+  border-bottom: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.tox-tbtn {
+  margin: 4px 1px !important;
+}
+
+.tox .tox-tbtn:hover {
+  background-color: #333 !important;
+}
+
+.tox .tox-tbtn--enabled, .tox .tox-tbtn--enabled:hover,
+.tox .tox-mbtn:hover:not(:disabled):not(.tox-mbtn--active), .tox .tox-mbtn--active {
+  background-color: #333 !important;
+}
+
+.tox .tox-mbtn:focus:not(:disabled) {
+  background-color: #333 !important;
+}
+
+.tox .tox-tbtn--disabled:hover {
+  background-color: #000 !important;
+}
+
+.tox-toolbar {
+  background-color: #777 !important;
+}
+
+.tox .tox-pop.tox-pop--top::before {
+  /*background-color: #000 !important;*/
+
+}
+
+.tox-toolbar-overlord {
+  border-top: 1px solid rgba(255, 255, 255, 0.48) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.48) !important;
+}
+
+.tox-toolbar__primary, .tox-tbtn--disabled {
+  background-color: #000 !important;
+  box-sizing: border-box !important;
+}
+
+.tox-collection__group {
+  background-color: #000 !important;
+  border: 1px solid #333 !important;
+  padding: 0 !important;
+}
+
+.tox-collection__item {
+  background-color: #000 !important;
+  border: 1px solid #333 !important;
+}
+
+.tox-collection__item-label p, .tox-collection__item-label h1, .tox-collection__item-label h2,
+.tox-collection__item-label h3, .tox-collection__item-label h4, .tox-collection__item-label h5,
+.tox-collection__item-label h6, .tox-collection__item-label pre {
+  background-color: #000 !important;
+}
+
+.tox-split-button:focus {
+  background-color: #333 !important;
+}
+
+.tox-menu {
+  background-color: #000 !important;
+}
+
+#tinymce {
+  background-color: #000 !important;
+}
+
+.tox-statusbar {
+  background-color: #000 !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.48) !important;
+}
+
+.tox-dialog-wrap__backdrop {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.tox-dialog, .tox-dialog__header, .tox-dialog__footer {
+  background-color: #000 !important;
+  border: 1px solid #333 !important;
+}
+
+.tox-textfield, .tox-listbox--select {
+  background-color: #333 !important;
+}
+
+.tox-textarea:focus, .tox .tox-textfield:focus, .tox .tox-listboxfield .tox-listbox--select:focus, .tox .tox-textarea:focus, .tox .tox-textfield:focus,
+.tox-selectfield:focus {
+  border-color: #ddd !important;
+}
+
+.tox-button--secondary {
+  background-color: #333 !important;
+  border-color: transparent !important;
+}
+
+.tox .tox-button--naked:hover:not(:disabled) {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+.tox-button:not(.tox-button--secondary):not(.tox-button--icon) {
+  border-color: #333 !important;
+}
+
+.tox-dialog__body-nav-item--active {
+  color: #eee !important;
+  border: 0 !important;
+}
+
+.tox-dialog__body-content {
+  border: 1px solid #333 !important;
+}
+
+.tox-dropzone {
+  background-color: #000 !important;
+}
+
+.tox .tox-dialog__body-content a {
+  color: #aaa !important;
+}
+
+.tox .tox-dialog__body-content a:focus, .tox .tox-dialog__body-content a:hover {
+  color: #eee !important;
+}
+
+.tox-button {
+  background-color: transparent !important;
+}
+
+.tox-edit-area__iframe {
+  /*border-top: 1px solid #333 !important;*/
+  /*border-bottom: 1px solid #333 !important;*/
+  background-color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.tox-toolbar__group {
+  border-right: 1px solid #777 !important;
+}
+
+.tox-toolbar__overflow {
+  background-color: #000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.48) !important;
+  border-right: 0 !important;
+}
+
+.tox-statusbar__wordcount {
+  background-color: transparent !important;
+}
+
+.tox .tox-swatches__picker-btn {
+  background-color: #fff !important;
+}
+
+.tox-swatches-menu {
+  background-color: #fff !important;
+  border: 1px solid #fff !important;
+  border-radius: 0 !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select, .tox .tox-textarea, .tox .tox-textfield, .tox .tox-toolbar-textfield,
+.tox .tox-listboxfield .tox-listbox--select:focus, .tox .tox-textarea:focus, .tox .tox-textfield:focus, .tox .tox-selectfield select {
+  background-color: #333 !important;
+}
+
+.tox .tox-menubar {
+  background-color: #000 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.48) !important;
+  padding: 0 8px !important;
+}
+
+.tox .tox-button--naked:focus:not(:disabled) {
+  border-color: transparent !important;
+}
+
+.tox-form__group .tox-label {
+  margin-bottom: 5px;
+}
+
+.tox .tox-tbtn:focus:not(.tox-tbtn--disabled) {
+  background-color: #333 !important;
+}
+
+.tox .tox-button--naked[disabled] {
+  border-color: #333 !important;
+}
+
+.tox .tox-insert-table-picker > div {
+  border-color: #333 !important;
+}
+
+.tox .tox-checkbox__icons .tox-checkbox-icon__checked svg {
+  fill: #fff !important;
+}
+
+.tox-tinymce :focus, .tox-tinymce-aux :focus {
+  outline: none !important;
+  border-color: transparent !important;
+}
+
+.tox .tox-notification--error {
+  background-color: #fb2727 !important;
+}
+
+.tox .tox-dialog--width-lg .tox-form__group:not(.tox-form__group--stretched) {
+  display: none;
+}
+
+.tox .tox-notification--warn, .tox .tox-notification--warning {
+  background-color: #ffc715 !important;
+}

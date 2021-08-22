@@ -1,0 +1,56 @@
+.GlobeContainer {
+  width: 100%;
+  height: 100vh !important;
+  position: relative;
+}
+
+.GlobeShade {
+  width: 100%;
+  height: 100% !important;
+  position: absolute !important;
+  z-index: 2 !important;
+}
+
+.Globe {
+  width: 100%;
+  height: 100% !important;
+}
+
+.MiniGlobeContainer {
+  width: 100%;
+  height: 90% !important;
+  display: flex;
+  align-items: center;
+}
+
+.MiniGlobe {
+  margin: 0 auto;
+}
+
+.DropDown {
+  font-size: 4rem !important;
+  cursor: pointer;
+  position: absolute;
+  bottom: 3rem;
+  left: calc(50% - 2rem);
+  z-index: 3;
+  animation: dropdown-float 2s alternate infinite ease-in-out;
+}
+
+@keyframes dropdown-float {
+  0% {
+    transform: translateY(0)
+  }
+  20% {
+    transform: translateY(1rem)
+  }
+  30% {
+    transform: translateY(0.5rem)
+  }
+  40% {
+    transform: translateY(1rem)
+  }
+  100% {
+    transform: translateY(1rem)
+  }
+}

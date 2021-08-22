@@ -1,0 +1,86 @@
+.Container {
+  font-family: flexo, sans-serif;
+  text-align: initial;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+.Title {
+  text-align: center;
+  font-weight: 400;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.Info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: flexo, sans-serif;
+  font-size: 14px;
+  justify-content: center;
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.Dot {
+  font-size: 24px;
+  line-height: 24px;
+  padding: 0 10px;
+  color: #777 !important;
+  position: relative;
+  top: 1px;
+}
+
+.Icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Icon svg {
+  font-size: 18px;
+  padding-right: 5px;
+}
+
+.CopyBtn {
+  position: absolute !important;
+  right: calc(6% + 20px);
+  margin: 5px 5px 0 0 !important;
+}
+
+.ActionIcon {
+  transition: all 0.1s cubic-bezier(0.685, 0.0473, 0.346, 1) !important;
+  min-width: 84px !important;
+  border-radius: 50px !important;
+}
+
+.ActionIcon:hover {
+  background-color: transparent !important;
+}
+
+.ActionIcon svg {
+  transition: all 0.1s cubic-bezier(0.685, 0.0473, 0.346, 1) !important;
+}
+
+.ActionIcon:active svg {
+  width: 0.7em;
+  height: 0.7em
+}
+
+.ActionIcon:active {
+  font-size: 0.7em;
+}
+
+.Render {}
+
+.Render table {
+  width: 100% !important;
+  font-size: 10px;
+}
+
+.Render ul {
+  padding-left: 20px;
+}

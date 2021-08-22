@@ -1,0 +1,164 @@
+.MainContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+
+.MainBox {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1) !important;
+}
+
+.TitleBox {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.CloseBtn {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+}
+
+.Container {
+  position: absolute;
+  width: 322px;
+  height: 320px;
+  top: calc(50% - 240px);
+  left: calc(50% - 160px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.MiniContainer {
+  position: absolute;
+  width: 100%;
+  height: 320px;
+  top: 60px;
+}
+
+.Tabs {
+  background-color: #000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.Tab {
+  width: 160px;
+}
+
+.MiniTab {
+  width: 50%;
+}
+
+.TabSelected {
+  color: #dddddd;
+  font-weight: 600;
+}
+
+.IndicatorColor {
+  background-color: #ddd !important;
+}
+
+.LoginContent {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.RegisterContent {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.FormControl {
+  margin: 6px 0 !important;
+}
+
+.MiniFormControl {
+  margin: 6px 0 !important;
+  width: 80%;
+}
+
+.InputLabel {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.Input {
+  margin: 0 auto;
+  width: 240px;
+}
+
+.MiniInput {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.Input:after, .MiniInput:after {
+  border-bottom-color: white !important;
+}
+
+.BtnBox {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 28px;
+  justify-content: space-between;
+}
+
+.Btn {
+  width: 96px;
+  margin-right: 41px !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.MiniBtn {
+  width: 96px;
+  margin-right: 10% !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.Btn:not(:disabled), .MiniBtn:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.OauthBox {
+  display: flex;
+  margin-top: 12px;
+  padding-left: 41px;
+  font-family: flexo, sans-serif;
+}
+
+.MiniOauthBox {
+  display: flex;
+  margin-top: 12px;
+  padding-left: 10%;
+}
+
+.OauthBtn {
+  cursor: pointer;
+  width: 24px !important;
+  height: 24px !important;
+  margin-right: 12px;
+}
+
+.AgreementBox {
+  margin-left: 32px;
+}
+
+
+.MiniAgreementBox {
+  margin-left: calc(10% - 9px);
+}
+
+.AgreementCheckbox {
+  color: #eee !important;
+}
+
+.Agreement {
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff
+}
+
+.SmallFont {
+  font-size: 12px;
+}

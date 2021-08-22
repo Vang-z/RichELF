@@ -1,0 +1,106 @@
+.ArticleContentContainer {
+  width: 88%;
+  margin: 0 auto;
+  padding-top: 84px;
+  font-family: flexo, sans-serif;
+  min-height: calc(100vh - 84px - 72px);
+  display: flex;
+  justify-content: space-between;
+}
+
+.PreviewContainer {
+  width: calc(50% - 58px);
+  margin-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  font-family: flexo, sans-serif;
+  text-align: initial;
+  padding: 20px;
+}
+
+.VerticalDivider {
+  background-color: #333;
+  margin-bottom: 10px !important;
+}
+
+.EditorContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: calc(50% - 18px);
+}
+
+.TitleBar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.InputBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.TitleHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.TitleInput {
+  margin-bottom: 24px !important;
+}
+
+.TitleLang {
+  width: 160px;
+  flex-shrink: 0;
+  margin-left: 12px !important;
+}
+
+.TitleInput fieldset, .DescInput fieldset, .TitleLang fieldset {
+  border-color: rgba(255, 255, 255, 0.48) !important;
+}
+
+.TitleInput label, .DescInput label, .TitleLang label {
+  color: rgba(255, 255, 255, 0.48) !important;
+  transform: translate(14px, 13px) scale(1);
+}
+
+.LangRadioBox {
+  height: 72px;
+  border-color: rgba(255, 255, 255, 0.48);
+  color: rgba(255, 255, 255, 0.48);
+  border-radius: 4px;
+}
+
+.LangRadio {
+  color: rgba(255, 255, 255, 0.48) !important;
+  position: relative;
+  top: 6px;
+}
+
+.Body {
+  margin-top: 20px;
+}
+
+.EditorBar {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.EditorBtn {
+  margin: 24px 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.48) !important;
+  position: absolute !important;
+  z-index: 3;
+  right: calc(6% + 4px);
+}
+
+.SaveBtn {
+  right: calc(6% + 72px);
+}
+
+.SubmitBtn {
+  right: calc(6% + 2px);
+}

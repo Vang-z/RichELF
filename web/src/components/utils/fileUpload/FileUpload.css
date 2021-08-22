@@ -1,0 +1,26 @@
+.filepond--credits {
+  display: none;
+}
+
+.filepond--root {
+  margin: 0;
+}
+
+.filepond--wrapper {
+  margin-top: 10px;
+  font-family: flexo, sans-serif;
+}
+
+.filepond--wrapper, .filepond--drop-label, .filepond--drop-label label, .filepond--file-action-button {
+  cursor: pointer;
+}
+
+.filepond--drop-label {
+  color: rgba(255, 255, 255, 0.68);
+  font-family: flexo, sans-serif;
+}
+
+.filepond--panel-root {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.48);
+}

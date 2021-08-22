@@ -1,0 +1,48 @@
+.UserBar {
+  display: flex;
+  height: 100%;
+  cursor: pointer;
+}
+
+.UserBarAvatar {
+  margin-right: 24px;
+}
+
+.UserDrawer {
+  background-color: #111 !important;
+  border-left: 1px solid #555;
+  max-width: 280px;
+}
+
+.DrawerAvatar {
+  margin: 0;
+}
+
+.UserDesc {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1
+}
+
+.DrawerIcon {
+  justify-content: center;
+}
+
+.Notification {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1
+}
+
+.NotificationIcon {
+  justify-content: center;
+  margin-left: 18px;
+}

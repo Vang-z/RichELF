@@ -1,0 +1,41 @@
+.Footer {
+  line-height: 24px;
+  z-index: 3;
+  background-color: black;
+  border-top: 1px solid #333;
+  font-size: 12px;
+}
+
+.MiniFooter {
+  line-height: 24px;
+  z-index: 3;
+  background-color: black;
+  border-top: 1px solid #333;
+  font-size: 12px;
+}
+
+.Icon {
+  display: inline-block !important;
+  width: 20px !important;
+  height: 20px !important;
+  top: 4px !important;
+  margin-right: 5px !important;
+}
+
+.GovIcon {
+  display: inline-block !important;
+  width: 20px !important;
+  height: 20px !important;
+  top: 5px !important;
+  margin: 0 5px 0 10px !important;
+}
+
+.FooterSpan {
+  color: #ccc !important;
+  font-family: flexo, serif;
+}
+
+.FooterLink {
+  color: #ccc !important;
+  font-family: flexo, serif;
+}

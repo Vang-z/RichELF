@@ -1,0 +1,130 @@
+.Header {
+  width: 100%;
+  height: 64px;
+  line-height: 64px;
+  position: fixed;
+  z-index: 7 !important;
+  background-color: black !important;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+}
+
+.MiniHeader {
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+  position: fixed;
+  z-index: 7 !important;
+  background-color: black !important;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+}
+
+.NavBar, .ActionBar {
+  display: flex;
+}
+
+.Logo {
+  width: 180px;
+  font-size: 36px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.MiniLogo {
+  font-size: 36px;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+  width: 120px;
+}
+
+.Nav {
+  font-size: 14px;
+  width: 450px;
+}
+
+.IndexBtn {
+  width: 100%;
+  height: 100%;
+  color: #aaa !important;
+  text-transform: capitalize !important;
+  border-bottom: 3px solid transparent !important;
+  border-radius: 0 !important;
+}
+
+.IndexBtnSelected {
+  width: 100%;
+  height: 100%;
+  color: #eee !important;
+  text-transform: capitalize !important;
+  border-radius: 0 !important;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.65) !important;
+  background-color: transparent !important;
+}
+
+.IndexBtnSelected span {
+  position: relative;
+  top: 4px;
+}
+
+.IndexBtn:hover {
+  background-color: transparent !important;
+}
+
+.IndexBtn span {
+  position: relative;
+  top: 4px;
+}
+
+.HeaderBtn {
+  color: whitesmoke !important;
+  width: 100%;
+  text-transform: capitalize !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.HeaderBtn:hover {
+  border-color: rgba(255, 255, 255, 1) !important;
+}
+
+.LangBar {
+  width: 150px;
+}
+
+.InputBar {
+  width: 240px;
+}
+
+.AuthBar {
+  width: 220px;
+  margin-right: 5px;
+}
+
+.BtnGroup {
+  width: 100%;
+}
+
+.Collapse {
+  background-color: #000;
+  border: 1px solid #222;
+}
+
+.CollapseBtn {
+  z-index: 9 !important;
+}
+
+.LangList span {
+  text-align: center !important;
+}
+
+.Search:after {
+  border-bottom-color: white !important;
+}
+
+.Backdrop {
+  z-index: 8 !important;
+  background-color: transparent !important;
+}

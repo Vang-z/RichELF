@@ -1,0 +1,65 @@
+.Container {
+  padding-top: 84px;
+}
+
+.Wrapper {
+  box-sizing: border-box;
+  width: 88%;
+  margin: auto;
+  background: linear-gradient(#777, #777) left top,
+  linear-gradient(#777, #777) left top,
+  linear-gradient(#777, #777) right top,
+  linear-gradient(#777, #777) right top,
+  linear-gradient(#777, #777) left bottom,
+  linear-gradient(#777, #777) left bottom,
+  linear-gradient(#777, #777) right bottom,
+  linear-gradient(#777, #777) right bottom;
+  background-repeat: no-repeat;
+  background-size: 2px 20px, 20px 2px;
+}
+
+.MainBox {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 12px 24px;
+  overflow: hidden;
+  text-align: start;
+  position: relative;
+  min-height: calc(100vh - 84px - 58px - 24px);
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Label {
+  position: relative;
+  padding-left: 12px;
+  font-size: 16px;
+  margin: 24px 0 6px;
+  color: #ccc;
+}
+
+.Label::before {
+  background-color: #ddd;
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 3px;
+}
+
+.Content {
+  font-size: 12px;
+  text-indent: 2em;
+  padding-left: 24px;
+  color: #ccc;
+  margin-bottom: 4px;
+}
+
+.Done {
+  text-decoration: line-through;
+}

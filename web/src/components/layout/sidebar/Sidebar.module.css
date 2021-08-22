@@ -1,0 +1,75 @@
+.SidebarDrawer {
+  background-color: #111 !important;
+  border-right: 1px solid #555;
+  max-width: 75%;
+}
+
+.SidebarHeader {
+  padding: 0;
+  height: 48px;
+}
+
+.SidebarHeader li {
+  padding: 0;
+  height: 48px;
+}
+
+.SidebarHeaderIcon {
+  padding: 12px;
+}
+
+.SidebarSearch {
+  padding: 0;
+}
+
+.Search {
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 100px;
+  width: 220px;
+}
+
+.DrawerIcon {
+  justify-content: center;
+  margin-left: 12px;
+}
+
+.Selected {
+  background-color: #222 !important;
+  border-right: 2px solid !important;
+}
+
+.LangList {
+  width: 120px;
+  margin-left: 42px !important;
+  cursor: pointer;
+}
+
+.LangList svg {
+  font-size: 14px;
+}
+
+.LangList span {
+  font-size: 12px;
+}
+
+.LangListLabel  {
+  padding-bottom: 0 !important;
+  padding-left: 4px !important;
+  height: 24px;
+  line-height: 24px;
+}
+
+.LangListLabel svg {
+  font-size: 24px;
+  margin-right: 14px;
+}
+
+.LangListLabel span {
+  font-size: 14px;
+  position: relative;
+  top: 2px;
+}
+
+.LangRadio {
+  margin-left: 18px !important;
+}

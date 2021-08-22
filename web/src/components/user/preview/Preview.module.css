@@ -1,0 +1,127 @@
+.Preview {
+  display: flex;
+  justify-content: space-between;
+}
+
+.PreviewContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.PreviewHeader {
+  display: flex;
+  align-items: flex-end;
+}
+
+.PreviewTitle {
+  display: flex;
+  padding: 16px 12px 8px;
+  font-size: 16px;
+  align-items: center;
+  color: #f5f5f5;
+}
+
+.PreviewTitle svg {
+  margin-right: 5px;
+}
+
+.PreviewTitle span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.PreviewDate {
+  font-size: 12px;
+  padding: 16px 6px 9px;
+  color: #aaa;
+  flex-shrink: 0
+}
+
+.PreviewStatus {
+  font-size: 12px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  margin: 16px 0 7px;
+  padding: 2px 12px 1px;
+  transform: scale(0.7);
+  flex-shrink: 0
+}
+
+.Success {
+  /*color: #388e3c;*/
+  /*border-color: #388e3c;*/
+  color: #81c784;
+  border-color: #81c784;
+}
+
+.Warning {
+  /*color: #f57c00;*/
+  /*border-color: #f57c00;*/
+  color: #ffb74d;
+  border-color: #ffb74d;
+}
+
+.Error {
+  /*color: #d32f2f;*/
+  /*border-color: #d32f2f;*/
+  color: #e57373;
+  border-color: #e57373;
+}
+
+.PreviewDesc {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  font-family: flexo, sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.PreviewBrief {
+  padding: 0 12px 8px;
+  color: #f5f5f5;
+}
+
+.PreviewIcon {
+  display: flex;
+  flex-direction: row;
+  text-align: start;
+  font-family: flexo, sans-serif;
+  font-size: 12px;
+  align-items: flex-end;
+  padding: 12px;
+}
+
+.Dot {
+  font-size: 24px;
+  line-height: 12px;
+  padding: 0 10px;
+  color: #777 !important;
+  position: relative;
+  bottom: 2px;
+}
+
+.PreviewInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #f5f5f5;
+}
+
+.PreviewInfo svg {
+  font-size: 18px;
+  padding-right: 5px;
+}
+
+.ActionContainer {
+  padding: 16px 12px 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

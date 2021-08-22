@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: flexo, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+  color: #eee;
+  position: relative;
+  font-weight: 400;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+::selection {
+  background: #344449;
+  color: #fff;
+  text-shadow: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #333;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #777;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-corner {
+  display: block;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+a:hover {
+  text-decoration: none !important;
+}
+
+@font-face {
+  font-family: 'flexo';
+  src: url("./assets/fonts/Flexo-Regular.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.Underline:hover:not(.disabled):before, .Underline:before {
+  border-color: #D2D2D2 !important;
+  border-width: 1px !important;
+}
+
+.Underline:hover:not(.disabled):before, :before {
+  border-color: #D2D2D2 !important;
+  border-width: 1px !important;
+}
+
+.MuiButton-root, .MuiTab-root {
+  text-transform: capitalize !important;
+}
+
+.switch-wrapper {
+  position: relative;
+}
+
+.switch-wrapper > div {
+  position: absolute;
+  width: 100%;
+}

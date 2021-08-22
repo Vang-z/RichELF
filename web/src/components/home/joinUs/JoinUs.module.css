@@ -1,0 +1,43 @@
+.Container {
+  margin-bottom: 24px;
+}
+
+.Container h5 {
+  font-family: Slidefu, sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
+.Icon {
+  justify-content: center;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.Icon div:nth-of-type(odd) {
+  margin: 1.5rem 1.5rem 0;
+}
+
+.Icon div:nth-of-type(even) {
+  margin: 0 1.5rem 1.5rem;
+}
+
+.IconDetail {
+  font-size: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.Btn {
+  font-family: Slidefu, sans-serif !important;
+  font-weight: 500 !important;
+  border-radius: 5rem !important;
+  width: 10rem;
+  border: 2px solid rgba(255, 255, 255, 0.7) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.Btn:hover {
+  border: 2px solid rgba(255, 255, 255, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+}

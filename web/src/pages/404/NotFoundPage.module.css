@@ -1,0 +1,53 @@
+.Container {
+  padding-top: 84px;
+  color: #eee;
+  overflow: hidden;
+  max-height: calc(100vh - 84px - 58px);
+}
+
+.Circle {
+  box-sizing: border-box;
+  position: relative;
+  width: 90vh;
+  height: 90vh;
+  border-style: solid;
+  border-color: #222;
+  border-top-width: 4px;
+  border-right-width: 0;
+  border-bottom-width: 4px;
+  border-left-width: 4px;
+  border-right-color: transparent;
+  border-radius: 50%;
+  top: -240px;
+  left: -120px;
+  transform: rotate(30deg);
+  background-color: #070707;
+}
+
+.MiniCircle {
+  width: 100vw;
+  height: 100vw;
+}
+
+.LabelBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  top: calc(50vh - 96px);
+  left: 50vw;
+}
+
+.MiniLabelBox {
+  top: calc(50vh - 96px);
+  left: calc(50vw - 144px);
+}
+
+.LabelSpan {
+  width: 15vh;
+}
+
+.MiniLabelSpan {
+  width: 96px;
+}
