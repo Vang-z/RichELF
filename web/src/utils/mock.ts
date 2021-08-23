@@ -210,3 +210,14 @@ mock.mock(RegExp('/api/user/profile/following.*'), 'get', (e: any) => {
     nextPage: following.length === pageSize ? page + 1 : null
   }
 })
+
+mock.mock(RegExp('/api/user/profile/user.*'), 'get', (e: any) => {
+  const username = e.url.split('/').pop()
+  const followed = Math.random() >= 0.5
+  return {
+    data: {
+      'username': username,
+      'followed': followed,
+    },
+  }
+})

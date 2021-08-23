@@ -6,10 +6,11 @@ interface ProfileState {
   error: string | null,
   timelines: any,
   popularRepositories: any,
-  contribution: any
-  repositories: any
-  follower: any
-  following: any
+  contribution: any,
+  repositories: any,
+  follower: any,
+  following: any,
+  user: any,
 }
 
 const initialState: ProfileState = {
@@ -21,6 +22,7 @@ const initialState: ProfileState = {
   repositories: null,
   follower: null,
   following: null,
+  user: null,
 }
 
 export const getPopularRepositories = createAsyncThunk(
@@ -124,6 +126,14 @@ export const getFollowing = createAsyncThunk(
   }
 )
 
+export const getUser = createAsyncThunk(
+  'profile/getUser',
+  async (username: string, thunkAPI) => {
+    const {data} = await Api.getUser(username)
+    return data
+  }
+)
+
 export const profileSlice = createSlice({
   name: 'profile',
   initialState,
@@ -136,6 +146,7 @@ export const profileSlice = createSlice({
       state.repositories = null
       state.follower = null
       state.following = null
+      state.user = null
       state.error = null
     }
   },
@@ -209,6 +220,18 @@ export const profileSlice = createSlice({
       state.error = null
     },
     [getFollowing.rejected.type]: (state, action) => {
+      state.loading = false
+      state.error = action.error
+    },
+    [getUser.pending.type]: (state) => {
+      state.loading = true
+    },
+    [getUser.fulfilled.type]: (state, action) => {
+      state.loading = false
+      state.user = action.payload
+      state.error = null
+    },
+    [getUser.rejected.type]: (state, action) => {
       state.loading = false
       state.error = action.error
     },

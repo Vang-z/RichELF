@@ -117,6 +117,11 @@ class Api {
     const url = `/api/user/profile/following/${username}/${page}`
     return this.http.get(url)
   }
+
+  getUser(username: string) {
+    const url = `api/user/profile/user/${username}`
+    return this.http.get(url)
+  }
 }
 
 export default new Api()

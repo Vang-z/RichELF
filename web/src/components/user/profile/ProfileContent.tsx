@@ -13,6 +13,7 @@ import {
   getRepositories,
   getFollower,
   getFollowing,
+  getUser,
 } from "../../../redux/profile/slice";
 
 import SwipeableViews from 'react-swipeable-views';
@@ -59,6 +60,8 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
   const repositories = useSelector(s => s.profile.repositories)
   const follower = useSelector(s => s.profile.follower)
   const following = useSelector(s => s.profile.following)
+  const authUser = useSelector(s => s.auth.user)
+  const user = useSelector(s => s.profile.user)
 
   useEffect(() => {
     dispatch(getPopularRepositories(username))
@@ -67,21 +70,37 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
     dispatch(getRepositories({username: username, page: 1}))
     dispatch(getFollower({username: username, page: 1}))
     dispatch(getFollowing({username: username, page: 1}))
+    dispatch(getUser(username))
     setTab(0)
     return () => {
       dispatch(profileSlice.actions.clearContent())
     }
-  }, [dispatch, username])
+  }, [authUser, dispatch, username])
 
   return <Box className={classNames([styles.MainContainer], {[`${styles.MiniMainContainer}`]: size === Small})}>
     <Box className={classNames([styles.UserInfoContainer], {[`${styles.MiniUserInfoContainer}`]: size === Small})}>
       <Avatar
         className={styles.Avatar}
         src={`https://vangz.club/media/avatar/trR6oSmAKGpVuWyeP5uZ29/WpgAk6ckPKU8vRawTtg2WS.jpg`}/>
-      <Box className={styles.Username}>Vang_z</Box>
+      <Box className={styles.Username}>{username}</Box>
       <Box className={styles.Desc}>But U can not make more time.</Box>
-      <Button className={styles.EditBtn} variant={"outlined"}
-              onClick={() => history.push(`/user/Vang_z/settings`)}>{t(`profile.editProfile`)}</Button>
+      {
+        authUser ?
+          user && authUser.username === user.data.username ?
+            <Button
+              className={styles.EditBtn} variant={"outlined"}
+              onClick={() => history.push(`/user/Vang_z/settings`)}>
+              {t(`profile.editProfile`)}
+            </Button> :
+            <Button
+              className={styles.EditBtn} variant={"outlined"}>
+              {user && user.data.followed ? t(`profile.unfollow`) : t(`profile.follow`)}
+            </Button> :
+          <Button
+            className={styles.EditBtn} variant={"outlined"}>
+            {t(`profile.follow`)}
+          </Button>
+      }
       <Box className={styles.BaseInfo}>
         <SupervisorAccountIcon className={styles.InfoIcon}/>
         <span className={styles.InfoSpan} onClick={() => setTab(2)}>700 {t(`profile.follower`)}</span>
@@ -162,7 +181,6 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                   {
                     contribution && <ContributionMap value={contribution.data} size={size}/>
                   }
-
                 </Box>
                 <Box className={styles.ActivityBorder}>
                   <span className={styles.ActivityTitle}>{t(`profile.activity`)}</span>
