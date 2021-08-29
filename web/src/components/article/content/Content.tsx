@@ -75,7 +75,7 @@ export const Content: React.FC<SizeProps> = ({size}) => {
                       date={article.date}
                       lang={article.lang}
                       comment={article.comment}
-                      praise={article.praise}
+                      star={article.star}
                       view={article.view}/>
                   })
                 }
@@ -117,7 +117,7 @@ export const Content: React.FC<SizeProps> = ({size}) => {
                   date={article.date}
                   lang={article.lang}
                   comment={article.comment}
-                  praise={article.praise}
+                  star={article.star}
                   view={article.view}/>
               })
             }
@@ -161,7 +161,7 @@ export const Content: React.FC<SizeProps> = ({size}) => {
                   date={article.date}
                   lang={article.lang}
                   comment={article.comment}
-                  praise={article.praise}
+                  star={article.star}
                   view={article.view}/>
               })
             }

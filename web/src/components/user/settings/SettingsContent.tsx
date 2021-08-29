@@ -41,7 +41,7 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
   })
   const [info, setInfo] = useState({
     email: '0',
-    praise: '0',
+    star: '0',
     comment: '0',
     follow: '0',
     snackbar: '0',
@@ -293,10 +293,10 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             </RadioGroup>
           </Box>
           <Box className={styles.InfoContainer}>
-            <Box className={styles.Label}>{t(`settings.praiseNotification`)} ：</Box>
+            <Box className={styles.Label}>{t(`settings.starNotification`)} ：</Box>
             <RadioGroup
-              aria-label="praise" name="praise" value={info.praise} row={true}
-              onChange={(e, value) => setInfo({...info, praise: value})}>
+              aria-label="star" name="star" value={info.star} row={true}
+              onChange={(e, value) => setInfo({...info, star: value})}>
               <FormControlLabel value="0" control={<Radio color={"default"} size={"small"}/>}
                                 label={t(`settings.accept`)}/>
               <FormControlLabel value="1" control={<Radio color={"default"} size={"small"}/>}

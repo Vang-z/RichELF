@@ -206,7 +206,7 @@ export const SearchResult: React.FC = () => {
                     date={article.date}
                     lang={article.lang}
                     comment={article.comment}
-                    praise={article.praise}
+                    star={article.star}
                     view={article.view}/>
                 })
               }
@@ -229,7 +229,7 @@ export const SearchResult: React.FC = () => {
                     date={data.date}
                     download={data.download}
                     comment={data.comment}
-                    praise={data.praise}
+                    star={data.star}
                     view={data.view}/>
                 })
               }
@@ -249,7 +249,7 @@ export const SearchResult: React.FC = () => {
                     desc={user.desc}
                     article={user.article}
                     dataset={user.dataset}
-                    praise={user.praise}
+                    star={user.star}
                     follower={user.follower}
                     following={user.following}
                     followed={user.followed}

@@ -45,7 +45,7 @@ export const PreSearch: React.FC = () => {
             date={article.date}
             lang={article.lang}
             comment={article.comment}
-            praise={article.praise}
+            star={article.star}
             view={article.view}/>
         })
       }

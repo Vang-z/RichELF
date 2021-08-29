@@ -29,7 +29,7 @@ interface RenderProps {
   },
   createDate: string,
   content: string,
-  praise: string,
+  star: string,
   view: string,
   lang: string,
   comment: string,
@@ -39,7 +39,7 @@ interface RenderProps {
 
 
 export const Render: React.FC<RenderProps> = (
-  {title, author, createDate, content, lang, praise, view, comment, preview, className}) => {
+  {title, author, createDate, content, lang, star, view, comment, preview, className}) => {
   const screenSize = useScreenSize().width >= MiniWidth ? Medium : Small
   const {t} = useTranslation()
 
@@ -66,7 +66,7 @@ export const Render: React.FC<RenderProps> = (
       <span className={styles.Dot}>•</span>
       <span className={styles.Icon}><CommentIcon/>{comment}</span>
       <span className={styles.Dot}>•</span>
-      <span className={styles.Icon}><FavoriteBorderIcon/>{praise}</span>
+      <span className={styles.Icon}><FavoriteBorderIcon/>{star}</span>
       <span className={styles.Dot}>•</span>
       <span className={styles.Icon}><VisibilityIcon/>{view}</span>
     </Box>
@@ -136,7 +136,7 @@ export const Render: React.FC<RenderProps> = (
             </svg>
           </SvgIcon>}
         >
-          {t(`detail.praise`)}
+          {t(`detail.star`)}
         </Button>
       </Box>
     }

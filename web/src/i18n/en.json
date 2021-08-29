@@ -73,7 +73,7 @@
     "comment": "Comment",
     "submit": "Submit",
     "reply": "Reply",
-    "praise": "Praise",
+    "star": "Star",
     "download": "Download"
   },
   "create": {
@@ -175,7 +175,7 @@
       "comment": "Comment",
       "follow": "Follow",
       "view": "Viewed",
-      "praise": "Praise",
+      "star": "Star",
       "publish": "Publish",
       "download": "Download"
     },
@@ -201,7 +201,7 @@
     "newArticle": "New Article",
     "loadingMore": "Loading More",
     "visit": "Visit",
-    "praise": "Praise",
+    "star": "Star",
     "editProfile": "Edit Profile",
     "published": "Published",
     "editing": "Editing",
@@ -228,7 +228,7 @@
     "mobile": "Mobile",
     "password": "Password",
     "emailNotification": "Email",
-    "praiseNotification": "Praise",
+    "starNotification": "Star",
     "commentNotification": "Comment",
     "followNotification": "Follow",
     "noticeBar": "NoticeBar",

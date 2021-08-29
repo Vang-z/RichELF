@@ -113,7 +113,7 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
         <span className={styles.InfoSpan}>700 {t(`profile.visit`)}</span>
         <span className={styles.Dot}>•</span>
         <FavoriteBorderIcon className={styles.InfoIcon}/>
-        <span className={styles.InfoSpan}>261 {t(`profile.praise`)}</span>
+        <span className={styles.InfoSpan}>261 {t(`profile.star`)}</span>
       </Box>
       <Divider className={styles.LinkDivider}/>
       <Box className={styles.LinkInfo}>
@@ -173,7 +173,7 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                       desc={data.desc}
                       lang={data.lang}
                       comment={data.comment}
-                      praise={data.praise}
+                      star={data.star}
                       view={data.view}/>
                   })}
                 </Box>
@@ -256,7 +256,7 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                     lang={(data as any).lang}
                     download={(data as any).download}
                     comment={data.comment}
-                    praise={data.praise}
+                    star={data.star}
                     view={data.view}/>
                 })
               }
@@ -314,7 +314,7 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                     desc={user.desc}
                     article={user.article}
                     dataset={user.dataset}
-                    praise={user.praise}
+                    star={user.star}
                     follower={user.follower}
                     following={user.following}
                     followed={user.followed}
@@ -376,7 +376,7 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                     desc={user.desc}
                     article={user.article}
                     dataset={user.dataset}
-                    praise={user.praise}
+                    star={user.star}
                     follower={user.follower}
                     following={user.following}
                     followed={user.followed}

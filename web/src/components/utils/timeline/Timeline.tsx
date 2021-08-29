@@ -35,7 +35,7 @@ export const Timeline: React.FC<{ username: string }> = ({username}) => {
         return <EmojiFlagsIcon/>
       case "view":
         return <EmojiFoodBeverageIcon/>
-      case "praise":
+      case "star":
         return <FavoriteIcon/>
       case "publish":
         return <EmojiObjectsIcon/>

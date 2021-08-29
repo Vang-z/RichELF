@@ -74,7 +74,7 @@
     "comment": "评论",
     "submit": "提交",
     "reply": "回复",
-    "praise": "点赞",
+    "star": "点赞",
     "download": "下载"
   },
   "create": {
@@ -175,7 +175,7 @@
       "comment": "评论",
       "follow": "关注",
       "view": "浏览",
-      "praise": "点赞",
+      "star": "点赞",
       "publish": "发布",
       "download": "下载"
     },
@@ -201,7 +201,7 @@
     "newArticle": "写文章",
     "loadingMore": "加载更多",
     "visit": "访问",
-    "praise": "点赞",
+    "star": "点赞",
     "editProfile": "修改个人资料",
     "published": "已发布",
     "editing": "待发布",
@@ -228,7 +228,7 @@
     "mobile": "手机",
     "password": "密码",
     "emailNotification": "邮件通知",
-    "praiseNotification": "点赞通知",
+    "starNotification": "点赞通知",
     "commentNotification": "评论通知",
     "followNotification": "关注通知",
     "noticeBar": "通知栏",

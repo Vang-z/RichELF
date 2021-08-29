@@ -27,7 +27,7 @@ interface PreviewProps {
   lang?: string,
   download?: string,
   comment: string,
-  praise: string,
+  star: string,
   view: string,
 }
 
@@ -83,7 +83,7 @@ export const Preview: React.FC<SizeProps & PreviewProps> = (props) => {
         <span className={styles.Dot}>•</span>
         <span className={styles.PreviewInfo}><CommentIcon/>{props.comment}</span>
         <span className={styles.Dot}>•</span>
-        <span className={styles.PreviewInfo}><FavoriteBorderIcon/>{props.praise}</span>
+        <span className={styles.PreviewInfo}><FavoriteBorderIcon/>{props.star}</span>
         <span className={styles.Dot}>•</span>
         <span className={styles.PreviewInfo}><VisibilityIcon/>{props.view}</span>
       </Box>

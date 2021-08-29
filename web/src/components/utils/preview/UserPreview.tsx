@@ -23,7 +23,7 @@ interface UserPreviewProps {
   desc: string,
   article: number | string,
   dataset: number | string,
-  praise: number | string,
+  star: number | string,
   follower: number | string,
   following: number | string,
   followed: boolean
@@ -50,7 +50,7 @@ export const UserPreview: React.FC<UserPreviewProps> = (props) => {
           <span className={styles.UserDot}>•</span>
           <span className={styles.UserPreviewInfo}><StorageIcon/>{props.dataset}</span>
           <span className={styles.UserDot}>•</span>
-          <span className={styles.UserPreviewInfo}><FavoriteBorderIcon/>{props.praise}</span>
+          <span className={styles.UserPreviewInfo}><FavoriteBorderIcon/>{props.star}</span>
           {
             screenSize === Medium && <>
               <span className={styles.UserDot}>•</span>

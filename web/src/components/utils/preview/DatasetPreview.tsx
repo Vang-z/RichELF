@@ -25,7 +25,7 @@ interface PreviewProps {
   date: string,
   comment: string,
   download: string,
-  praise: string,
+  star: string,
   view: string,
   className?: string,
   hiddenAuthor?: boolean
@@ -54,7 +54,7 @@ export const DatasetPreview: React.FC<PreviewProps> = (props) => {
         <span className={styles.Dot}>•</span>
         <span className={styles.DatasetInfo}><CommentIcon/>{props.comment}</span>
         <span className={styles.Dot}>•</span>
-        <span className={styles.DatasetInfo}><FavoriteBorderIcon/>{props.praise}</span>
+        <span className={styles.DatasetInfo}><FavoriteBorderIcon/>{props.star}</span>
         <span className={styles.Dot}>•</span>
         <span className={styles.DatasetInfo}><VisibilityIcon/>{props.view}</span>
       </Box>

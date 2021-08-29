@@ -34,7 +34,7 @@ export const Detail: React.FC<{ did: string }> = ({did}) => {
         author={dataset.data.author}
         createDate={dateFormatHandler("comm", dataset.data.createDate)}
         download={dataset.data.download}
-        praise={dataset.data.praise}
+        star={dataset.data.star}
         view={dataset.data.view}
         comment={dataset.data.commentCount}
         content={dataset.data.content}

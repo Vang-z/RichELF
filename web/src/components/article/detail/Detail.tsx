@@ -34,7 +34,7 @@ export const Detail: React.FC<{ aid: string }> = ({aid}) => {
         author={article.data.author}
         createDate={dateFormatHandler("comm", article.createDate)}
         lang={article.data.lang}
-        praise={article.data.praise}
+        star={article.data.star}
         view={article.data.view}
         comment={article.data.commentCount}
         content={article.data.content}/>

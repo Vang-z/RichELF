@@ -31,7 +31,7 @@ const UserPanel: React.FC<{ username: string }> = ({username}) => {
     desc: 'But U can not make more time.',
     article: '241',
     dataset: '12',
-    praise: '411',
+    star: '411',
   })
 
   return <Box className={styles.UserPanelBox} onClick={e => e.preventDefault()}>
@@ -49,7 +49,7 @@ const UserPanel: React.FC<{ username: string }> = ({username}) => {
       <span className={styles.UserDot}>•</span>
       <span className={styles.UserPreviewInfo}><StorageIcon/>{userInfo.dataset}</span>
       <span className={styles.UserDot}>•</span>
-      <span className={styles.UserPreviewInfo}><FavoriteBorderIcon/>{userInfo.praise}</span>
+      <span className={styles.UserPreviewInfo}><FavoriteBorderIcon/>{userInfo.star}</span>
     </Box>
     <Box className={styles.UserPanelFooter}>
       <Button className={styles.UserPanelBtn} size={"small"} variant={"outlined"}>{t(`profile.follow`)}</Button>

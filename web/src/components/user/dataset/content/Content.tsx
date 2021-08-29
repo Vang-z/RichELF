@@ -36,7 +36,7 @@ export const Content: React.FC = () => {
       createDate={dateFormatHandler("comm", (new Date((new Date().getTime() + (new Date().getTimezoneOffset() * 60000)))).toString())}
       content={datasetInfo.content}
       download={`0`}
-      praise={`0`}
+      star={`0`}
       view={`0`}
       comment={`0`}
       preview={true}

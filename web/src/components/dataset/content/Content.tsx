@@ -76,7 +76,7 @@ export const Content: React.FC<SizeProps> = ({size}) => {
                       date={dataset.date}
                       download={dataset.download}
                       comment={dataset.comment}
-                      praise={dataset.praise}
+                      star={dataset.star}
                       view={dataset.view}/>
                   })
                 }
@@ -118,7 +118,7 @@ export const Content: React.FC<SizeProps> = ({size}) => {
                   date={dataset.date}
                   download={dataset.download}
                   comment={dataset.comment}
-                  praise={dataset.praise}
+                  star={dataset.star}
                   view={dataset.view}/>
               })
             }
@@ -161,7 +161,7 @@ export const Content: React.FC<SizeProps> = ({size}) => {
                   date={dataset.date}
                   download={dataset.download}
                   comment={dataset.comment}
-                  praise={dataset.praise}
+                  star={dataset.star}
                   view={dataset.view}/>
               })
             }

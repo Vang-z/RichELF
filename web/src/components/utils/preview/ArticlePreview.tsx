@@ -26,7 +26,7 @@ interface PreviewProps {
   date: string,
   lang: string,
   comment: string,
-  praise: string,
+  star: string,
   view: string,
   className?: string,
   hiddenAuthor?: boolean
@@ -56,7 +56,7 @@ export const ArticlePreview: React.FC<PreviewProps> = (props) => {
         <span className={styles.Dot}>•</span>
         <span className={styles.ArticleInfo}><CommentIcon/>{props.comment}</span>
         <span className={styles.Dot}>•</span>
-        <span className={styles.ArticleInfo}><FavoriteBorderIcon/>{props.praise}</span>
+        <span className={styles.ArticleInfo}><FavoriteBorderIcon/>{props.star}</span>
         <span className={styles.Dot}>•</span>
         <span className={styles.ArticleInfo}><VisibilityIcon/>{props.view}</span>
       </Box>
