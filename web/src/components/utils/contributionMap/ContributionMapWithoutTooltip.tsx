@@ -1,12 +1,13 @@
+// 引入 tooltip 后, 会引起页面渲染异常卡顿, 如果有性能要求请使用该组件代替 ContributionMap.tsx
 import React, {useState, useEffect, useCallback} from "react";
 import styles from "./ContributionMap.module.css";
 import useScreenSize from "use-screen-size";
 import {useTranslation} from "react-i18next";
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 
-import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
-import VideogameAssetIcon from '@material-ui/icons/VideogameAsset';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 
 import HeatMap from "@uiw/react-heat-map";
 
@@ -18,7 +19,6 @@ interface ContributionMapProps {
   value: {
     date: string,
     count: number,
-    content: string
   }[] | []
 }
 
@@ -27,7 +27,7 @@ export const ContributionMapWithoutTooltip: React.FC<ContributionMapProps & Size
   const [startDate, setStartDate] = useState<Date>()
   const {t} = useTranslation()
   const screenSize = useScreenSize().width
-  const panelColor = ['#161b22', '#161b22', '#0e4429', '#006d32', '#26a641', '#26a641', '#39d353']
+  const panelColor = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
   const monthLabels = [
     t(`contributionMap.month.Jan`),
     t(`contributionMap.month.Feb`),
@@ -71,12 +71,15 @@ export const ContributionMapWithoutTooltip: React.FC<ContributionMapProps & Size
       rectProps={{rx: 2.5}}
       panelColors={{
         0: panelColor[0],
-        1: panelColor[1],
-        2: panelColor[2],
-        3: panelColor[3],
-        4: panelColor[4],
-        5: panelColor[5],
-        6: panelColor[6]
+        1: panelColor[0],
+        2: panelColor[1],
+        3: panelColor[1],
+        4: panelColor[2],
+        5: panelColor[2],
+        6: panelColor[3],
+        7: panelColor[3],
+        8: panelColor[3],
+        9: panelColor[4]
       }}
       legendCellSize={0}
       weekLables={[

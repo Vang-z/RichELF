@@ -5,8 +5,8 @@ import useScreenSize from "use-screen-size";
 import {useLocation} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 
-import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 
 import {MainLayout} from "../../layouts";
 
@@ -26,8 +26,8 @@ export const AboutPage: React.FC = () => {
   })
 
   useEffect(() => {
-    document.title = 'RichELF | 关于'
-  }, [])
+    document.title = `RichELF | ${t(`page.about`)}`
+  }, [t])
 
   return <>
     <MainLayout size={size}>
@@ -35,7 +35,7 @@ export const AboutPage: React.FC = () => {
         <Box className={styles.Wrapper}>
           <Box className={styles.MainBox}>
             <Box>
-              <Box className={classNames([styles.Label])}>{t(`about.explanation`)}</Box>
+              <Box className={classNames([styles.Label])}>{t(`about.about`)}</Box>
               <Box className={classNames([styles.Content])}>{t(`about.explanationContent`)}</Box>
               <Box className={classNames([styles.Label])}>{t(`about.goal`)}</Box>
               <Box className={classNames([styles.Content])}>{t(`about.goalContent1`)}</Box>

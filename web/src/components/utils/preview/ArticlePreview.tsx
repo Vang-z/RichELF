@@ -2,21 +2,19 @@ import React from "react";
 import styles from "./Preview.module.css"
 import {Link} from "react-router-dom";
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 
 import {BadgeAvatar} from "../badgeAvatar";
 
-import CodeIcon from "@material-ui/icons/Code";
-import CommentIcon from "@material-ui/icons/Comment";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import ViewQuiltIcon from '@material-ui/icons/ViewQuilt';
-
-import {dateFormatHandler} from "../../../utils/util";
+import CommentIcon from "@mui/icons-material/Comment";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 interface PreviewProps {
   preSearch: boolean,
-  id: string,
+  id?: string,
   title: string,
   author: {
     avatar: string,
@@ -25,9 +23,10 @@ interface PreviewProps {
   desc: string,
   date: string,
   lang: string,
-  comment: string,
-  star: string,
-  view: string,
+  commentCount: string | number,
+  stars: string | number,
+  views: string | number,
+  downloadCount: string | number,
   className?: string,
   hiddenAuthor?: boolean
 }
@@ -35,7 +34,7 @@ interface PreviewProps {
 
 export const ArticlePreview: React.FC<PreviewProps> = (props) => {
   return <>
-    <Link to={`/article/${props.id}`}
+    <Link to={props.id ? `/article/${props.id}` : `#`}
           className={props.className ? props.className : props.preSearch ? styles.PreSearchArticle : styles.Article}>
       <Box>
         <Box className={styles.ArticleTitle}><ViewQuiltIcon/>{props.title}</Box>
@@ -46,19 +45,27 @@ export const ArticlePreview: React.FC<PreviewProps> = (props) => {
               <BadgeAvatar src={props.author.avatar} online={false} size={"small"} user={props.author.username}/>
               <span>{props.author.username}</span>
               <span className={styles.Dot} style={{top: '2px'}}>•</span>
-              <span>{dateFormatHandler("diff", props.date)}</span>
+              <span>{props.date}</span>
             </Box>
           }
         </Box>
       </Box>
       <Box className={styles.ArticleIcon}>
-        <span className={styles.ArticleInfo}><CodeIcon/>{props.lang}</span>
+        <span className={styles.ArticleInfo}>
+          <VisibilityIcon/><span className={styles.InfoNum}>{props.views}</span>
+        </span>
         <span className={styles.Dot}>•</span>
-        <span className={styles.ArticleInfo}><CommentIcon/>{props.comment}</span>
+        <span className={styles.ArticleInfo}>
+          <CommentIcon/><span className={styles.InfoNum}>{props.commentCount}</span>
+        </span>
         <span className={styles.Dot}>•</span>
-        <span className={styles.ArticleInfo}><FavoriteBorderIcon/>{props.star}</span>
+        <span className={styles.ArticleInfo}>
+          <FavoriteBorderIcon/><span className={styles.InfoNum}>{props.stars}</span>
+        </span>
         <span className={styles.Dot}>•</span>
-        <span className={styles.ArticleInfo}><VisibilityIcon/>{props.view}</span>
+        <span className={styles.ArticleInfo}>
+          <CloudDownloadIcon/><span className={styles.InfoNum}>{props.downloadCount}</span>
+        </span>
       </Box>
     </Link>
   </>

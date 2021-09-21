@@ -4,27 +4,25 @@ import {useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {useDispatch} from "react-redux";
 import {useSelector} from "../../../redux/hooks";
-import {searchSlice, getTendingKeywords, getTendingUser} from "../../../redux/search/slice";
+import {searchSlice, getTending} from "../../../redux/search/slice";
 
-import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
-import WhatshotIcon from "@material-ui/icons/Whatshot";
-import TrendingUpIcon from "@material-ui/icons/TrendingUp";
-import LoyaltyIcon from "@material-ui/icons/Loyalty";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import LoyaltyIcon from "@mui/icons-material/Loyalty";
 
 
 export const SearchTending: React.FC = () => {
   const {t} = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
-  const tendingKeywords = useSelector(s => s.search.tendingKeywords)
-  const tendingUser = useSelector(s => s.search.tendingUser)
+  const tending = useSelector(s => s.search.tending)
 
   useEffect(() => {
-    dispatch(getTendingKeywords())
-    dispatch(getTendingUser())
+    dispatch(getTending())
   }, [dispatch])
 
   return <>
@@ -34,7 +32,7 @@ export const SearchTending: React.FC = () => {
       </Box>
       <Box className={styles.TendingContentContainer}>
         {
-          tendingKeywords && tendingKeywords.data.map((tending: any) => {
+          tending && tending.keywords.map((tending: any) => {
             return <li
               className={styles.TendingContent}
               key={tending.id}
@@ -56,14 +54,14 @@ export const SearchTending: React.FC = () => {
       </Box>
       <Box className={styles.TagContentContainer}>
         {
-          tendingUser && tendingUser.data.map((user: any) => {
+          tending && tending.users.map((user: any) => {
             return <Button
               className={styles.TagBtn}
               size={"small"}
               variant={"outlined"}
               key={user.username}
               onClick={() => history.push(`/user/${user.username}`)}>
-              <span className={styles.TagAvatar}><Avatar alt="..." src={user.avatar}/></span>
+              <span className={styles.TagAvatar}><Avatar alt="..." src={user.avatar_url}/></span>
               <span className={styles.Hot}>{user.username}</span>
             </Button>
           })

@@ -1,12 +1,7 @@
 body {
-  margin: 0;
-  font-family: flexo, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: black;
-  color: #eee;
   position: relative;
-  font-weight: 400;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -20,26 +15,6 @@ body {
   background: #344449;
   color: #fff;
   text-shadow: none;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-track-piece {
-  background-color: #333;
-  border-radius: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #777;
-  border-radius: 8px;
-}
-
-::-webkit-scrollbar-corner {
-  display: block;
 }
 
 code {

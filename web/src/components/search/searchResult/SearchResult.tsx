@@ -3,25 +3,26 @@ import styles from "./SearchResult.module.css"
 import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
+import {useSnackbar} from "notistack";
 import {useSelector} from "../../../redux/hooks";
-import {searchArticles, searchDatasets, searchUsers, searchSlice} from "../../../redux/search/slice";
+import {searchArticles, searchSlice, searchUsers} from "../../../redux/search/slice";
+import jwt_decode from "jwt-decode";
 
-import SwipeableViews from 'react-swipeable-views';
+import AppBar from '@mui/material/AppBar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import IconButton from "@mui/material/IconButton";
+import Autocomplete from '@mui/material/Autocomplete';
 
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import NearMeIcon from '@mui/icons-material/NearMe';
+import CloseIcon from "@mui/icons-material/Close";
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
-import CreateIcon from '@material-ui/icons/Create';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-
-import {ArticlePreview, DatasetPreview, UserPreview, ProcessBar} from "../../utils";
+import {ArticlePreview, UserPreview, ProcessBar} from "../../utils";
 import Api from "../../../utils/api";
+import {dateFormatHandler} from "../../../utils/util";
 
 
 interface ActionBarProps {
@@ -33,17 +34,49 @@ interface ActionBarProps {
     icon: React.ReactNode,
     action: string,
     label: string
-  }
+  },
+  category: 'article' | 'user'
 }
 
-const ActionBar: React.FC<ActionBarProps> = ({options, actions}) => {
+const ActionBar: React.FC<ActionBarProps> = ({options, actions, category}) => {
   const {t} = useTranslation()
   const history = useHistory()
+  const dispatch = useDispatch()
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+  const auth = useSelector(s => s.auth)
+  const keywords = useSelector(s => s.search.keywords)
 
   const actionHandler = () => {
-    actions && Api.getUUID().then(res => {
-      history.push(`/user/Vang_z/${actions.action}/${res.data.date}`)
-    })
+    if (actions) {
+      if (auth.accessToken) {
+        const user = jwt_decode(auth.accessToken)
+        if (!user.create_at) {
+          enqueueSnackbar(t(`enqueueSnackbar.makeArticleWaitingForActive`), {
+            variant: "warning",
+            action: key => <IconButton
+              disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+          })
+          return
+        }
+        Api.http.post(`/article`, {}, {
+          headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+        }).then(res => {
+          history.push(`/user/${user.username}/article/${res.data.data}`)
+        }).catch(() => {
+          enqueueSnackbar(t(`enqueueSnackbar.makeArticleFailed`), {
+            variant: "error",
+            action: key => <IconButton
+              disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+          })
+        })
+      } else {
+        enqueueSnackbar(t(`enqueueSnackbar.makeArticleWaitingForLogin`), {
+          variant: "warning",
+          action: key => <IconButton
+            disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+        })
+      }
+    }
   }
 
   return <>
@@ -55,7 +88,7 @@ const ActionBar: React.FC<ActionBarProps> = ({options, actions}) => {
         disableClearable={true}
         disablePortal={true}
         defaultValue={options[0]}
-        getOptionSelected={(option, value) => option.id === value.id}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
         getOptionLabel={(option) => option.name}
         renderInput={(params) =>
           <TextField
@@ -68,8 +101,17 @@ const ActionBar: React.FC<ActionBarProps> = ({options, actions}) => {
         classes={{
           paper: styles.SelectorPaper
         }}
-        onChange={(event: any, value: { name: string, id: number }) => {
-          console.log(value)
+        onChange={(event: any, value: any) => {
+          switch (category) {
+            case "article":
+              dispatch(searchSlice.actions.dispatchArticleSort(value.sort))
+              dispatch(searchArticles({keywords: keywords, page: 1}))
+              return
+            case "user":
+              dispatch(searchSlice.actions.dispatchUserSort(value.sort))
+              dispatch(searchUsers({keywords: keywords, page: 1, auth}))
+              return;
+          }
         }}
       />
       {actions && <Button
@@ -89,27 +131,20 @@ export const SearchResult: React.FC = () => {
   const dispatch = useDispatch()
   const keywords = useSelector(s => s.search.keywords)
   const articleContent = useSelector(s => s.search.articleContent)
-  const datasetContent = useSelector(s => s.search.datasetContent)
+  const articleState = useSelector(s => s.search.articleState)
   const userContent = useSelector(s => s.search.userContent)
-  const loading = useSelector(s => s.search.loading)
-
+  const userState = useSelector(s => s.search.userState)
+  const auth = useSelector(s => s.auth)
   const articleOptions = [
-    {name: `${t('searchResult.bestMatch')}`, id: 0},
-    {name: `${t('searchResult.recentlyUpdated')}`, id: 1},
-    {name: `${t('searchResult.mostStars')}`, id: 2},
-    {name: `${t('searchResult.mostViews')}`, id: 3},
-  ];
-  const datasetOptions = [
-    {name: `${t('searchResult.bestMatch')}`, id: 0},
-    {name: `${t('searchResult.recentlyUpdated')}`, id: 1},
-    {name: `${t('searchResult.mostDownloads')}`, id: 2},
-    {name: `${t('searchResult.mostViews')}`, id: 3},
-    {name: `${t('searchResult.mostStars')}`, id: 4},
+    {name: `${t('searchResult.recentlyUpdated')}`, id: 0, sort: 'update_at'},
+    {name: `${t('searchResult.mostStars')}`, id: 1, sort: 'stars'},
+    {name: `${t('searchResult.mostViews')}`, id: 2, sort: 'views'},
+    {name: `${t('searchResult.mostComments')}`, id: 3, sort: 'comments'},
   ];
   const userOptions = [
-    {name: `${t('searchResult.bestMatch')}`, id: 0},
-    {name: `${t('searchResult.mostFollowers')}`, id: 1},
-    {name: `${t('searchResult.mostPopular')}`, id: 2},
+    {name: `${t('searchResult.mostPopular')}`, id: 0, sort: 'popular'},
+    {name: `${t('searchResult.mostFollowers')}`, id: 1, sort: 'followers'},
+    {name: `${t('searchResult.mostFollowings')}`, id: 2, sort: 'followings'},
   ];
 
   const loadingPages = useCallback(() => {
@@ -119,27 +154,22 @@ export const SearchResult: React.FC = () => {
       const scrollTop = document.documentElement.scrollTop
       const viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
 
-      if ((offsetTop - scrollTop <= viewPortHeight + 100) && !loading) {
+      if (offsetTop - scrollTop <= viewPortHeight + 100) {
         switch (tab) {
           case 0:
-            if (articleContent && articleContent.nextPage) {
-              dispatch(searchArticles({keywords: keywords, page: articleContent.nextPage}))
+            if (articleContent && articleContent.next && !articleState) {
+              dispatch(searchArticles({keywords: keywords, page: articleContent.next}))
             }
             break
           case 1:
-            if (datasetContent && datasetContent.nextPage) {
-              dispatch(searchDatasets({keywords: keywords, page: datasetContent.nextPage}))
-            }
-            break
-          case 2:
-            if (userContent && userContent.nextPage) {
-              dispatch(searchUsers({keywords: keywords, page: userContent.nextPage}))
+            if (userContent && userContent.next && !userState) {
+              dispatch(searchUsers({keywords: keywords, page: userContent.next, auth}))
             }
             break
         }
       }
     }
-  }, [articleContent, datasetContent, userContent, dispatch, keywords, loading, tab])
+  }, [dispatch, tab, articleContent, articleState, userContent, userState, keywords, auth])
 
   useEffect(() => {
     document.addEventListener('scroll', loadingPages)
@@ -147,13 +177,11 @@ export const SearchResult: React.FC = () => {
   }, [loadingPages])
 
   useEffect(() => {
-    dispatch(searchArticles({keywords: keywords, page: 1}))
-    dispatch(searchDatasets({keywords: keywords, page: 1}))
-    dispatch(searchUsers({keywords: keywords, page: 1}))
-    return () => {
-      dispatch(searchSlice.actions.clearSearch())
+    if (keywords) {
+      dispatch(searchArticles({keywords: keywords, page: 1}))
+      dispatch(searchUsers({keywords: keywords, page: 1, auth}))
     }
-  }, [dispatch, keywords])
+  }, [dispatch, keywords, auth])
 
   return <>
     <Box className={styles.Container}>
@@ -176,97 +204,67 @@ export const SearchResult: React.FC = () => {
             disableRipple={true}/>
           <Tab
             classes={{selected: styles.TabSelected}}
-            label={t('searchResult.datasets')}
-            disableRipple={true}/>
-          <Tab
-            classes={{selected: styles.TabSelected}}
             label={t('searchResult.users')}
             disableRipple={true}/>
         </Tabs>
       </AppBar>
-      <SwipeableViews
-        index={tab}
-        onChangeIndex={(value) => {
-          setTab(value)
-        }}>
-        <Box hidden={tab !== 0}>
-          {
-            tab === 0 && <Box className={styles.Content}>
-              <ActionBar options={articleOptions}
-                         actions={{icon: <CreateIcon/>, label: t(`searchResult.newArticle`), action: 'article'}}/>
-              {
-                articleContent && articleContent.data.map((article: any) => {
-                  return <ArticlePreview
-                    preSearch={false}
-                    key={article.id}
-                    id={article.id}
-                    title={article.title}
-                    desc={article.desc}
-                    author={article.author}
-                    date={article.date}
-                    lang={article.lang}
-                    comment={article.comment}
-                    star={article.star}
-                    view={article.view}/>
-                })
-              }
-            </Box>
-          }
-        </Box>
-        <Box hidden={tab !== 1}>
-          {
-            tab === 1 && <Box className={styles.Content}>
-              <ActionBar options={datasetOptions}
-                         actions={{icon: <CloudUploadIcon/>, label: t(`searchResult.newDataset`), action: 'dataset'}}/>
-              {
-                datasetContent && datasetContent.data.map((data: any) => {
-                  return <DatasetPreview
-                    key={data.id}
-                    id={data.id}
-                    title={data.title}
-                    desc={data.desc}
-                    author={data.author}
-                    date={data.date}
-                    download={data.download}
-                    comment={data.comment}
-                    star={data.star}
-                    view={data.view}/>
-                })
-              }
-            </Box>
-          }
-        </Box>
-        <Box hidden={tab !== 2}>
-          {
-            tab === 2 && <Box className={styles.Content}>
-              <ActionBar options={userOptions}/>
-              {
-                userContent && userContent.data.map((user: any) => {
-                  return <UserPreview
-                    key={user.id}
-                    username={user.username}
-                    avatar={user.avatar}
-                    desc={user.desc}
-                    article={user.article}
-                    dataset={user.dataset}
-                    star={user.star}
-                    follower={user.follower}
-                    following={user.following}
-                    followed={user.followed}
-                  />
-                })
-              }
-            </Box>
-          }
-        </Box>
-      </SwipeableViews>
+      <Box hidden={tab !== 0}>
+        {
+          tab === 0 && <Box className={styles.Content}>
+            <ActionBar
+              options={articleOptions} category={"article"}
+              actions={{icon: <NearMeIcon/>, label: t(`searchResult.newArticle`), action: 'article'}}/>
+            {
+              articleContent && articleContent.results.map((article: any) => {
+                return <ArticlePreview
+                  preSearch={false}
+                  key={article.aid}
+                  id={article.aid}
+                  title={article.title}
+                  desc={article.desc}
+                  author={article.author}
+                  date={dateFormatHandler('comm', article.publish_at)}
+                  lang={article.lang}
+                  views={article.views}
+                  commentCount={article.comment_count}
+                  stars={article.stars}
+                  downloadCount={article.download_count}/>
+              })
+            }
+          </Box>
+        }
+      </Box>
+      <Box hidden={tab !== 1}>
+        {
+          tab === 1 && <Box className={styles.Content}>
+            <ActionBar options={userOptions} category={"user"}/>
+            {
+              userContent && userContent.results.map((user: any) => {
+                return <UserPreview
+                  key={user.uid}
+                  uid={user.uid}
+                  username={user.username}
+                  avatar={user.avatar_url}
+                  bio={user.bio}
+                  articles={user.articles}
+                  followers={user.followers}
+                  followings={user.followings}
+                  is_followed={user.is_followed}
+                />
+              })
+            }
+          </Box>
+        }
+      </Box>
       <Box p={2} id={`loadingMore`}>
         <Box className={styles.loadingMore}>
           {
-            (tab === 0 && articleContent && articleContent.nextPage !== null) ||
-            (tab === 1 && datasetContent && datasetContent.nextPage !== null) ||
-            (tab === 2 && userContent && userContent.nextPage !== null) ?
-              <ProcessBar/> : <span>{`${t('searchResult.end')}`}</span>
+            tab === 0 ? articleContent && articleContent.next !== null ?
+                <ProcessBar/> : articleContent && articleContent.count > 6 &&
+                <span>{`${t('searchResult.end')}`}</span> :
+              userContent && userContent.next !== null ?
+                <ProcessBar/> : userContent && userContent.count > 6 &&
+                <span>{`${t('searchResult.end')}`}</span>
           }
         </Box>
       </Box>

@@ -4,29 +4,29 @@ import {useTranslation} from "react-i18next";
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useSelector} from "../../../redux/hooks";
-import {preSearchArticles, preSearchUsers} from "../../../redux/search/slice";
+import {preSearch} from "../../../redux/search/slice";
 
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
 
-import DescriptionIcon from "@material-ui/icons/Description";
-import LoyaltyIcon from "@material-ui/icons/Loyalty";
+import DescriptionIcon from "@mui/icons-material/Description";
+import LoyaltyIcon from "@mui/icons-material/Loyalty";
 
 import {ArticlePreview} from "../../utils";
+import {dateFormatHandler} from "../../../utils/util";
 
 
 export const PreSearch: React.FC = () => {
   const {t} = useTranslation()
   const history = useHistory()
   const dispatch = useDispatch()
-  const articles = useSelector(s => s.search.preSearchArticles)
-  const users = useSelector(s => s.search.preSearchUsers)
+  const pre = useSelector(s => s.search.preSearch)
+  const search = useSelector(s => s.search.keywords)
 
   useEffect(() => {
-    dispatch(preSearchArticles())
-    dispatch(preSearchUsers())
-  }, [dispatch])
+    dispatch(preSearch(search))
+  }, [dispatch, search])
 
   return <>
     <Box className={styles.ArticleContainer}>
@@ -34,19 +34,20 @@ export const PreSearch: React.FC = () => {
         <DescriptionIcon/><p className={styles.Article}>{t('searchContent.article')}</p>
       </Box>
       {
-        articles && articles.data.map((article: any) => {
+        pre && pre.articles.map((article: any) => {
           return <ArticlePreview
             preSearch={true}
-            key={article.id}
-            id={article.id}
+            key={article.aid}
+            id={article.aid}
             title={article.title}
             desc={article.desc}
             author={article.author}
-            date={article.date}
+            date={dateFormatHandler('comm', article.publish_at)}
             lang={article.lang}
-            comment={article.comment}
-            star={article.star}
-            view={article.view}/>
+            views={article.views}
+            commentCount={article.comment_count}
+            stars={article.stars}
+            downloadCount={article.download_count}/>
         })
       }
     </Box>
@@ -56,14 +57,14 @@ export const PreSearch: React.FC = () => {
       </Box>
       <Box className={styles.TagContentContainer}>
         {
-          users && users.data.map((user: any) => {
+          pre && pre.users.map((user: any) => {
             return <Button
               className={styles.TagBtn}
               size={"small"}
               variant={"outlined"}
-              key={user.id}
+              key={user.uid}
               onClick={() => history.push(`/user/${user.username}`)}>
-              <span className={styles.TagAvatar}><Avatar alt="..." src={user.avatar}/></span>
+              <span className={styles.TagAvatar}><Avatar alt="..." src={user.avatar_url}/></span>
               <span className={styles.Hot}>{user.username}</span>
             </Button>
           })

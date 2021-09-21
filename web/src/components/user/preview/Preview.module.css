@@ -115,8 +115,13 @@
 }
 
 .PreviewInfo svg {
-  font-size: 18px;
+  font-size: 20px;
   padding-right: 5px;
+}
+
+.InfoNum {
+  position: relative;
+  top: 1px;
 }
 
 .ActionContainer {
@@ -124,4 +129,48 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.ModalContainer {
+  position: absolute;
+  width: 360px;
+  height: 240px;
+  background: #070707;
+  left: calc(50% - 180px);
+  top: calc(50% - 220px);
+  border: 1px solid #333 !important;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.ModalContainer:focus-visible {
+  outline: none;
+}
+
+.CloseBtn {
+  position: absolute !important;
+  right: 0;
+}
+
+.ModalTitleBox {
+  font-family: flexo, sans-serif;
+  font-size: 14px;
+  margin: 24px 36px 0;
+  text-align: start;
+  color: #ccc;
+}
+
+.ModalTitle {
+  font-weight: 800;
+}
+
+.ModalBtn {
+  margin: 18px 36px !important;
+  color: rgba(211, 47, 47, 1) !important;
+  background-color: rgba(211, 47, 47, 0.2) !important;
+}
+
+.ModalBtn:hover {
+  background-color: rgba(211, 47, 47, 0.2) !important;
 }

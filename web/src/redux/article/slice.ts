@@ -1,12 +1,15 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import Api from "../../utils/api"
+import {AuthState} from "../auth/slice";
+import {BUSINESS} from "../../utils/util";
+import Api from "../../utils/api";
 
 interface ArticleState {
   loading: boolean,
   error: string | null,
   mainContent: any,
   recommendContent: any,
-  article: any
+  article: any,
+  articleParams: any
 }
 
 const initialState: ArticleState = {
@@ -15,33 +18,50 @@ const initialState: ArticleState = {
   mainContent: null,
   recommendContent: null,
   article: null,
+  articleParams: {
+    start: '',
+    end: '',
+  }
 }
 
 export const getArticles = createAsyncThunk(
   'article/getArticles',
   async (page: number, thunkAPI) => {
-    const {data} = await Api.getArticles(page)
-    const preArticles = (thunkAPI.getState() as any).article.mainContent
-    let datasets: any[] = []
-    if (preArticles) datasets = JSON.parse(JSON.stringify(preArticles.data))
-    datasets = datasets.concat(data.data)
-    return {...data, data: datasets}
+    const state = thunkAPI.getState() as any
+    let {data} = await Api.http.get(`/article?page=${page}&start=${state.article.articleParams.start}&end=${state.article.articleParams.end}`)
+    if (data.code === BUSINESS.OK) {
+      data = data.data
+      const preArticles = state.article.mainContent
+      let articles: any[] = []
+      if (preArticles && page !== 1) articles = JSON.parse(JSON.stringify(preArticles.results))
+      articles = articles.concat(data.results)
+      return {...data, results: articles}
+    }
+    return {results: []}
   }
 )
 
 export const getRecommendArticles = createAsyncThunk(
   'article/getRecommendArticles',
   async () => {
-    const {data} = await Api.getRecommendArticles()
-    return data
+    const {data} = await Api.http.get(`/recommend`)
+    if (data.code === BUSINESS.OK) {
+      return data.data
+    }
+    return []
   }
 )
 
 export const getArticle = createAsyncThunk(
   'article/getArticle',
-  async (aid: string) => {
-    const {data} = await Api.getArticle(aid)
-    return data
+  async (params: { aid: string, auth: AuthState }) => {
+    const {data} = await Api.http.get(`/article/${params.aid}`, {
+      headers: {'Authorization': params.auth.accessToken ? `${params.auth.tokenType} ${params.auth.accessToken}` : 'Bearer'}
+    })
+    if (data.code === BUSINESS.OK) {
+      return data.data
+    }
+    return null
   }
 )
 
@@ -55,6 +75,13 @@ export const articleSlice = createSlice({
       state.recommendContent = null
       state.error = null
       state.article = null
+      state.articleParams = {
+        start: '',
+        end: '',
+      }
+    },
+    dispatchArticleParams: (state, action) => {
+      state.articleParams = action.payload
     }
   },
   extraReducers: {

@@ -5,9 +5,10 @@ import {useDispatch} from "react-redux";
 import {useSelector} from "../../../redux/hooks";
 import {getArticle, articleSlice} from "../../../redux/article/slice";
 
-import Box from "@material-ui/core/Box";
-import Fade from "@material-ui/core/Fade";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
 
+import {NotFound} from "../../404";
 import {Render} from "../render";
 import {Comment} from "../../utils";
 
@@ -18,29 +19,36 @@ export const Detail: React.FC<{ aid: string }> = ({aid}) => {
   const screenSize = useScreenSize().width >= MiniWidth ? Medium : Small
   const dispatch = useDispatch()
   const article = useSelector(s => s.article.article)
+  const loading = useSelector(s => s.article.loading)
+  const auth = useSelector(s => s.auth)
 
   useEffect(() => {
-    dispatch(getArticle(aid))
+    dispatch(getArticle({aid, auth}))
     return () => {
       dispatch(articleSlice.actions.clearContent())
     }
-  }, [aid, dispatch])
+  }, [dispatch, aid, auth])
 
-  if (!article) return <></>
+  if (loading && !article) return <></>
+  if (!article) return <NotFound/>
   return <Fade in={true} timeout={500}>
     <Box className={styles.Container}>
       <Render
-        title={article.data.title}
-        author={article.data.author}
-        createDate={dateFormatHandler("comm", article.createDate)}
-        lang={article.data.lang}
-        star={article.data.star}
-        view={article.data.view}
-        comment={article.data.commentCount}
-        content={article.data.content}/>
+        aid={article.aid}
+        title={article.title}
+        author={article.author}
+        createAt={dateFormatHandler("comm", article.publish_at)}
+        lang={article.lang}
+        content={article.content}
+        stars={article.stars}
+        views={article.views}
+        download={article.download_count}
+        file={article.file}
+        comment={article.comment_count}/>
       {
-        (screenSize === Small && article.data.comments === undefined) ? <></> :
-          <Comment commentsCount={article.data.commentCount} comments={article.data.comments}/>
+        (screenSize === Small && article.comment_count === 0) ? <></> :
+          <Comment aid={article.aid} articleAuthor={article.author.username} commentsCount={article.comment_count}
+                   comments={article.comments}/>
       }
     </Box>
   </Fade>

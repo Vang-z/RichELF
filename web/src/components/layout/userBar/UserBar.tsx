@@ -2,39 +2,40 @@ import React, {useState} from "react";
 import styles from "./UserBar.module.css";
 import {useDispatch} from "react-redux";
 import {useSelector} from "../../../redux/hooks";
-import {authSlice, UserProps} from "../../../redux/auth/slice";
+import {authSlice} from "../../../redux/auth/slice";
 import {useTranslation} from "react-i18next";
 import {useHistory, useLocation} from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
-import Box from "@material-ui/core/Box";
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Collapse from '@material-ui/core/Collapse';
+import Box from "@mui/material/Box";
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import Collapse from '@mui/material/Collapse';
 
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InfoIcon from '@material-ui/icons/Info';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import InfoIcon from '@mui/icons-material/Info';
 
 import {BadgeAvatar} from "../../utils";
 
 export const UserBar: React.FC = () => {
   const [userBarOpen, setUserBarOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(true)
-  const auth = useSelector(s => s.auth)
-  const user = auth.user as UserProps
   const dispatch = useDispatch()
   const history = useHistory()
   const location = useLocation()
   const {t} = useTranslation()
+  const token = useSelector(s => s.auth.accessToken)
+  const user = token ? jwt_decode(token as string) as any : {}
 
   const userBarHandler = () => {
     setUserBarOpen(!userBarOpen)
@@ -60,7 +61,7 @@ export const UserBar: React.FC = () => {
 
   return <Box className={styles.UserBar}>
     <Box onClick={userBarHandler}>
-      <BadgeAvatar className={styles.UserBarAvatar} size={"small"} online={true} src={user.avatar}/>
+      <BadgeAvatar className={styles.UserBarAvatar} size={"small"} online={true} src={user.avatar_url}/>
     </Box>
     <Drawer
       open={userBarOpen}
@@ -74,9 +75,10 @@ export const UserBar: React.FC = () => {
       <List>
         <ListItem>
           <ListItemAvatar>
-            <BadgeAvatar className={styles.DrawerAvatar} size={"medium"} online={true} src={user.avatar}/>
+            <BadgeAvatar className={styles.DrawerAvatar} size={"medium"} online={true} src={user.avatar_url}/>
           </ListItemAvatar>
-          <ListItemText primary={user.username} secondary={<object className={styles.UserDesc}>{user.desc}</object>}/>
+          <ListItemText primary={user.username} secondary={<span
+            className={styles.UserDesc}>{user.bio}</span>}/>
         </ListItem>
       </List>
       <Divider/>
@@ -105,7 +107,7 @@ export const UserBar: React.FC = () => {
           <List component="div" disablePadding>
             <ListItem button={true}>
               <ListItemIcon className={styles.NotificationIcon}><InfoIcon/></ListItemIcon>
-              <ListItemText className={styles.Notification} secondary="您的会员已过期，请及时续费"/>
+              <ListItemText className={styles.Notification} secondary={t(`userBar.notification`)}/>
             </ListItem>
           </List>
         </Collapse>

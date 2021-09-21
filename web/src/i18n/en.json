@@ -3,7 +3,6 @@
     "home": "Home",
     "article": "Article",
     "video": "Video",
-    "dataset": "Dataset",
     "about": "About",
     "search": "Search",
     "register": "Register",
@@ -50,14 +49,13 @@
     "recentlyUpdated": "Recently Updated",
     "mostStars": "Most Stars",
     "mostViews": "Most Views",
-    "mostDownloads": "Most Downloads",
+    "mostComments": "Most Comments",
     "mostFollowers": "Most Followers",
+    "mostFollowings": "Most Followings",
     "mostPopular": "Most Popular",
     "articles": "Articles",
-    "datasets": "Datasets",
     "users": "Users",
     "newArticle": "New Article",
-    "newDataset": "New Dataset",
     "end": "ENDING~~"
   },
   "content": {
@@ -99,12 +97,12 @@
     "labelFileRemoveError": "Error during remove",
     "labelTapToCancel": "tap to cancel",
     "labelTapToRetry": "tap to retry",
-    "labelTapToUndo": "tap to undo",
+    "labelTapToUndo": "Remove",
     "labelButtonRemoveItem": "Remove",
     "labelButtonAbortItemLoad": "Abort",
     "labelButtonRetryItemLoad": "Retry",
     "labelButtonAbortItemProcessing": "Cancel",
-    "labelButtonUndoItemProcessing": "Undo",
+    "labelButtonUndoItemProcessing": "Remove",
     "labelButtonRetryItemProcessing": "Retry",
     "labelButtonProcessItem": "Upload"
   },
@@ -117,13 +115,15 @@
     "required": " [Required]",
     "moreThan6C": " [More than 6 characters]",
     "confirm": "Confirm",
-    "agreement": "Agreement"
+    "agreement": "Agreement",
+    "forgetPwd": "Forget Password"
   },
   "userBar": {
     "profile": "Profile",
     "settings": "Settings",
     "signOut": "Sign out",
-    "notifications": "New notifications"
+    "notifications": "New notifications",
+    "notification": "Welcome to the community, thank you for meeting you"
   },
   "contributionMap": {
     "month": {
@@ -171,13 +171,16 @@
       "Dec": "December"
     },
     "action": {
-      "join": "Join",
-      "comment": "Comment",
-      "follow": "Follow",
-      "view": "Viewed",
-      "star": "Star",
-      "publish": "Publish",
-      "download": "Download"
+      "0": "Join",
+      "1": "View",
+      "2": "Follow",
+      "3": "Unfollow",
+      "4": "Star",
+      "5": "Download",
+      "6": "Comment",
+      "7": "Publish",
+      "8": "Edit",
+      "9": "Delete"
     },
     "community": "Community"
   },
@@ -197,7 +200,6 @@
     "mostStar": "Most Star",
     "mostView": "Most Viewed",
     "mostComment": "Most Comment",
-    "newDataset": "New Dataset",
     "newArticle": "New Article",
     "loadingMore": "Loading More",
     "visit": "Visit",
@@ -210,7 +212,11 @@
     "edit": "Edit",
     "delete": "Delete",
     "follow": "Follow",
-    "unfollow": "Unfollow"
+    "unfollow": "Unfollow",
+    "delArticleP1": "This action cannot be undone. his will permanently delete：",
+    "delArticleP2": "and remove all the files and actions",
+    "delArticleP3": "Are you sure you want to proceed？",
+    "delArticle": "Immediately Delete"
   },
   "settings": {
     "accountSettings": "Account Settings",
@@ -225,8 +231,11 @@
     "link": "HTTP",
     "linkP": "Homepage：https://example.com",
     "email": "Email",
+    "newEmail": "New Email",
     "mobile": "Mobile",
+    "mobileNum": "Mobile number",
     "password": "Password",
+    "newPassword": "New Password",
     "emailNotification": "Email",
     "starNotification": "Star",
     "commentNotification": "Comment",
@@ -241,15 +250,19 @@
     "rotation": "Rotation",
     "upload": "Upload",
     "authentication": "Authentication",
-    "authenticationP": "Enter the password to authenticate",
+    "authenticationP": "Enter the password to authenticate (If no password is set, the password is left blank)",
     "authenticate": "Authenticate",
     "change": "Change",
     "bind": "Bind",
-    "unbind": "Unbind"
+    "unbind": "Unbind",
+    "getCode": "Captcha",
+    "captcha": "CAPTCHA",
+    "waitingForActive": "You need to active account firstly"
+
   },
   "about": {
-    "explanation": "Explanation",
-    "explanationContent": "At first, I just wanted to reorganize the blog, but I found that it would be more motivating to make it an open platform for people to record their feelings and learn together, so I started to develop it✊ 【2021-06-24 ==> 2021-08-13】",
+    "about": "About",
+    "explanationContent": "We are committed to creating a harmonious, equal, free open source community, record daily learning experience and life perception. It's a place to share everything that fits the core socialist values, but if it is reproduced, please indicate the source, don't copy other people's articles. Finally, the Internet is not an illegal place, please pay attention to words and deeds✨",
     "goal": "Goals",
     "goalContent1": "α. CMS",
     "goalContent2": "β. Video Page",
@@ -265,5 +278,60 @@
     "contact": "Contact",
     "conclusion": "Conclusion",
     "conclusionContent": "Thank you for meeting me in the vast sea of people, and I will surely carve your imprint in time. I hope to make more friends in the future, not for money, not for honor, but for leaving civilization in the years✨"
+  },
+  "comment": {
+    "cancel": "Cancel",
+    "author": "Author"
+  },
+  "editor": {
+    "uploadFailed": "Upload Failed"
+  },
+  "page": {
+    "about": "About",
+    "article": "Article",
+    "home": "Home",
+    "search": "Search",
+    "active": "Active Account",
+    "newArticle": "New Article"
+  },
+  "enqueueSnackbar": {
+    "makeArticleWaitingForActive": "You need to activate your account to publish articles",
+    "makeArticleWaitingForLogin": "You need to login to publish articles~~",
+    "makeArticleFailed": "Failed to create a new article",
+    "downloadWaitingForActive": "You need to activate your account to download this",
+    "downloadWaitingForLogin": "You need to login to download this",
+    "followWaitingForActive": "You need to activate your account to follow",
+    "followWaitingForLogin": "You need to login your account to follow",
+    "praiseWaitingForActive": "You need to activate your account to praise",
+    "praiseWaitingForLogin": "You need to login your account to praise",
+    "commentWaitingForActive": "You need to activate your account to comment",
+    "commentWaitingForLogin": "You need to login your account to comment",
+    "praiseSuccess": "Praise Success",
+    "emailValidateFailed": "Email format error",
+    "captchaValidateFailed": "CAPTCHA check failed",
+    "emailSendSuccess": "CAPTCHA send success",
+    "emailSendFailed": "CAPTCHA send failed",
+    "emailChangeSuccess": "Email change success",
+    "loginSuccess": "Login success",
+    "pwdValidateFailed": "Password validate failed",
+    "checkPwdValidateFailed": "Password not match",
+    "pwdChangeSuccess": "Password update success",
+    "pwdChangeFailed": "Password update failed",
+    "registerSuccess": "Register success, you need to active your account in 2 hours",
+    "saveFailed": "Save Failed",
+    "saveSuccess": "Save Success",
+    "publishArticleFailed": "Article publish failed",
+    "publishArticleSuccess": "Article publish success",
+    "delSuccess": "Article delete success",
+    "imgFormatError": "Image format validate failed",
+    "unfollowSuccess": "Unfollow success",
+    "followSelf": "Can not follow yourself",
+    "followSuccess": "Follow success",
+    "commentValidateFailed": "Content must not be empty",
+    "commentSuccess": "Comment success",
+    "uploadSuccess": "Upload success",
+    "uploadFailed": "Upload failed",
+    "activeSuccess": "Active success",
+    "alreadyPraise": "You have already praise this article"
   }
 }

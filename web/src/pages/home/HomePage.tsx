@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {useLocation} from "react-router-dom";
 import {useSelector} from "../../redux/hooks";
+import {useTranslation} from "react-i18next";
 
 import useScreenSize from "use-screen-size";
 import {Globe, Moments, JoinUs} from "../../components";
@@ -12,6 +13,7 @@ import {MiniWidth, Small, Medium, scroll2Top, usePrevious} from "../../utils/uti
 export const HomePage: React.FC = () => {
   const size = useScreenSize().width >= MiniWidth ? Medium : Small
   const location = useLocation()
+  const {t} = useTranslation()
   const preLoc = usePrevious(location)
   const auth = useSelector(s => s.auth)
 
@@ -22,14 +24,14 @@ export const HomePage: React.FC = () => {
   }, [location, preLoc])
 
   useEffect(() => {
-    document.title = 'RichELF | 首页'
-  }, [])
+    document.title = `RichELF | ${t(`page.home`)}`
+  }, [t])
 
   return <>
     <MainLayout size={size}>
       <Globe size={size}/>
       <Moments size={size}/>
-      {!auth.token && <JoinUs/>}
+      {!auth.accessToken && <JoinUs/>}
     </MainLayout>
   </>
 }

@@ -1,4 +1,4 @@
-.Article, .Dataset {
+.Article {
   width: 100%;
   padding: 0 16px;
   display: flex;
@@ -22,23 +22,23 @@
   box-sizing: border-box;
 }
 
-.Article:hover, .PreSearchArticle:hover, .Dataset:hover {
+.Article:hover, .PreSearchArticle:hover{
   background-color: rgba(255, 255, 255, 0.08);
 }
 
-.ArticleTitle, .DatasetTitle {
+.ArticleTitle {
   display: flex;
   padding: 16px 12px 8px;
   font-size: 16px;
-  align-items: center;
+  align-items: flex-start;
   color: #f5f5f5;
 }
 
-.ArticleTitle svg, .DatasetTitle svg {
+.ArticleTitle svg {
   margin-right: 5px;
 }
 
-.ArticleDesc, .DatasetDesc {
+.ArticleDesc {
   display: flex;
   flex-direction: column;
   text-align: start;
@@ -47,20 +47,20 @@
   overflow: hidden;
 }
 
-.ArticleBrief, .DatasetBrief {
+.ArticleBrief {
   word-break: break-all;
   padding: 0 12px 8px;
   color: #f5f5f5;
 }
 
-.ArticleAuthor, .DatasetAuthor {
+.ArticleAuthor {
   display: flex;
   flex-direction: row;
   align-items: center;
   color: #f5f5f5;
 }
 
-.ArticleIcon, .DatasetIcon {
+.ArticleIcon {
   display: flex;
   flex-direction: row;
   text-align: start;
@@ -79,16 +79,21 @@
   bottom: 2px;
 }
 
-.ArticleInfo, .DatasetInfo {
+.ArticleInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
   color: #f5f5f5;
 }
 
-.ArticleInfo svg, .DatasetInfo svg {
-  font-size: 18px;
+.ArticleInfo svg {
+  font-size: 20px;
   padding-right: 5px;
+}
+
+.InfoNum {
+  position: relative;
+  top: 1px;
 }
 
 .UserPreview {
@@ -141,6 +146,8 @@
   line-height: 18px;
   padding: 0 10px;
   color: #777 !important;
+  position: relative;
+  top: 2px;
 }
 
 .UserPreviewInfo {
@@ -149,7 +156,7 @@
 }
 
 .UserPreviewInfo svg {
-  font-size: 16px;
+  font-size: 20px;
   padding-right: 5px;
 }
 

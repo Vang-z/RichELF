@@ -7,26 +7,25 @@ import {languageSlice} from "../../../redux/lang/slice";
 import {useTranslation} from "react-i18next";
 import {useHistory, useLocation} from "react-router-dom";
 
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Input from "@material-ui/core/Input";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Input from "@mui/material/Input";
+import RadioGroup from "@mui/material/RadioGroup";
+import Radio from "@mui/material/Radio";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
-import ListIcon from '@material-ui/icons/List';
-import SearchIcon from '@material-ui/icons/Search';
-import CameraIcon from '@material-ui/icons/Camera';
-import ViewQuiltIcon from '@material-ui/icons/ViewQuilt';
-import FeaturedVideoIcon from '@material-ui/icons/FeaturedVideo';
-import StorageIcon from '@material-ui/icons/Storage';
-import DetailsIcon from '@material-ui/icons/Details';
-import TranslateIcon from "@material-ui/icons/Translate";
+import ListIcon from '@mui/icons-material/List';
+import SearchIcon from '@mui/icons-material/Search';
+import CameraIcon from '@mui/icons-material/Camera';
+import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
+import FeaturedVideoIcon from '@mui/icons-material/FeaturedVideo';
+import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
+import TranslateIcon from "@mui/icons-material/Translate";
 
 
 export const Sidebar: React.FC = () => {
@@ -113,20 +112,11 @@ export const Sidebar: React.FC = () => {
       </ListItem>
       <ListItem
         button={true}
-        disabled={location.pathname === `/dataset`}
-        onClick={navHandler(`/dataset`)}
-        className={location.pathname.startsWith(`/dataset`) ? styles.Selected : undefined}
-      >
-        <ListItemIcon className={styles.DrawerIcon}><StorageIcon/></ListItemIcon>
-        <ListItemText secondary={t(`header.dataset`)}/>
-      </ListItem>
-      <ListItem
-        button={true}
         disabled={location.pathname === `/about`}
         onClick={navHandler(`/about`)}
         className={location.pathname.startsWith(`/about`) ? styles.Selected : undefined}
       >
-        <ListItemIcon className={styles.DrawerIcon}><DetailsIcon/></ListItemIcon>
+        <ListItemIcon className={styles.DrawerIcon}><ChangeHistoryIcon/></ListItemIcon>
         <ListItemText secondary={t(`header.about`)}/>
       </ListItem>
     </List>

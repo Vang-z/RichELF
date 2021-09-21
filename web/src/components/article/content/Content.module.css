@@ -34,6 +34,7 @@
 
 .TendingBarTitle {
   margin: 10px auto;
+  text-align: center;
   color: #bbb;
   font-size: 16px;
   font-family: flexo, sans-serif;

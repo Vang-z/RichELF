@@ -4,7 +4,8 @@ import {useParams} from "react-router-dom";
 import {useSelector} from "../../../redux/hooks";
 import {searchSlice} from "../../../redux/search/slice";
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
+
 import {SearchTending} from "../searchTending";
 import {PreSearch} from "../preSearch";
 import {SearchResult} from "../searchResult";

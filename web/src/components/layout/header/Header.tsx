@@ -2,22 +2,22 @@ import React, {useState} from "react";
 import styles from "./Header.module.css"
 import {useHistory, useLocation} from "react-router-dom"
 
-import Box from "@material-ui/core/Box";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import Backdrop from '@material-ui/core/Backdrop';
+import Box from "@mui/material/Box";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Input from "@mui/material/Input";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Collapse from '@mui/material/Collapse';
+import Backdrop from '@mui/material/Backdrop';
+import IconButton from "@mui/material/IconButton";
 
-import TranslateIcon from '@material-ui/icons/Translate';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import IconButton from "@material-ui/core/IconButton";
-import DehazeIcon from "@material-ui/icons/Dehaze";
+import TranslateIcon from '@mui/icons-material/Translate';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import DehazeIcon from "@mui/icons-material/Dehaze";
 
 import {UserBar} from "../userBar";
 import {Sidebar} from "../sidebar";
@@ -95,7 +95,7 @@ export const Header: React.FC<SizeProps> = ({size}) => {
               </Box>
               <Box className={styles.Nav}>
                 <Grid container={true}>
-                  <Grid xs={3} item={true}>
+                  <Grid xs={4} item={true}>
                     <Button
                       disableRipple={true}
                       disabled={location.pathname === `/article`}
@@ -108,7 +108,7 @@ export const Header: React.FC<SizeProps> = ({size}) => {
                       {t('header.article')}
                     </Button>
                   </Grid>
-                  <Grid xs={3} item={true}>
+                  <Grid xs={4} item={true}>
                     <Button
                       disableRipple={true}
                       disabled={location.pathname === `/video`}
@@ -121,20 +121,7 @@ export const Header: React.FC<SizeProps> = ({size}) => {
                       {t('header.video')}
                     </Button>
                   </Grid>
-                  <Grid xs={3} item={true}>
-                    <Button
-                      disableRipple={true}
-                      disabled={location.pathname === `/dataset`}
-                      className={location.pathname.startsWith(`/dataset`) ? styles.IndexBtnSelected : styles.IndexBtn}
-                      size={"large"}
-                      onClick={() => {
-                        location.pathname !== `/dataset` && history.push(`/dataset`)
-                      }}
-                    >
-                      {t('header.dataset')}
-                    </Button>
-                  </Grid>
-                  <Grid xs={3} item={true}>
+                  <Grid xs={4} item={true}>
                     <Button
                       disableRipple={true}
                       disabled={location.pathname === `/about`}
@@ -153,7 +140,7 @@ export const Header: React.FC<SizeProps> = ({size}) => {
             <Box className={styles.ActionBar}>
               <Box className={styles.LangBar}>
                 <List component="nav">
-                  <ListItem button onClick={handleClickLanguageBtn}>
+                  <ListItem button disableRipple={true} onClick={handleClickLanguageBtn}>
                     <TranslateIcon/>
                     <ListItemText style={{textAlign: "center"}} primary={code2name(language.lang)}/>
                     {state.langList ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
@@ -165,6 +152,7 @@ export const Header: React.FC<SizeProps> = ({size}) => {
                           <ListItem
                             className={styles.CollapseBtn}
                             button
+                            disableRipple={true}
                             selected={l.code === language.lang}
                             disabled={l.code === language.lang}
                             onClick={handleClickChangeLanguage(l.code)}
@@ -184,9 +172,9 @@ export const Header: React.FC<SizeProps> = ({size}) => {
                   onClick={() => history.push(`/search`)}
                 />
               </Box>
-              <Box className={styles.AuthBar} style={{width: auth.token ? "unset" : undefined}}>
+              <Box className={styles.AuthBar} style={{width: auth.accessToken ? "unset" : undefined}}>
                 {
-                  auth.token ? <UserBar/> :
+                  auth.accessToken ? <UserBar/> :
                     <ButtonGroup
                       classes={{
                         root: styles.BtnGroup
@@ -223,7 +211,7 @@ export const Header: React.FC<SizeProps> = ({size}) => {
           </Box>
           <Box>
             {
-              auth.token ? <UserBar/> :
+              auth.accessToken ? <UserBar/> :
                 <ButtonGroup size={"medium"} style={{right: "5px", position: "relative"}}>
                   <Button className={styles.HeaderBtn} variant={"outlined"}
                           onClick={handleLoginOrRegister('register')}>{t('header.register')}</Button>

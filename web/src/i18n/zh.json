@@ -3,7 +3,6 @@
     "home": "首页",
     "article": "文章",
     "video": "视频",
-    "dataset": "数据集",
     "code": "代码",
     "about": "关于",
     "search": "搜索",
@@ -51,14 +50,13 @@
     "recentlyUpdated": "最新发布",
     "mostStars": "最多点赞",
     "mostViews": "最多浏览",
-    "mostDownloads": "最多下载",
-    "mostFollowers": "最多关注",
+    "mostComments": "最多评论",
+    "mostFollowers": "最多粉丝",
+    "mostFollowings": "最多关注",
     "mostPopular": "最活跃",
     "articles": "文章",
-    "datasets": "数据集",
     "users": "用户",
     "newArticle": "写文章",
-    "newDataset": "上传数据集",
     "end": "到底啦~~"
   },
   "content": {
@@ -85,7 +83,7 @@
     "publish": "发布"
   },
   "fileUpload": {
-    "labelIdle": "上传数据集",
+    "labelIdle": "上传文件",
     "labelInvalidField": "请勿上传非法文件",
     "labelFileWaitingForSize": "文件大小计算中",
     "labelFileSizeNotAvailable": "文件大小非法",
@@ -99,12 +97,12 @@
     "labelFileRemoveError": "删除失败",
     "labelTapToCancel": "取消",
     "labelTapToRetry": "重试",
-    "labelTapToUndo": "撤销",
+    "labelTapToUndo": "删除",
     "labelButtonRemoveItem": "删除",
     "labelButtonAbortItemLoad": "恢复",
     "labelButtonRetryItemLoad": "重试",
     "labelButtonAbortItemProcessing": "取消",
-    "labelButtonUndoItemProcessing": "撤销",
+    "labelButtonUndoItemProcessing": "删除",
     "labelButtonRetryItemProcessing": "重试",
     "labelButtonProcessItem": "上传"
   },
@@ -117,13 +115,15 @@
     "required": "【必填】",
     "moreThan6C": "【不少于6个字符】",
     "confirm": "同意",
-    "agreement": "用户协议"
+    "agreement": "用户协议",
+    "forgetPwd": "忘记密码"
   },
   "userBar": {
     "profile": "个人中心",
     "settings": "设置",
     "signOut": "注销",
-    "notifications": "新消息"
+    "notifications": "新消息",
+    "notification": "欢迎加入社区，感谢能和你相遇"
   },
   "contributionMap": {
     "month": {
@@ -171,13 +171,16 @@
       "Dec": "十二月"
     },
     "action": {
-      "join": "加入",
-      "comment": "评论",
-      "follow": "关注",
-      "view": "浏览",
-      "star": "点赞",
-      "publish": "发布",
-      "download": "下载"
+      "0": "加入",
+      "1": "浏览",
+      "2": "关注",
+      "3": "取关",
+      "4": "点赞",
+      "5": "下载",
+      "6": "评论",
+      "7": "发布",
+      "8": "修改",
+      "9": "删除"
     },
     "community": "社区"
   },
@@ -197,7 +200,6 @@
     "mostStar": "最多点赞",
     "mostView": "最多浏览",
     "mostComment": "最多评论",
-    "newDataset": "上传数据集",
     "newArticle": "写文章",
     "loadingMore": "加载更多",
     "visit": "访问",
@@ -210,7 +212,11 @@
     "edit": "修改",
     "delete": "删除",
     "follow": "关注",
-    "unfollow": "取消关注"
+    "unfollow": "取消关注",
+    "delArticleP1": "该操作是无法撤销的，这将永久删除：",
+    "delArticleP2": "包括它的评论，附带文件等",
+    "delArticleP3": "您确定要继续执行操作吗？",
+    "delArticle": "立即删除"
   },
   "settings": {
     "accountSettings": "账户设置",
@@ -225,8 +231,11 @@
     "link": "主页",
     "linkP": "个人主页的链接：https://example.com",
     "email": "邮箱",
+    "newEmail": "新邮箱",
     "mobile": "手机",
+    "mobileNum": "手机号码",
     "password": "密码",
+    "newPassword": "新密码",
     "emailNotification": "邮件通知",
     "starNotification": "点赞通知",
     "commentNotification": "评论通知",
@@ -241,15 +250,18 @@
     "rotation": "旋转",
     "upload": "确定",
     "authentication": "身份验证",
-    "authenticationP": "输入密码验证身份",
+    "authenticationP": "输入密码验证身份  (未设置密码直接留空)",
     "authenticate": "验证",
     "change": "修改",
     "bind": "绑定",
-    "unbind": "解绑"
+    "unbind": "解绑",
+    "getCode": "获取验证码",
+    "captcha": "邮箱验证码",
+    "waitingForActive": "请先激活账户后再进行修改"
   },
   "about": {
-    "explanation": "说明",
-    "explanationContent": "一开始只是打算重构一下博客, 后来发现做成一个公开平台让大家一起记录生活感悟、学习内容好像更能调动积极性, 于是就开始着手开发✊ 【2021-06-24 ==> 2021-08-13】",
+    "about": "说明",
+    "explanationContent": "致力于开创一个和谐、平等、免费的开源社区，将平时的学习心得、生活感悟记录下来。本站可以分享在符合社会主义核心价值观为前提下的一切内容，但如是转载内容请注明出处，不要抄袭他人的文章，更不要带入类似 CSDN 的抄袭风气。最后，互联网并非法外之地，望各位谨慎言行✨",
     "goal": "目标",
     "goalContent1": "α. 管理系统",
     "goalContent2": "β. 音乐播放",
@@ -265,5 +277,60 @@
     "contact": "联系方式",
     "conclusion": "结束语",
     "conclusionContent": "感谢各位能够在茫茫人海中和我相遇, 必定也会在时间中刻下你们的印记, 希望在未来能够多认识一些朋友, 不为金钱、不为荣誉, 只为在岁月中留下文明✨"
+  },
+  "comment": {
+    "cancel": "取消",
+    "author": "作者"
+  },
+  "editor": {
+    "uploadFailed": "上传失败"
+  },
+  "page": {
+    "about": "关于",
+    "article": "文章",
+    "home": "首页",
+    "search": "搜索",
+    "active": "激活账号",
+    "newArticle": "写文章"
+  },
+  "enqueueSnackbar": {
+    "makeArticleWaitingForActive": "您需要先激活账号才能发布文章哟~~",
+    "makeArticleWaitingForLogin": "您需要先登陆账号才能发布文章哟~~",
+    "makeArticleFailed": "文章在虚空中消失了，请等一会儿再试试~~",
+    "downloadWaitingForActive": "您需要先激活账号才能下载这个资源哟~~",
+    "downloadWaitingForLogin": "您需要先登陆账号才能下载这个资源哟~~",
+    "followWaitingForActive": "您需要先激活账号才能关注哟~~",
+    "followWaitingForLogin": "您需要先登陆账号才能关注哟~~",
+    "praiseWaitingForActive": "您需要先激活账号才能点赞哟~~",
+    "praiseWaitingForLogin": "您需要先登陆账号才能点赞哟~~",
+    "commentWaitingForActive": "您需要先激活账号才能评论哟~~",
+    "commentWaitingForLogin": "您需要先登陆账号才能评论哟~~",
+    "praiseSuccess": "芜湖，点赞成功！",
+    "emailValidateFailed": "邮箱格式不对嗷~~",
+    "captchaValidateFailed": "还没输入验证码呢~~",
+    "emailSendSuccess": "呼呼呼，邮件发送成功~~",
+    "emailSendFailed": "邮件发送失败了，请检查邮箱是否正确哟~~",
+    "emailChangeSuccess": "邮箱已经修改啦，下次登陆记得使用新邮箱哟~~",
+    "loginSuccess": "成功了，进入了一个新世界！",
+    "pwdValidateFailed": "密码校验失败，重新输入一次试试呢~~",
+    "checkPwdValidateFailed": "重复输入密码都能出错吗？",
+    "pwdChangeSuccess": "密码已经修改啦，下次登陆要记得使用新密码哟~~",
+    "pwdChangeFailed": "密码修改失败，待会儿再试试叭~~",
+    "registerSuccess": "注册成功！欢迎加入我们，记得要在 2 小时内前往邮箱激活账户嗷~~",
+    "saveFailed": "呜呜，保存出错了，等一会儿再试试叭~~",
+    "saveSuccess": "保存成功啦~~",
+    "publishArticleFailed": "呜呜，文章发布失败了，等一会儿再试试叭~~",
+    "publishArticleSuccess": "好耶！发布成功，审核完成就会发布上线啦~~",
+    "delSuccess": "又有一篇文章遁入虚空了，太可惜了~~",
+    "imgFormatError": "图片格式不符合要求，换一张叭~~",
+    "unfollowSuccess": "关注解除了！",
+    "followSelf": "你无时无刻不在关注着自己~~",
+    "followSuccess": "成功建立起了关注联系！",
+    "commentValidateFailed": "你还是说点什么叭~~",
+    "commentSuccess": "评论成功啦~~",
+    "uploadSuccess": "芜湖，上传完成啦~~",
+    "uploadFailed": "呜呜，上传失败了~~",
+    "activeSuccess": "成功啦，完成激活啦~~",
+    "alreadyPraise": "知道你很欣赏这篇文章，但是也不能一直点赞对叭~~"
   }
 }

@@ -197,9 +197,10 @@
 }
 
 .RepositoriesSearchBox {
-  margin: 16px 12px;
+  padding: 16px 12px;
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #333;
 }
 
 .MainSearchBox {
@@ -220,6 +221,7 @@
 
 .RepositoriesSearch div {
   color: #aaa !important;
+  height: 44px;
 }
 
 .RepositoriesSearch fieldset {
@@ -259,7 +261,15 @@
 }
 
 .RepositoryPreview {
-  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.UserPreview {
+  padding: 12px;
+  display: flex;
+  border-bottom: 1px solid #333;
+  font-family: flexo, sans-serif;
+  text-align: start;
 }
 
 .LoadingMoreRepository {

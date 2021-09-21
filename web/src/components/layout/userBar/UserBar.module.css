@@ -9,7 +9,7 @@
 }
 
 .UserDrawer {
-  background-color: #111 !important;
+  background: #121212 !important;
   border-left: 1px solid #555;
   max-width: 280px;
 }

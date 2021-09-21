@@ -1,8 +1,9 @@
 import React, {useEffect} from "react";
 import {useLocation} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
-import Fade from "@material-ui/core/Fade";
-import Box from "@material-ui/core/Box";
+import Fade from "@mui/material/Fade";
+import Box from "@mui/material/Box";
 
 import {SearchHeader, SearchContent} from "../../components";
 
@@ -12,6 +13,7 @@ import {scroll2Top, usePrevious} from "../../utils/util";
 export const SearchPage: React.FC = () => {
   const location = useLocation()
   const preLoc = usePrevious(location)
+  const {t} = useTranslation()
 
   useEffect(() => {
     if (preLoc !== location) {
@@ -20,8 +22,8 @@ export const SearchPage: React.FC = () => {
   })
 
   useEffect(() => {
-    document.title = 'Search Page'
-  }, [])
+    document.title = `RichELF | ${t(`page.search`)}`
+  }, [t])
 
   return <Fade in={true}>
     <Box>

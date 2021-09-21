@@ -119,6 +119,12 @@
   border-color: rgba(255, 255, 255, 0.7) !important;
 }
 
+.OauthWrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
 .OauthBox {
   display: flex;
   margin-top: 12px;
@@ -139,10 +145,35 @@
   margin-right: 12px;
 }
 
-.AgreementBox {
-  margin-left: 32px;
+.ForgetPwd {
+  position: relative;
+  top: 3px;
+  margin-right: 41px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
+.MiniForgetPwd {
+  position: relative;
+  top: 3px;
+  margin-right: 10%;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.AgreementBox {
+  margin-left: 32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
 
 .MiniAgreementBox {
   margin-left: calc(10% - 9px);

@@ -9,7 +9,6 @@ import {authSlice} from "./auth/slice";
 import {sidebarSlice} from "./sidebar/slice";
 import {momentsSlice} from "./moments/slice";
 import {articleSlice} from "./article/slice";
-import {datasetSlice} from "./dataset/slice";
 import {profileSlice} from "./profile/slice";
 
 const persistConfig = {
@@ -27,7 +26,6 @@ const rootReducer = combineReducers({
   sidebar: sidebarSlice.reducer,
   moments: momentsSlice.reducer,
   article: articleSlice.reducer,
-  dataset: datasetSlice.reducer,
   profile: profileSlice.reducer,
 })
 

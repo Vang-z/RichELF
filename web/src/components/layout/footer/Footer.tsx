@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./Footer.module.css"
 
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
+import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
+import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
 
 import {SizeProps} from "../../../utils/util";
 
@@ -20,14 +20,15 @@ export const Footer: React.FC<SizeProps> = ({size}) => {
         <Grid id={`footer`} className={styles.Footer} container={true}>
           <Grid container={true}>
             <Grid item={true} sm={4}/>
-            <Grid item={true} sm={4}>
-              <span className={styles.FooterSpan}>COPYRIGHT &#169; 2021 Vang_z. ALL RIGHTS RESERVED. </span>
+            <Grid item={true} sm={4} style={{textAlign: "center"}}>
+              <span className={styles.FooterSpan}>COPYRIGHT &#169; 2021 Vang-z. ALL RIGHTS RESERVED. </span>
               <span className={styles.FooterSpan}> POWERED BY&nbsp;&nbsp;</span>
               <span className={styles.FooterSpan}>
-            <Link className={styles.FooterLink} href="https://fastapi.tiangolo.com/" target={"_blank"} rel="noopener">
-              <Avatar className={styles.Icon} variant="rounded" src={fastApiIco.default}/>
-            </Link>
-          </span>
+                <Link className={styles.FooterLink} href="https://fastapi.tiangolo.com/" target={"_blank"}
+                      rel="noopener">
+                  <Avatar className={styles.Icon} variant="rounded" src={fastApiIco.default}/>
+                </Link>
+              </span>
               <span className={styles.FooterSpan}>
             <Link className={styles.FooterLink} href="https://material-ui.com/" target={"_blank"} rel="noopener">
               <Avatar className={styles.Icon} variant="rounded" src={materialIco.default}/>
@@ -38,10 +39,10 @@ export const Footer: React.FC<SizeProps> = ({size}) => {
           </Grid>
           <Grid container={true}>
             <Grid item={true} sm={4}/>
-            <Grid item={true} sm={4}>
+            <Grid item={true} sm={4}style={{textAlign: "center"}}>
               <Link className={styles.FooterLink} href="https://beian.miit.gov.cn/" target={"_blank"}
                     rel="noopener">
-                蜀ICP备20011394号-1
+                蜀ICP备20011394号-2
               </Link>
               <Link className={styles.FooterLink}
                     href="https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=51112302000147"
@@ -56,15 +57,15 @@ export const Footer: React.FC<SizeProps> = ({size}) => {
         </Grid> :
         <Box id={`footer`} className={styles.MiniFooter}>
           <Box>
-            <span className={styles.FooterSpan}>COPYRIGHT &#169; 2021 Vang_z. ALL RIGHTS RESERVED. </span>
+            <span className={styles.FooterSpan}>COPYRIGHT &#169; 2021 Vang-z. ALL RIGHTS RESERVED. </span>
           </Box>
           <Box>
             <span className={styles.FooterSpan}> POWERED BY&nbsp;&nbsp;</span>
             <span className={styles.FooterSpan}>
-        <Link className={styles.FooterLink} href="https://fastapi.tiangolo.com/" target={"_blank"} rel="noopener">
-          <Avatar className={styles.Icon} variant="rounded" src={fastApiIco.default}/>
-        </Link>
-        </span>
+              <Link className={styles.FooterLink} href="https://fastapi.tiangolo.com/" target={"_blank"} rel="noopener">
+                <Avatar className={styles.Icon} variant="rounded" src={fastApiIco.default}/>
+              </Link>
+            </span>
             <span className={styles.FooterSpan}>
           <Link className={styles.FooterLink} href="https://material-ui.com/" target={"_blank"} rel="noopener">
             <Avatar className={styles.Icon} variant="rounded" src={materialIco.default}/>

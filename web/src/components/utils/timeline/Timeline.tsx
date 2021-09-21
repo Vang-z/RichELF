@@ -7,16 +7,19 @@ import {useDispatch} from "react-redux";
 import {getTimeline} from "../../../redux/profile/slice";
 import {useSelector} from "../../../redux/hooks";
 
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
-import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import EmojiFoodBeverageIcon from '@material-ui/icons/EmojiFoodBeverage';
-import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
+import EmojiFoodBeverageIcon from '@mui/icons-material/EmojiFoodBeverage';
+import EmojiFlagsIcon from '@mui/icons-material/EmojiFlags';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import GestureIcon from '@mui/icons-material/Gesture';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 
 export const Timeline: React.FC<{ username: string }> = ({username}) => {
@@ -25,28 +28,37 @@ export const Timeline: React.FC<{ username: string }> = ({username}) => {
   const dispatch = useDispatch()
   const timelines = useSelector(s => s.profile.timelines)
 
-  const iconHandler = (action: string) => {
+  /**
+   * @param {action} action - 0: 加入社区 1: 浏览 2: 关注 3: 取关 4: 点赞 5: 下载 6: 评论 7: 发布 8: 修改 9: 删除
+   * **/
+  const iconHandler = (action: number) => {
     switch (action) {
-      case "join":
+      case 0:
         return <AccountBalanceIcon/>
-      case "comment":
-        return <QuestionAnswerIcon/>
-      case "follow":
-        return <EmojiFlagsIcon/>
-      case "view":
+      case 1:
         return <EmojiFoodBeverageIcon/>
-      case "star":
+      case 2:
+        return <EmojiFlagsIcon/>
+      case 3:
+        return <FlashOnIcon/>
+      case 4:
         return <FavoriteIcon/>
-      case "publish":
-        return <EmojiObjectsIcon/>
-      case "download":
+      case 5:
         return <CloudDownloadIcon/>
+      case 6:
+        return <QuestionAnswerIcon/>
+      case 7:
+        return <EmojiObjectsIcon/>
+      case 8:
+        return <GestureIcon/>
+      case 9:
+        return <RemoveIcon/>
     }
   }
 
   return <>
     {
-      timelines && timelines.data.map((timeline: any) => {
+      timelines && timelines.results.map((timeline: any) => {
         return <Box className={styles.TimelineBox} key={uuid4()}>
           <Box className={styles.TimelineDate}>
             <span className={styles.TimelineDateBox}>
@@ -71,14 +83,16 @@ export const Timeline: React.FC<{ username: string }> = ({username}) => {
                       <span
                         className={styles.TimelineTitleObj}
                         onClick={() => {
-                          if (b.obj !== '') {
-                            const s = b.obj.split('_')
-                            const type = s[0]
-                            const id = s[1]
-                            history.push(`/${type}/${id}`)
+                          if (b.obj) {
+                            const s = b.obj.split('$_$')
+                            if (s[0] === 'user') {
+                              history.push(`/${s[0]}/${s[1]}`)
+                            } else {
+                              history.push(`/${s[0]}/${s[2]}`)
+                            }
                           }
                         }}
-                      >{b.action === "join" ? t(`timeline.community`) : b.title}</span>
+                      >{b.action === 0 ? t(`timeline.community`) : b.obj.split('$_$')[1]}</span>
                     </Box>
                     <Box className={styles.TimelineDateInfo}>
                       <span>{b.date}</span>
@@ -92,12 +106,12 @@ export const Timeline: React.FC<{ username: string }> = ({username}) => {
       })
     }
     <Box className={styles.LoadingMore}
-         hidden={timelines && !timelines.nextPage}>
+         hidden={timelines && !timelines.next}>
       <Button
         disableRipple={true} fullWidth={true} variant={"outlined"}
         onClick={() => dispatch(getTimeline({
           username: username,
-          page: timelines.nextPage
+          page: timelines.next
         }))}>{t(`profile.loadingMore`)}</Button>
     </Box>
   </>

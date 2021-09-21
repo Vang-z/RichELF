@@ -4,53 +4,39 @@ import useScreenSize from "use-screen-size";
 import {useTranslation} from "react-i18next";
 import {useSnackbar} from 'notistack';
 import {useDispatch} from "react-redux";
+import validator from "validator";
+
 import {useSelector} from "../../../redux/hooks";
 import {loginBoxSlice} from "../../../redux/loginBox/slice";
 import {authSlice} from "../../../redux/auth/slice";
 
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from '@material-ui/core/FormControl';
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
-import Checkbox from '@material-ui/core/Checkbox';
+import Modal from "@mui/material/Modal";
+import Backdrop from "@mui/material/Backdrop";
+import Fade from "@mui/material/Fade";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from '@mui/material/FormControl';
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
+import Checkbox from '@mui/material/Checkbox';
 
-import CloseIcon from '@material-ui/icons/Close';
-import EmailIcon from "@material-ui/icons/EmailOutlined";
-import Visibility from "@material-ui/icons/VisibilityOutlined";
-import VisibilityOff from "@material-ui/icons/VisibilityOffOutlined";
+import CloseIcon from '@mui/icons-material/Close';
+import EmailIcon from "@mui/icons-material/EmailOutlined";
+import Visibility from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOff from "@mui/icons-material/VisibilityOffOutlined";
 
 import githubIcon from "../../../assets/images/github.svg"
 import qqIcon from "../../../assets/images/qq.svg"
 import googleIcon from "../../../assets/images/google.svg"
 import {Medium, MiniWidth, Small} from "../../../utils/util";
 
-const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJ0clI2b1NtQUtHcFZ1V3llUDV1WjI5IiwiZXhwIjoxNjI4NjUwNjA0fQ.l0Mcr_CJzouZhLrKy7RPn20RDj9HyN-wfO4vJI3Bnig'
-const USER = {
-  "uid": "5df73bde-a5c7-4ab0-9b21-64c5093d8b68",
-  "last_login": "2021-08-04T10:56:44.677316+08:00",
-  "is_superuser": true,
-  "desc": "But U can not make more time.",
-  "email": "vang-z@foxmail.com",
-  "username": "Vang-z",
-  "link": "https://vangz.club/user/Vang-z",
-  "avatar": "https://vangz.club/media/avatar/trR6oSmAKGpVuWyeP5uZ29/WpgAk6ckPKU8vRawTtg2WS.jpg",
-  "telephone": null,
-  "date_joined": "2020-03-31T13:16:40.780282+08:00",
-  "is_active": true,
-  "is_staff": true,
-  "coin": 0,
-  "follow": []
-}
+import Api from "../../../utils/api";
 
 
 export const LoginBox: React.FC = () => {
@@ -64,6 +50,16 @@ export const LoginBox: React.FC = () => {
   const [registerPasswordVisible, setRegisterPasswordVisible] = useState(false)
   const [checkRegisterPasswordVisible, setCheckRegisterPasswordVisible] = useState(false)
   const [agreement, setAgreement] = useState(true)
+  const [login, setLogin] = useState({
+    email: '',
+    pwd: '',
+  })
+  const [reg, setReg] = useState({
+    email: '',
+    pwd: '',
+    pwdChecked: ''
+  })
+  const [regBtnDisabled, setRegBtnDisabled] = useState(false)
 
   const closeModalHandler = () => {
     dispatch(loginBoxSlice.actions.dispatchOpen({open: false, type: 'login'}))
@@ -79,10 +75,71 @@ export const LoginBox: React.FC = () => {
     }
   }, [loginBoxStatus])
 
-  const loginHandler = () => {
-    dispatch(authSlice.actions.setToken({user: USER, token: TOKEN}))
+  const loginHandler = async () => {
+    if (!validator.isEmail(login.email)) {
+      enqueueSnackbar(t(`enqueueSnackbar.emailValidateFailed`), {
+        variant: "error",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+      return
+    }
+    let formData = new FormData();
+    formData.append("username", login.email);
+    formData.append("password", btoa(login.pwd));
+    const res = await Api.http.post(`/token`, formData)
+    if (res.status !== 200) {
+      enqueueSnackbar(res.data.detail.msg, {
+        variant: "warning",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+      return
+    }
+    dispatch(authSlice.actions.setToken({accessToken: res.data.access_token, tokenType: res.data.token_type}))
     closeModalHandler()
-    enqueueSnackbar('登陆成功', {
+    enqueueSnackbar(t(`enqueueSnackbar.loginSuccess`), {
+      variant: "success",
+      action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+    })
+  }
+
+  const registerHandler = async () => {
+    if (!validator.isEmail(reg.email)) {
+      enqueueSnackbar(t(`enqueueSnackbar.emailValidateFailed`), {
+        variant: "error",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+      return
+    }
+    if (!reg.pwd || !reg.pwdChecked || reg.pwd.length < 6 || reg.pwdChecked.length < 6) {
+      enqueueSnackbar(t(`enqueueSnackbar.pwdValidateFailed`), {
+        variant: "error",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+      return
+    }
+    if (reg.pwd !== reg.pwdChecked) {
+      enqueueSnackbar(t(`enqueueSnackbar.checkPwdValidateFailed`), {
+        variant: "warning",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+      return
+    }
+    setRegBtnDisabled(true)
+    let formData = new FormData();
+    formData.append("email", reg.email);
+    formData.append("password", btoa(reg.pwd));
+    const res = await Api.http.post(`/user`, formData)
+    setRegBtnDisabled(false)
+    if (res.status !== 201) {
+      enqueueSnackbar(res.data.detail.msg, {
+        variant: "warning",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+      return
+    }
+    dispatch(authSlice.actions.setToken({accessToken: res.data.access_token, tokenType: res.data.token_type}))
+    closeModalHandler()
+    enqueueSnackbar(t(`enqueueSnackbar.registerSuccess`), {
       variant: "success",
       action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
     })
@@ -94,6 +151,7 @@ export const LoginBox: React.FC = () => {
   const inputStyle = (screenSize === Medium ? styles.Input : styles.MiniInput)
   const btnStyle = (screenSize === Medium ? styles.Btn : styles.MiniBtn)
   const oauthBoxStyle = (screenSize === Medium ? styles.OauthBox : styles.MiniOauthBox)
+  const forgetPwdStyle = (screenSize === Medium ? styles.ForgetPwd : styles.MiniForgetPwd)
   const agreementBoxStyle = (screenSize === Medium ? styles.AgreementBox : styles.MiniAgreementBox)
 
   return <Modal
@@ -152,7 +210,7 @@ export const LoginBox: React.FC = () => {
               {
                 tab === 0 &&
                 <Box className={styles.LoginContent}>
-                  <FormControl className={formControlStyle}>
+                  <FormControl className={formControlStyle} variant={"standard"}>
                     <InputLabel className={styles.InputLabel}>{t(`loginBox.email`)}<small
                       className={styles.SmallFont}>{t(`loginBox.required`)}</small></InputLabel>
                     <Input
@@ -160,9 +218,12 @@ export const LoginBox: React.FC = () => {
                       endAdornment={<IconButton size={"small"} disabled={true}>
                         <EmailIcon style={{color: 'rgba(255, 255, 255, 0.7)'}}/>
                       </IconButton>}
+                      onChange={(e) => {
+                        setLogin({...login, email: e.target.value})
+                      }}
                     />
                   </FormControl>
-                  <FormControl className={formControlStyle}>
+                  <FormControl className={formControlStyle} variant={"standard"}>
                     <InputLabel className={styles.InputLabel}>{t(`loginBox.password`)}<small
                       className={styles.SmallFont}>{t(`loginBox.required`)}</small></InputLabel>
                     <Input
@@ -177,6 +238,15 @@ export const LoginBox: React.FC = () => {
                           }
                         </IconButton>
                       }
+                      onChange={(e) => {
+                        setLogin({...login, pwd: e.target.value})
+                      }}
+                      onKeyUp={(e) => {
+                        switch (e.key) {
+                          case 'Enter':
+                            return loginHandler();
+                        }
+                      }}
                     />
                   </FormControl>
                   <Box className={styles.BtnBox}>
@@ -186,10 +256,13 @@ export const LoginBox: React.FC = () => {
                       onClick={loginHandler}
                     >{t(`loginBox.login`)}</Button>
                   </Box>
-                  <Box className={oauthBoxStyle}>
-                    <Avatar className={styles.OauthBtn} src={githubIcon} variant={"rounded"}/>
-                    <Avatar className={styles.OauthBtn} src={qqIcon} variant={"rounded"}/>
-                    <Avatar className={styles.OauthBtn} src={googleIcon} variant={"rounded"}/>
+                  <Box className={styles.OauthWrapper}>
+                    <Box className={oauthBoxStyle}>
+                      <Avatar className={styles.OauthBtn} src={githubIcon} variant={"rounded"}/>
+                      <Avatar className={styles.OauthBtn} src={qqIcon} variant={"rounded"}/>
+                      <Avatar className={styles.OauthBtn} src={googleIcon} variant={"rounded"}/>
+                    </Box>
+                    <span className={forgetPwdStyle}>{t(`loginBox.forgetPwd`)}</span>
                   </Box>
                 </Box>
               }
@@ -198,21 +271,26 @@ export const LoginBox: React.FC = () => {
               {
                 tab === 1 &&
                 <Box className={styles.RegisterContent}>
-                  <FormControl className={formControlStyle}>
+                  <FormControl className={formControlStyle} variant={"standard"}>
                     <InputLabel className={styles.InputLabel}>{t(`loginBox.email`)}<small
                       className={styles.SmallFont}>{t(`loginBox.required`)}</small></InputLabel>
                     <Input
                       className={inputStyle}
+                      value={reg.email}
                       endAdornment={<IconButton size={"small"} disabled={true}>
                         <EmailIcon style={{color: 'rgba(255, 255, 255, 0.7)'}}/>
                       </IconButton>}
+                      onChange={(e) => {
+                        setReg({...reg, email: e.target.value})
+                      }}
                     />
                   </FormControl>
-                  <FormControl className={formControlStyle}>
+                  <FormControl className={formControlStyle} variant={"standard"}>
                     <InputLabel className={styles.InputLabel}>{t(`loginBox.password`)}<small
                       className={styles.SmallFont}>{t(`loginBox.moreThan6C`)}</small></InputLabel>
                     <Input
                       className={inputStyle}
+                      value={reg.pwd}
                       type={registerPasswordVisible ? 'text' : 'password'}
                       endAdornment={
                         <IconButton size={"small"}
@@ -224,13 +302,17 @@ export const LoginBox: React.FC = () => {
                           }
                         </IconButton>
                       }
+                      onChange={(e) => {
+                        setReg({...reg, pwd: e.target.value})
+                      }}
                     />
                   </FormControl>
-                  <FormControl className={formControlStyle}>
+                  <FormControl className={formControlStyle} variant={"standard"}>
                     <InputLabel className={styles.InputLabel}>{t(`loginBox.confirmPassword`)}<small
                       className={styles.SmallFont}>{t(`loginBox.required`)}</small></InputLabel>
                     <Input
                       className={inputStyle}
+                      value={reg.pwdChecked}
                       type={checkRegisterPasswordVisible ? 'text' : 'password'}
                       endAdornment={
                         <IconButton
@@ -243,13 +325,17 @@ export const LoginBox: React.FC = () => {
                           }
                         </IconButton>
                       }
+                      onChange={(e) => {
+                        setReg({...reg, pwdChecked: e.target.value})
+                      }}
                     />
                   </FormControl>
                   <Box className={styles.BtnBox}>
                     <Button
                       className={btnStyle}
                       variant={"outlined"}
-                      disabled={!agreement}
+                      disabled={!agreement || regBtnDisabled}
+                      onClick={registerHandler}
                     >{t(`loginBox.register`)}</Button>
                     <Box className={agreementBoxStyle}>
                       <Checkbox

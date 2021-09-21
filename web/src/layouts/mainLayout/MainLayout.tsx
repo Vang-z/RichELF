@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector} from "../../redux/hooks";
-import Box from "@material-ui/core/Box";
-import Fade from "@material-ui/core/Fade";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
 import {Header, Footer, LoginBox} from "../../components";
 
 import {SizeProps} from "../../utils/util";
@@ -14,7 +14,7 @@ export const MainLayout: React.FC<SizeProps> = ({size, children}) => {
     <Fade in={true} timeout={500}>
       {
         loginBoxStatus.open ?
-          <LoginBox/> :
+          <Box><LoginBox/></Box> :
           <Box style={{minHeight: "calc(100vh - 58px)"}}>
             {children}
           </Box>

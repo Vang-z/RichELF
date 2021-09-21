@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
-import Api from "../../utils/api"
-import {dateFormatHandler} from "../../utils/util";
+import {dateFormatHandler, BUSINESS} from "../../utils/util";
+import Api from "../../utils/api";
 
 interface MomentsState {
   loading: boolean,
@@ -17,59 +17,65 @@ const initialState: MomentsState = {
 export const getMoments = createAsyncThunk(
   'moments/getMoments',
   async (page: number, thunkAPI) => {
-    const {data} = await Api.getMoments(page)
-    const preMoments = (thunkAPI.getState() as any).moments.content
-    let datasets: any[] = []
-    if (preMoments) datasets = JSON.parse(JSON.stringify(preMoments.data))
-    data.data.forEach((data: any) => {
-      const date = new Date(data.date)
-      if (preMoments) {
-        let matchData = datasets.pop()
-        if (matchData.year === date.getFullYear().toString() && matchData.month === (date.getMonth() + 1).toString() && matchData.day === date.getDate().toString()) {
-          matchData.body.push({
-            id: data.id,
-            title: data.title,
-            author: data.author,
-            date: data.date,
-            showDate: dateFormatHandler("comm", data.date),
-            desc: data.desc,
-            snapshot: data.snapshot
-          })
-          datasets.push(matchData)
+    let {data} = await Api.http.get(`/article?page=${page}&start=&end=`)
+    if (data.code === BUSINESS.OK) {
+      data = data.data
+      const preMoments = (thunkAPI.getState() as any).moments.content
+      let results: any[] = []
+      if (preMoments && page !== 1) results = JSON.parse(JSON.stringify(preMoments.results))
+      data.results.forEach((data: any) => {
+        const date = new Date(data.publish_at)
+        if (results.length > 0) {
+          let matchData = results.pop()
+          if (matchData.year === date.getFullYear().toString() && matchData.month === (date.getMonth() + 1).toString() && matchData.day === date.getDate().toString()) {
+            matchData.body.push({
+              id: data.aid,
+              title: data.title,
+              author: data.author,
+              date: data.publish_at,
+              showDate: dateFormatHandler("comm", data.publish_at),
+              desc: data.desc,
+              snapshot: data.snapshot
+            })
+            results.push(matchData)
+          } else {
+            results.push(matchData, {
+              year: date.getFullYear().toString(),
+              month: (date.getMonth() + 1).toString(),
+              day: date.getDate().toString(),
+              body: [{
+                id: data.aid,
+                title: data.title,
+                author: data.author,
+                date: data.publish_at,
+                showDate: dateFormatHandler("comm", data.publish_at),
+                desc: data.desc,
+                snapshot: data.snapshot
+              }]
+            })
+          }
         } else {
-          datasets.push(matchData, {
+          results.push({
             year: date.getFullYear().toString(),
             month: (date.getMonth() + 1).toString(),
             day: date.getDate().toString(),
             body: [{
-              id: data.id,
+              id: data.aid,
               title: data.title,
               author: data.author,
-              date: data.date,
-              showDate: dateFormatHandler("comm", data.date),
+              date: data.publish_at,
+              showDate: dateFormatHandler("comm", data.publish_at),
               desc: data.desc,
               snapshot: data.snapshot
             }]
           })
         }
-      } else {
-        datasets.push({
-          year: date.getFullYear().toString(),
-          month: (date.getMonth() + 1).toString(),
-          day: date.getDate().toString(),
-          body: [{
-            id: data.id,
-            title: data.title,
-            author: data.author,
-            date: data.date,
-            showDate: dateFormatHandler("comm", data.date),
-            desc: data.desc,
-            snapshot: data.snapshot
-          }]
-        })
-      }
-    })
-    return {...data, data: datasets}
+      })
+      return {...data, results: results}
+    }
+    return {
+      results: []
+    }
   }
 )
 

@@ -192,10 +192,6 @@
   flex-direction: row-reverse;
 }
 
-.Button {
-  border: 1px solid #999 !important;
-}
-
 .EditBtn {
   margin-left: 24px !important;
   width: 68px;
@@ -300,6 +296,10 @@
   text-align: center;
 }
 
+.AccountModalContainer:focus-visible {
+  outline: none;
+}
+
 .MiniAccountModalContainer {
   position: absolute;
   width: 100%;
@@ -311,10 +311,6 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-}
-
-.AccountModalContainer:focus-visible {
-  outline: none;
 }
 
 .AccountModalTitle {
@@ -337,6 +333,29 @@
 
 .AccountModalInput:after {
   border-bottom-color: #ccc !important;
+}
+
+.AccountModalEmailCodeBox {
+  margin: 12px 36px !important;
+  display: flex;
+}
+
+.AccountModalEmailCodeInput {
+  font-size: 14px !important;
+}
+
+.AccountModalEmailCodeInput:before {
+  border-bottom-style: solid !important;
+}
+
+.AccountModalEmailCodeInput:after {
+  border-bottom-color: #ccc !important;
+}
+
+.AccountModalEmailCodeBtn {
+  flex-shrink: 0;
+  margin-left: 24px !important;
+  width: 90px !important;
 }
 
 .AccountModalBtn {

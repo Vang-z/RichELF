@@ -27,10 +27,13 @@ import "tinymce/plugins/toc/plugin.min"
 import "tinymce/plugins/wordcount/plugin.min"
 import "tinymce/plugins/autoresize/plugin.min"
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 
+import {useTranslation} from "react-i18next";
 import {useSelector} from "../../../redux/hooks";
 import {editorSlice} from "../../../redux/editor/slice";
+import {incrementalMD5} from "../../../utils/util";
+import Api from "../../../utils/api";
 
 import './editor.css'
 
@@ -40,11 +43,13 @@ interface EditorProps {
 }
 
 const APIKEY = 'b4fgyjjz40ibzvpid6x6i3qw7l29abb4nqwchtp5bkjfc677'
-const IMAGE_UPLOAD_URL = 'http://127.0.0.1:8000/file/excel_upload/'
 
 export const Editor: React.FC<EditorProps> = ({height, width}) => {
   const dispatch = useDispatch()
+  const {t} = useTranslation()
   const language = useSelector(s => s.language)
+  const content = useSelector(s => s.editor.content)
+  const auth = useSelector(s => s.auth)
 
   const baseInitProps = {
     skin: 'oxide-dark',
@@ -123,14 +128,13 @@ export const Editor: React.FC<EditorProps> = ({height, width}) => {
       apiKey={APIKEY}
       init={{
         ...baseInitProps,
-        entity_encoding: 'numeric',
+        entity_encoding: 'raw',
         menubar: menubar,
         menu: menu,
         codesample_languages: codesample_languages,
         help_tabs: ['shortcuts', 'versions'],
         nonbreaking_force_tab: true,
         paste_data_images: true,
-        images_upload_url: IMAGE_UPLOAD_URL,
         textpattern_patterns: [
           {start: '---', replacement: '<hr/>'},
           {start: '--', replacement: '<br/>'},
@@ -139,7 +143,27 @@ export const Editor: React.FC<EditorProps> = ({height, width}) => {
         ],
         plugins: plugins,
         toolbar: toolbar,
+        images_upload_handler: async (blob: any, success: (url: string) => void, failure: (err: string) => void) => {
+          const file = blob.blob()
+          const md5 = await incrementalMD5(file) as string
+          let formData = new FormData();
+          formData.append("file", file);
+          formData.append("filesize", file.size.toString());
+          formData.append("category", 'images');
+          formData.append("identifier", md5);
+          const res = await Api.http.post(`/file/upload`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'
+            }
+          })
+          if (res.status === 201 || res.status === 200) {
+            return success(res.data.data)
+          }
+          return failure(t(`editor.uploadFailed`));
+        }
       }}
+      value={content}
       onEditorChange={(content, _) => {
         dispatch(editorSlice.actions.dispatchContent(content))
       }}

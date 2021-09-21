@@ -2,32 +2,46 @@ import React, {useEffect, useState, useCallback} from "react";
 import styles from "./SettingsContent.module.css"
 import classNames from "classnames";
 import {useSelector} from "../../../redux/hooks";
-import {UserProps} from "../../../redux/auth/slice";
+import {authSlice} from "../../../redux/auth/slice";
+import {useSnackbar} from "notistack";
+import {useDispatch} from "react-redux";
+import {useHistory} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import jwt_decode from "jwt-decode";
+import SparkMD5 from "spark-md5";
+import validator from "validator";
 
-import Box from "@material-ui/core/Box";
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import Slider from '@material-ui/core/Slider';
-import IconButton from '@material-ui/core/IconButton';
+import Box from "@mui/material/Box";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import Modal from '@mui/material/Modal';
+import Backdrop from "@mui/material/Backdrop";
+import Fade from "@mui/material/Fade";
+import Slider from '@mui/material/Slider';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import CloseIcon from '@material-ui/icons/Close';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloseIcon from '@mui/icons-material/Close';
 
 import Cropper from 'react-easy-crop'
 
-import {scrollToAnchor, scrollToPos, readFile, SizeProps, Medium, Small} from "../../../utils/util";
+import {
+  scrollToAnchor,
+  scrollToPos,
+  readFile,
+  dataURLtoFile,
+  SizeProps,
+  Medium,
+  Small,
+} from "../../../utils/util";
 import {getCroppedImg} from '../../../utils/canvasUtils'
-
-import avatar from "../../../assets/images/avatar.jpg"
+import Api from '../../../utils/api'
 
 
 export const SettingsContent: React.FC<SizeProps> = ({size}) => {
@@ -35,9 +49,11 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
   const [tab, setTab] = useState(0);
   const [accountModal, setAccountModal] = useState({
     open: false,
-    title: t(`settings.authentication`),
-    placeholder: t(`settings.authenticationP`),
-    label: t(`settings.authenticate`)
+    title: '',
+    passwordPlaceholder: t(`settings.authenticationP`),
+    placeholder: '',
+    label: '',
+    type: ''
   })
   const [info, setInfo] = useState({
     email: '0',
@@ -46,7 +62,7 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
     follow: '0',
     snackbar: '0',
   })
-  const [imgSrc, setImgSrc] = useState<string | null>(null)
+  const [imgSrc, setImgSrc] = useState<{ src: string, filename: string, fileType: string } | null>(null)
   const [crop, setCrop] = useState({x: 0, y: 0})
   const [rotation, setRotation] = useState<number>(0)
   const [zoom, setZoom] = useState<number>(1)
@@ -56,10 +72,25 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
     x: 0,
     y: 0
   })
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar()
+  const dispatch = useDispatch()
+  const history = useHistory()
   const auth = useSelector(s => s.auth)
-  const user = auth.user as UserProps
+  const user = auth.accessToken ? jwt_decode(auth.accessToken) as any : {}
 
-  const [avatarSrc, setAvatarSrc] = useState(avatar)
+  const [avatarSrc, setAvatarSrc] = useState(user.avatar_url)
+  const [username, setUsername] = useState(user.username)
+  const [bio, setBio] = useState(user.bio ? user.bio : '')
+  const [link, setLink] = useState(user.link ? user.link : '')
+  const [accountForm, setAccountForm] = useState<{
+    pwd: string, data: string, emailCode: string, getCode: any, interval: any
+  }>({
+    pwd: '',
+    data: '',
+    emailCode: '',
+    getCode: t('settings.getCode'),
+    interval: null
+  })
 
   const scrollHandler = useCallback(() => {
     const dis = 320
@@ -84,11 +115,18 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
       const file = e.target.files[0]
       if (typeof file === 'undefined') return;
       if (file.type.split('/')[0] !== 'image') {
-        console.log("图片格式错误！", file);
+        enqueueSnackbar(t(`enqueueSnackbar.imgFormatError`), {
+          variant: "warning",
+          action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+        })
         return;
       }
-      let imageDataUrl = (await readFile(file))
-      setImgSrc(imageDataUrl as string)
+      let imageDataUrl = await readFile(file) as string
+      setImgSrc({
+        src: imageDataUrl,
+        filename: file.name,
+        fileType: file.type
+      })
     }
   }
 
@@ -103,40 +141,39 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
     setRotation(0)
   }
 
-  const AccountBtn = (label: string) => {
-    return <Button
-      onClick={() => setAccountModal({...accountModal, open: true})}
-      className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
-      size={"small"}>{label}</Button>
-  }
-
-  const accountBtnHandler = (event: 'bind' | 'unbind' | 'change', type: 'email' | 'mobile' | 'password' | 'qq' | 'github' | 'google') => {
-    switch (type) {
-      case "email":
-        return AccountBtn(t(`settings.change`))
-      case "mobile":
-        if (event === "bind") return AccountBtn(t(`settings.bind`))
-        else return AccountBtn(t(`settings.change`))
-      case "password":
-        return AccountBtn(t(`settings.change`))
-      case "qq":
-        if (event === "bind") return AccountBtn(t(`settings.bind`))
-        else return AccountBtn(t(`settings.unbind`))
-      case "github":
-        if (event === "bind") return AccountBtn(t(`settings.bind`))
-        else return AccountBtn(t(`settings.unbind`))
-      case "google":
-        if (event === "bind") return AccountBtn(t(`settings.bind`))
-        else return AccountBtn(t(`settings.unbind`))
-    }
-  }
-
   useEffect(() => {
     if (size === Medium) {
       document.addEventListener('scroll', scrollHandler)
       return () => document.removeEventListener('scroll', scrollHandler)
     }
   }, [scrollHandler, size])
+
+  const saveProfileInfoHandler = async () => {
+    let formData = new FormData();
+    formData.append("username", username);
+    formData.append("avatar", avatarSrc);
+    formData.append("bio", bio);
+    formData.append("link", link);
+    const res = await Api.http.put(`/user`, formData, {
+      headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+    })
+    if (res.status === 200) {
+      dispatch(authSlice.actions.setToken({
+        accessToken: res.data.access_token,
+        tokenType: res.data.token_type
+      }))
+      enqueueSnackbar(t(`enqueueSnackbar.saveSuccess`), {
+        variant: "success",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+      history.replace(`/user/${username}/settings`)
+    } else {
+      enqueueSnackbar(t(`enqueueSnackbar.saveFailed`), {
+        variant: "warning",
+        action: key => <IconButton disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+      })
+    }
+  }
 
   return <>
     <Box className={styles.Container}>
@@ -158,7 +195,8 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
                  disableRipple={true}/>
             <Tab label={t(`settings.account`)} classes={{selected: styles.TabSelected}} onClick={scrollToPos(408)}
                  disableRipple={true}/>
-            <Tab label={t(`settings.notification`)} className={styles.TabTrouble} classes={{selected: styles.TabSelected}}
+            <Tab label={t(`settings.notification`)} className={styles.TabTrouble}
+                 classes={{selected: styles.TabSelected}}
                  onClick={scrollToAnchor(`notification`)} disableRipple={true}/>
             <Tab disabled={true} className={styles.TabDisabled}/>
           </Tabs>
@@ -199,7 +237,10 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             <Input
               className={styles.InfoInput}
               placeholder={t(`settings.usernameP`)}
-              defaultValue={user.username}/>
+              onChange={(e) => {
+                setUsername(e.target.value)
+              }}
+              defaultValue={username}/>
           </Box>
           <Box className={styles.InfoContainer}>
             <Box
@@ -207,7 +248,10 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             <Input
               className={styles.InfoInput}
               placeholder={t(`settings.bioP`)}
-              defaultValue={user.desc}/>
+              onChange={(e) => {
+                setBio(e.target.value)
+              }}
+              defaultValue={bio}/>
           </Box>
           <Box className={styles.InfoContainer}>
             <Box
@@ -215,10 +259,23 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             <Input
               className={styles.InfoInput}
               placeholder={t(`settings.linkP`)}
-              defaultValue={user.link}/>
+              onChange={(e) => {
+                setLink(e.target.value)
+              }}
+              defaultValue={link}/>
           </Box>
           <Box className={styles.ButtonContainer}>
-            <Button className={styles.Button} variant={"outlined"} size={"small"}>{t(`settings.save`)}</Button>
+            {
+              user.create_at ?
+                <Button className={styles.Button} variant={"outlined"} size={"small"} color={"secondary"}
+                        onClick={saveProfileInfoHandler}>{t(`settings.save`)}</Button> :
+                <Tooltip placement="top-end" title={`${t(`settings.waitingForActive`)}`} arrow={true}>
+                  <span>
+                  <Button disabled={true} className={styles.Button} variant={"outlined"}
+                          size={"small"}>{t(`settings.save`)}</Button>
+                  </span>
+                </Tooltip>
+            }
           </Box>
         </Box>
 
@@ -231,8 +288,35 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             <Input
               className={classNames([styles.InfoInput, styles.AccountInput, {[`${styles.MiniAccountInput}`]: size === Small}])}
               disabled={true}
-              placeholder={`vang-z@foxmail.com`}/>
-            {accountBtnHandler('change', "email")}
+              placeholder={user.email}/>
+            {
+              user.create_at ?
+                <Button
+                  onClick={() => {
+                    setAccountModal({
+                      ...accountModal,
+                      open: true,
+                      title: `${t(`settings.change`)}${t(`settings.email`)}`,
+                      placeholder: t(`settings.newEmail`),
+                      label: t(`settings.change`),
+                      type: 'email'
+                    })
+                  }}
+                  className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+                  size={"small"}>
+                  {t(`settings.change`)}
+                </Button> :
+                <Tooltip placement="top-start" title={`${t(`settings.waitingForActive`)}`} arrow={true}>
+                  <span>
+                    <Button
+                      disabled
+                      className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+                      size={"small"}>
+                      {t(`settings.change`)}
+                    </Button>
+                  </span>
+                </Tooltip>
+            }
           </Box>
           <Box className={styles.InfoContainer}>
             <Box
@@ -240,8 +324,35 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             <Input
               className={classNames([styles.InfoInput, styles.AccountInput, {[`${styles.MiniAccountInput}`]: size === Small}])}
               disabled={true}
-              placeholder={`183 * * * * 7779`}/>
-            {accountBtnHandler('change', "mobile")}
+              placeholder={user.mobile_hash}/>
+            {
+              user.create_at ?
+                <Button
+                  onClick={() => {
+                    setAccountModal({
+                      ...accountModal,
+                      open: true,
+                      title: `${user.mobile_hash ? t(`settings.change`) : t(`settings.bind`)}${t(`settings.mobile`)}`,
+                      placeholder: t(`settings.mobileNum`),
+                      label: `${user.mobile_hash ? t(`settings.change`) : t(`settings.bind`)}`,
+                      type: 'mobile'
+                    })
+                  }}
+                  className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+                  size={"small"}>
+                  {`${user.mobile_hash ? t(`settings.change`) : t(`settings.bind`)}`}
+                </Button> :
+                <Tooltip placement="top-start" title={`${t(`settings.waitingForActive`)}`} arrow={true}>
+                  <span>
+                    <Button
+                      disabled
+                      className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+                      size={"small"}>
+                      {t(`settings.bind`)}
+                    </Button>
+                  </span>
+                </Tooltip>
+            }
           </Box>
           <Box className={styles.InfoContainer}>
             <Box
@@ -250,31 +361,73 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
               className={classNames([styles.InfoInput, styles.AccountInput, {[`${styles.MiniAccountInput}`]: size === Small}])}
               disabled={true}
               placeholder={`●●●●●●`}/>
-            {accountBtnHandler('change', "password")}
+            {
+              user.create_at ?
+                <Button
+                  onClick={() => {
+                    setAccountModal({
+                      ...accountModal,
+                      open: true,
+                      title: `${t(`settings.change`)}${t(`settings.password`)}`,
+                      placeholder: t(`settings.newPassword`),
+                      label: t(`settings.change`),
+                      type: 'password'
+                    })
+                  }}
+                  className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+                  size={"small"}>
+                  {t(`settings.change`)}
+                </Button> :
+                <Tooltip placement="top-start" title={`${t(`settings.waitingForActive`)}`} arrow={true}>
+                  <span>
+                    <Button
+                      disabled
+                      className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+                      size={"small"}>
+                      {t(`settings.change`)}
+                    </Button>
+                  </span>
+                </Tooltip>
+            }
           </Box>
           <Box className={styles.InfoContainer}>
             <Box className={classNames([styles.Label, {[`${styles.MiniLabel}`]: size === Small}])}>QQ ：</Box>
             <Input
               className={classNames([styles.InfoInput, styles.AccountInput, {[`${styles.MiniAccountInput}`]: size === Small}])}
               disabled={true}
-              placeholder={`🍓 【1346959249】`}/>
-            {accountBtnHandler('change', "qq")}
+              placeholder={``}/>
+            <Button
+              disabled
+              className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+              size={"small"}>
+              {t(`settings.bind`)}
+            </Button>
           </Box>
           <Box className={styles.InfoContainer}>
             <Box className={classNames([styles.Label, {[`${styles.MiniLabel}`]: size === Small}])}>Github ：</Box>
             <Input
               className={classNames([styles.InfoInput, styles.AccountInput, {[`${styles.MiniAccountInput}`]: size === Small}])}
               disabled={true}
-              placeholder={`Vang-z 【vang-z@foxmail.com】`}/>
-            {accountBtnHandler('change', "github")}
+              placeholder={``}/>
+            <Button
+              disabled
+              className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+              size={"small"}>
+              {t(`settings.bind`)}
+            </Button>
           </Box>
           <Box className={styles.InfoContainer}>
             <Box className={classNames([styles.Label, {[`${styles.MiniLabel}`]: size === Small}])}>Google ：</Box>
             <Input
               className={classNames([styles.InfoInput, styles.AccountInput, {[`${styles.MiniAccountInput}`]: size === Small}])}
               disabled={true}
-              placeholder={`王梓涵 【vang-z@foxmail.com】`}/>
-            {accountBtnHandler('change', "google")}
+              placeholder={``}/>
+            <Button
+              disabled
+              className={classNames([styles.Button, styles.EditBtn])} variant={"outlined"}
+              size={"small"}>
+              {t(`settings.bind`)}
+            </Button>
           </Box>
         </Box>
 
@@ -337,7 +490,17 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             </RadioGroup>
           </Box>
           <Box className={styles.ButtonContainer}>
-            <Button className={styles.Button} variant={"outlined"} size={"small"}>{t(`settings.save`)}</Button>
+            {
+              user.create_at ?
+                <Button disabled={true} className={styles.Button} variant={"outlined"}
+                        size={"small"}>{t(`settings.save`)}</Button> :
+                <Tooltip placement="top-end" title={`${t(`settings.waitingForActive`)}`} arrow={true}>
+                  <span>
+                  <Button disabled={true} className={styles.Button} variant={"outlined"}
+                          size={"small"}>{t(`settings.save`)}</Button>
+                  </span>
+                </Tooltip>
+            }
           </Box>
         </Box>
 
@@ -361,7 +524,7 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
           ><CloseIcon/></IconButton>
           <Box className={classNames([styles.CropperContainer, {[`${styles.MiniCropperContainer}`]: size === Small}])}>
             <Cropper
-              image={imgSrc as string}
+              image={imgSrc ? imgSrc.src : undefined}
               crop={crop}
               rotation={rotation}
               zoom={zoom}
@@ -410,13 +573,27 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             <Box className={styles.ButtonContainer}>
               <Button size={"small"} variant={"outlined"} onClick={() => {
                 const croppedImage = getCroppedImg(
-                  imgSrc as string,
+                  imgSrc ? imgSrc.src : '',
+                  imgSrc ? imgSrc.fileType : '',
                   croppedAreaPixels,
                   rotation
                 )
-                croppedImage.then(e => {
-                  console.log(e)
-                  return setAvatarSrc(e as string);
+                croppedImage.then(async (e: string) => {
+                  const file = dataURLtoFile(e, imgSrc ? imgSrc.filename : '')
+                  let spark = new SparkMD5.ArrayBuffer()
+                  const identifier = spark.append(await file.arrayBuffer()).end()
+                  let formData = new FormData();
+                  formData.append("file", file);
+                  formData.append("filesize", file.size.toString());
+                  formData.append("category", 'users');
+                  formData.append("identifier", identifier);
+                  let res = await Api.http.post(`/file/upload`, formData, {
+                    headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                  })
+                  if (res.status === 201 || res.status === 200) {
+                    return setAvatarSrc(res.data.data)
+                  }
+                  return setAvatarSrc(e);
                 })
                 closeModalHandler()
               }}>{t(`settings.upload`)}</Button>
@@ -428,10 +605,8 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
     <Modal
       open={accountModal.open}
       onClose={() => setAccountModal({
+        ...accountModal,
         open: false,
-        title: t(`settings.authentication`),
-        placeholder: t(`settings.authenticationP`),
-        label: t(`settings.authenticate`)
       })}
       BackdropComponent={Backdrop}
       closeAfterTransition={true}
@@ -445,16 +620,203 @@ export const SettingsContent: React.FC<SizeProps> = ({size}) => {
             size={"small"}
             disableRipple={true}
             onClick={() => setAccountModal({
+              ...accountModal,
               open: false,
-              title: t(`settings.authentication`),
-              placeholder: t(`settings.authenticationP`),
-              label: t(`settings.authenticate`)
             })}
           ><CloseIcon/></IconButton>
           <Box
             className={classNames([styles.AccountModalTitle, {[`${styles.MiniAccountModalTitle}`]: size === Small}])}>{accountModal.title}</Box>
-          <Input className={styles.AccountModalInput} placeholder={accountModal.placeholder}/>
-          <Button className={styles.AccountModalBtn} variant={"outlined"}>{accountModal.label}</Button>
+          <Input
+            className={styles.AccountModalInput} placeholder={accountModal.passwordPlaceholder} type={'password'}
+            onChange={(e) => {
+              setAccountForm({
+                ...accountForm,
+                pwd: e.target.value
+              })
+            }}/>
+          <Input
+            className={styles.AccountModalInput} placeholder={accountModal.placeholder}
+            type={accountModal.type === 'password' ? 'password' : 'text'}
+            onChange={(e) => {
+              setAccountForm({
+                ...accountForm,
+                data: e.target.value
+              })
+            }}/>
+          {
+            accountModal.type === 'email' &&
+            <Box className={styles.AccountModalEmailCodeBox}>
+              <Input
+                className={styles.AccountModalEmailCodeInput} placeholder={`${t(`settings.captcha`)}`} fullWidth={true}
+                onChange={(e) => {
+                  setAccountForm({
+                    ...accountForm,
+                    emailCode: e.target.value
+                  })
+                }}/>
+              <Button
+                className={styles.AccountModalEmailCodeBtn} variant={"outlined"} size={"small"}
+                disabled={typeof accountForm.getCode === "number"}
+                onClick={async () => {
+                  if (!validator.isEmail(accountForm.data)) {
+                    enqueueSnackbar(t(`enqueueSnackbar.emailValidateFailed`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  let time = 60;
+                  setAccountForm({
+                    ...accountForm,
+                    getCode: time--
+                  });
+                  accountForm.interval = setInterval(function () {
+                    setAccountForm({
+                      ...accountForm,
+                      getCode: time--
+                    });
+                    if (time < 0) {
+                      clearInterval(accountForm.interval);
+                      setAccountForm({
+                        ...accountForm,
+                        getCode: t(`settings.getCode`)
+                      });
+                    }
+                  }, 1000)
+                  let formData = new FormData();
+                  formData.append("password", btoa(accountForm.pwd));
+                  formData.append("email", accountForm.data);
+                  formData.append("code", '');
+                  const res = await Api.http.put(`/user/email`, formData, {
+                    headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                  })
+                  if (res.status !== 200) {
+                    enqueueSnackbar(t(`enqueueSnackbar.emailSendFailed`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  enqueueSnackbar(t(`enqueueSnackbar.emailSendSuccess`), {
+                    variant: "success",
+                    action: key => <IconButton
+                      disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                  })
+                }}
+              >
+                {accountForm.getCode}
+              </Button>
+            </Box>
+          }
+          <Button
+            className={styles.AccountModalBtn} variant={"outlined"}
+            onClick={async () => {
+              let res, formData
+              switch (accountModal.type) {
+                case "email":
+                  if (!accountForm.emailCode) {
+                    enqueueSnackbar(t(`enqueueSnackbar.captchaValidateFailed`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  formData = new FormData();
+                  formData.append("password", btoa(accountForm.pwd));
+                  formData.append("email", accountForm.data);
+                  formData.append("code", btoa(accountForm.emailCode));
+                  res = await Api.http.put(`/user/email`, formData, {
+                    headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                  })
+                  if (res.status !== 200) {
+                    enqueueSnackbar(t(`enqueueSnackbar.emailSendFailed`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  enqueueSnackbar(t(`enqueueSnackbar.emailChangeSuccess`), {
+                    variant: "success",
+                    action: key => <IconButton
+                      disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                  })
+                  dispatch(authSlice.actions.setToken({
+                    accessToken: res.data.access_token,
+                    tokenType: res.data.token_type
+                  }))
+                  setAccountModal({
+                    open: false,
+                    title: '',
+                    passwordPlaceholder: t(`settings.authenticationP`),
+                    placeholder: '',
+                    label: '',
+                    type: ''
+                  })
+                  setAccountForm({
+                    pwd: '',
+                    data: '',
+                    emailCode: '',
+                    getCode: t(`settings.getCode`),
+                    interval: null
+                  })
+                  return
+                case "password":
+                  if (accountForm.data.length < 6) {
+                    enqueueSnackbar(t(`enqueueSnackbar.pwdValidateFailed`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  formData = new FormData();
+                  formData.append("password", btoa(accountForm.pwd));
+                  formData.append("new_password", btoa(accountForm.data));
+                  res = await Api.http.put(`/user/password`, formData, {
+                    headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                  })
+                  if (res.status !== 200) {
+                    enqueueSnackbar(t(`enqueueSnackbar.pwdChangeFailed`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  enqueueSnackbar(t(`enqueueSnackbar.pwdChangeSuccess`), {
+                    variant: "success",
+                    action: key => <IconButton
+                      disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                  })
+                  dispatch(authSlice.actions.setToken({
+                    accessToken: res.data.access_token,
+                    tokenType: res.data.token_type
+                  }))
+                  setAccountModal({
+                    open: false,
+                    title: '',
+                    passwordPlaceholder: t(`settings.authenticationP`),
+                    placeholder: '',
+                    label: '',
+                    type: ''
+                  })
+                  setAccountForm({
+                    pwd: '',
+                    data: '',
+                    emailCode: '',
+                    getCode: t(`settings.getCode`),
+                    interval: null
+                  })
+                  return
+              }
+            }}
+          >
+            {accountModal.label}
+          </Button>
         </Box>
       </Fade>
     </Modal>

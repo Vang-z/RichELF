@@ -2,8 +2,9 @@ import React from "react";
 import styles from "./Globe.module.css"
 import useScreenSize from "use-screen-size";
 
-import Box from "@material-ui/core/Box";
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import Box from "@mui/material/Box";
+
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import {SizeProps, scrollToAnchor} from "../../../utils/util";
 

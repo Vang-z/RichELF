@@ -79,6 +79,12 @@
 .UserDesc {
   font-size: 12px;
   line-height: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
 .UserPanelContent {

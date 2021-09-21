@@ -2,46 +2,59 @@ import React, {useState} from "react";
 import styles from "./Comment.module.css"
 import classNames from "classnames"
 import {useTranslation} from "react-i18next";
-
+import {useSnackbar} from "notistack";
 import useScreenSize from "use-screen-size";
+import {useDispatch} from "react-redux";
+import {useSelector} from "../../../redux/hooks";
+import {getArticle} from "../../../redux/article/slice";
+import {initialAuthState} from "../../../redux/auth/slice";
+import {editorSlice} from "../../../redux/editor/slice";
+import jwt_decode from "jwt-decode";
 
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 import {BadgeAvatar} from "../badgeAvatar";
 import {Editor} from "../editor";
 
-import {SizeProps, Medium, MiniWidth, Small} from "../../../utils/util";
+import {SizeProps, Medium, MiniWidth, Small, dateFormatHandler} from "../../../utils/util";
+import Api from "../../../utils/api";
 
-const avatar = require('../../../assets/images/avatar.jpg')
+const avatar = require('../../../assets/images/avatar.png')
 
 interface CommentProps {
+  aid: string,
+  articleAuthor: string
   commentsCount: string | number
   comments?: CommentsProps[]
 }
 
 export interface CommentsProps {
-  id: string
+  aid: string
+  cid: string
+  articleAuthor: string
   author: {
     username: string,
     avatar: string,
   },
-  date: string,
+  create_at: string,
   content: string,
   comments?: CommentsProps[]
 }
 
-interface EditorProps {
-  hidden: boolean
-  height: number
-}
-
 const CommentBox: React.FC<CommentsProps & SizeProps> = (
-  {size, author, date, content, comments}) => {
+  {size, aid, cid, articleAuthor, author, create_at, content, comments}) => {
   const [openReply, setOpenReply] = useState(false)
   const {t} = useTranslation()
-
+  const dispatch = useDispatch()
+  const auth = useSelector(s => s.auth)
+  const editorContent = useSelector(s => s.editor.content)
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
   return <Box className={classNames([styles.CommentBox, {[`${styles.MiniCommentBox}`]: size === Small}])}>
     {
@@ -60,8 +73,11 @@ const CommentBox: React.FC<CommentsProps & SizeProps> = (
               user={author.username}/>
           }
           <span>{author.username}</span>
+          {
+            author.username === articleAuthor && <span className={styles.CommentAuthor}>{t(`comment.author`)}</span>
+          }
           <span className={styles.CommentDot}>•</span>
-          <span className={styles.CommentDate}>{date}</span>
+          <span className={styles.CommentDate}>{dateFormatHandler('comm', create_at)}</span>
         </Box>
         <Box hidden={size === Small}>
           <span className={styles.CommentReply} onClick={() => setOpenReply(true)}>{t(`detail.reply`)}</span>
@@ -71,55 +87,186 @@ const CommentBox: React.FC<CommentsProps & SizeProps> = (
         className={classNames([styles.CommentRender, {[`${styles.MiniCommentRender}`]: size === Small}])}
         dangerouslySetInnerHTML={{__html: content}}/>
       {
-        openReply && <CommentEditor height={200} hidden={false}/>
+        openReply &&
+        <Box className={styles.CommentBox}>
+          <BadgeAvatar
+            className={styles.CommentAvatar}
+            src={auth.accessToken ? jwt_decode(auth.accessToken).avatar_url : avatar.default} online={false}
+            size={"small"}/>
+          <Box className={styles.CommentDirIcon}/>
+          <Box className={styles.CommentBorder}>
+            <Editor height={200} width={'100%'}/>
+            <ButtonGroup>
+              <Button
+                className={styles.CommentBtn} variant={"outlined"} size={"small"}
+                onClick={() => {
+                  dispatch(editorSlice.actions.dispatchContent(''))
+                  setOpenReply(false)
+                }}>
+                {t(`comment.cancel`)}
+              </Button>
+              <Button
+                className={styles.CommentBtn} variant={"outlined"} size={"small"}
+                onClick={async () => {
+                  if (!content) {
+                    enqueueSnackbar(t(`enqueueSnackbar.commentValidateFailed`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  if (!auth.accessToken) {
+                    enqueueSnackbar(t(`enqueueSnackbar.commentWaitingForLogin`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  if (!jwt_decode(auth.accessToken).create_at) {
+                    enqueueSnackbar(t(`enqueueSnackbar.commentWaitingForActive`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  let formData = new FormData()
+                  formData.append('cid', cid)
+                  formData.append('content', editorContent)
+                  const res = await Api.http.post(`/comment`, formData, {
+                    headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                  })
+                  if (res.status === 201) {
+                    enqueueSnackbar(t(`enqueueSnackbar.commentSuccess`), {
+                      variant: "success",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    setOpenReply(false)
+                    dispatch(editorSlice.actions.dispatchContent(''))
+                    dispatch(getArticle({aid, auth: initialAuthState}))
+                  }
+                }}
+              >
+                {t(`detail.submit`)}
+              </Button>
+            </ButtonGroup>
+          </Box>
+        </Box>
       }
       {
         comments !== undefined &&
         comments.map(comment => {
           return <CommentBox
-            id={comment.id} key={comment.id} size={size} author={comment.author}
-            date={comment.date} content={comment.content} comments={comment.comments}/>
+            key={comment.cid} cid={comment.cid} aid={aid} size={size} articleAuthor={articleAuthor}
+            author={comment.author} create_at={comment.create_at} content={comment.content}
+            comments={comment.comments}/>
         })
       }
     </Box>
   </Box>
 }
 
-const CommentEditor: React.FC<EditorProps> = ({height, hidden}) => {
-  const [openEditor, setOpenEditor] = useState(false)
-  const {t} = useTranslation()
 
-  return <Box className={styles.CommentBox}>
-    <BadgeAvatar className={styles.CommentAvatar} src={avatar.default} online={false} size={"small"}/>
-    <Box className={styles.CommentDirIcon} style={hidden ? (openEditor ? undefined : {display: "none"}) : undefined}/>
-    <Box className={styles.CommentBorder} style={hidden ? (openEditor ? undefined : {display: "none"}) : undefined}>
-      <Editor height={height} width={'100%'}/>
-      <Button className={styles.CommentBtn} variant={"outlined"}>{t(`detail.submit`)}</Button>
-    </Box>
-    <TextField
-      className={styles.CommentInput} variant="outlined" label={t(`detail.comment`)} fullWidth={true}
-      onClick={() => setOpenEditor(true)}
-      style={hidden ? (openEditor ? {display: "none"} : undefined) : {display: "none"}}/>
-  </Box>
-}
-
-
-export const Comment: React.FC<CommentProps> = ({comments, commentsCount}) => {
+export const Comment: React.FC<CommentProps> = ({aid, articleAuthor, comments, commentsCount}) => {
   const screenSize = useScreenSize().width >= MiniWidth ? Medium : Small
   const {t} = useTranslation()
+  const [openEditor, setOpenEditor] = useState(false)
+  const dispatch = useDispatch()
+  const content = useSelector(s => s.editor.content)
+  const auth = useSelector(s => s.auth)
+  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
   return <Box
     className={classNames([styles.CommentContainer, {[`${styles.MiniCommentContainer}`]: screenSize === Small}])}>
     <Box className={styles.CommentTitle}>{t(`detail.comment`)}&nbsp;(&nbsp;{commentsCount}&nbsp;)</Box>
-    {screenSize === Medium && <CommentEditor height={240} hidden={true}/>}
     {
-      comments && comments.map((comment: CommentsProps) => {
+      screenSize === Medium &&
+      <Box className={styles.CommentBox}>
+        <BadgeAvatar
+          className={styles.CommentAvatar}
+          src={auth.accessToken ? jwt_decode(auth.accessToken).avatar_url : avatar.default} online={false}
+          size={"small"}/>
+        <Box className={styles.CommentDirIcon} style={openEditor ? undefined : {display: "none"}}/>
+        <Box className={styles.CommentBorder} style={openEditor ? undefined : {display: "none"}}>
+          <Editor height={240} width={'100%'}/>
+          <ButtonGroup>
+            <Button
+              className={styles.CommentBtn} variant={"outlined"} size={"small"}
+              onClick={() => {
+                setOpenEditor(false)
+                dispatch(editorSlice.actions.dispatchContent(''))
+              }}>
+              {t(`comment.cancel`)}
+            </Button>
+            <Button
+              className={styles.CommentBtn} variant={"outlined"} size={"small"}
+              onClick={async () => {
+                if (!content) {
+                  enqueueSnackbar(t(`enqueueSnackbar.commentValidateFailed`), {
+                    variant: "warning",
+                    action: key => <IconButton
+                      disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                  })
+                  return
+                }
+                if (!auth.accessToken) {
+                  enqueueSnackbar(t(`enqueueSnackbar.commentWaitingForLogin`), {
+                    variant: "warning",
+                    action: key => <IconButton
+                      disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                  })
+                  return
+                }
+                if (!jwt_decode(auth.accessToken).create_at) {
+                  enqueueSnackbar(t(`enqueueSnackbar.commentWaitingForActive`), {
+                    variant: "warning",
+                    action: key => <IconButton
+                      disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                  })
+                  return
+                }
+                let formData = new FormData()
+                formData.append('aid', aid)
+                formData.append('content', content)
+                const res = await Api.http.post(`/comment`, formData, {
+                  headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                })
+                if (res.status === 201) {
+                  enqueueSnackbar(t(`enqueueSnackbar.commentSuccess`), {
+                    variant: "success",
+                    action: key => <IconButton
+                      disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                  })
+                  setOpenEditor(false)
+                  dispatch(editorSlice.actions.dispatchContent(''))
+                  dispatch(getArticle({aid, auth: initialAuthState}))
+                  return
+                }
+              }}
+            >
+              {t(`detail.submit`)}
+            </Button>
+          </ButtonGroup>
+        </Box>
+        <TextField
+          className={styles.CommentInput} variant="outlined" label={t(`detail.comment`)} fullWidth={true}
+          onClick={() => setOpenEditor(true)}
+          style={openEditor ? {display: "none"} : undefined}/>
+      </Box>
+    }
+    {
+      comments && comments.map(comment => {
         return <CommentBox
-          key={comment.id}
-          id={comment.id}
+          key={comment.cid}
+          aid={aid}
+          cid={comment.cid}
           size={screenSize}
+          articleAuthor={articleAuthor}
           author={comment.author}
-          date={comment.date}
+          create_at={comment.create_at}
           content={comment.content}
           comments={comment.comments}/>
       })

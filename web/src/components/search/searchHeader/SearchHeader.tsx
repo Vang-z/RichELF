@@ -6,13 +6,13 @@ import {useDebouncedCallback} from "use-debounce";
 import {useDispatch} from "react-redux";
 import {searchSlice} from "../../../redux/search/slice";
 
-import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
 
-import CloseIcon from '@material-ui/icons/Close';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@mui/icons-material/Close';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+import SearchIcon from '@mui/icons-material/Search';
 
 
 export const SearchHeader: React.FC = () => {

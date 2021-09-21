@@ -1,33 +1,27 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-export interface UserProps {
-  avatar: string,
-  username: string,
-  desc: string,
-  link: string | null
-}
 
 export interface AuthState {
-  token: string | null,
-  user: UserProps | null
+  accessToken: string | null,
+  tokenType: string | null
 }
 
-const initialState: AuthState = {
-  token: null,
-  user: null
+export const initialAuthState: AuthState = {
+  accessToken: null,
+  tokenType: null
 }
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: initialAuthState,
   reducers: {
     setToken: (state, action) => {
-      state.token = action.payload.token
-      state.user = action.payload.user
+      state.accessToken = action.payload.accessToken
+      state.tokenType = action.payload.tokenType
     },
     clearToken: state => {
-      state.token = null
-      state.user = null
+      state.accessToken = null
+      state.tokenType = null
     }
   },
 })

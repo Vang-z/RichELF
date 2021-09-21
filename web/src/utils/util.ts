@@ -1,4 +1,5 @@
 import {useEffect, useRef} from "react";
+import SparkMD5 from "spark-md5";
 
 export const MiniWidth = 1680
 export const Small = 'small'
@@ -70,7 +71,11 @@ export const dateFormatHandler = (type: 'diff' | 'comm', dateStr: string) => {
     date = new Date()
   }
   const today = new Date()
-  date = new Date(date.getTime() - (today.getTimezoneOffset() * 60000))
+  if (dateStr) {
+    date = new Date(date.getTime() - (today.getTimezoneOffset() * 60000))
+  } else {
+    date = today
+  }
   switch (type) {
     case "diff":
       // dif 为分钟差
@@ -109,7 +114,6 @@ export const scrollToAnchor = (anchorName?: string) => () => {
       anchorElement.scrollIntoView({block: 'start', behavior: 'smooth'});
     }
   }
-  console.log(window.pageYOffset)
 }
 
 export const scrollToPos = (top: number) => () => {
@@ -122,4 +126,71 @@ export const readFile = (file: Blob) => {
     reader.addEventListener('load', () => resolve(reader.result), false)
     reader.readAsDataURL(file)
   })
+}
+
+export const dataURLtoFile = (dataUrl: string, filename: string) => {
+  let arr = dataUrl.split(','),
+    mime = (arr[0].match(/:(.*?);/) as Array<any>)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, {type: mime});
+}
+
+export const incrementalMD5 = (file: File) =>
+  new Promise((resolve, reject) => {
+    const fileReader = new FileReader()
+    const spark = new SparkMD5.ArrayBuffer()
+    const chunkSize = 1024 * 1024 // Read in chunks of 1MB
+    const chunks = Math.ceil(file.size / chunkSize)
+    let currentChunk = 0
+
+    fileReader.onload = (event) => {
+      if (event.target) {
+        spark.append(event.target.result as ArrayBuffer) // Append array buffer
+        ++currentChunk
+        currentChunk < chunks ? loadNext() : resolve(spark.end()) // Compute hash
+      }
+    }
+
+    fileReader.onerror = () => reject(fileReader.error)
+
+    const loadNext = () => {
+      const start = currentChunk * chunkSize
+      const end = start + chunkSize >= file.size ? file.size : start + chunkSize
+      fileReader.readAsArrayBuffer(File.prototype.slice.call(file, start, end))
+    }
+
+    loadNext()
+  })
+
+export const BUSINESS = {
+  OK: 20000,  // 操作成功, 'OK'
+  INVALID_TOKEN: 20001,  // 无效的token, 'Invalid token'
+  ACCESS_TOKEN_EXPIRED: 20002,  // access token过期, 'Access token expired'
+  AUTHORIZATION_ERROR: 20004,  // authorization字段错误, 'Authorization error'
+
+  PHONE_ERROR: 20010,  // 手机号格式不符合规则, 'Wrong format of mobile phone number'
+  PHONE_EXISTED: 20011,  // 手机号已被使用, 'Phone existed'
+  EMAIL_ERROR: 20012,  // 邮箱地址不符合规则, 'Wrong format of email address'
+  EMAIL_EXISTED: 20013,  // 邮箱地址已被使用, 'Email existed'
+  PASSWORD_ERROR: 20014,  // 密码不符合规则, 'Wrong format of password'
+  USERNAME_OR_PASSWORD_ERROR: 20015,  // 账户或密码错误, 'Wrong account or password'
+  ACCOUNT_LOCKED: 20016,  // 账户已被锁定, 'Account has been locked'
+  ACCOUNT_EXISTED: 20017,  // 账号已被使用, 'Account existed'
+  NOT_EXIST: 20018,  // 结果不存在, 'Result does not exist'
+  ILLEGAL_OPERATION: 20019,  // 非法操作, 'Illegal operation'
+
+  CODE_ERROR: 20020,  // 验证码错误, 'Wrong code'
+  CODE_SEND_SUCCESS: 20021,  // 发送验证码成功, 'Send code success'
+  CODE_SEND_ERROR: 20022,  // 发送验证码失败, 'Send code failed'
+  CODE_RESEND_ERROR: 20023, // 60s内不能重复发送验证码, '60s needed for resend'
+  FILE_NOT_EXIST: 20024,  // 文件不存在, 'File not found'
+  FILE_ALREADY_EXIST: 20026,  // 文件以存在, 'File already exist'
+  EMPTY_FILE: 20026,  // 文件为空, 'Empty file'
+  FILE_FORMAT_ERROR: 20027,  // 上传的文件格式不正确, 'Wrong pic format'
+  PARAMS_ERROR: 20028,  // 参数错误, 'Params error'
 }
