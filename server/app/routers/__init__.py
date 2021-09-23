@@ -1,8 +1,6 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from .user import router as user_router
 from .article import router as article_router
-# from .dataset import router as dataset_router
 from .comment import router as comment_router
 from .timeline import router as timeline_router
 from .search import router as search_router
@@ -11,7 +9,6 @@ from config import configs
 
 
 def init_router(app: FastAPI):
-    app.mount("/static", StaticFiles(directory="static"), name="static")
     app.include_router(
         router=user_router,
         tags=["用户api_v1"],

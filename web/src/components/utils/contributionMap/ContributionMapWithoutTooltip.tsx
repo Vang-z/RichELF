@@ -19,11 +19,15 @@ interface ContributionMapProps {
   value: {
     date: string,
     count: number,
-  }[] | []
+  }[] | [],
+  info: {
+    total: string | number,
+    continuance: string | number
+  }
 }
 
 
-export const ContributionMapWithoutTooltip: React.FC<ContributionMapProps & SizeProps> = ({className, value, size}) => {
+export const ContributionMapWithoutTooltip: React.FC<ContributionMapProps & SizeProps> = ({className, value, info, size}) => {
   const [startDate, setStartDate] = useState<Date>()
   const {t} = useTranslation()
   const screenSize = useScreenSize().width
@@ -97,11 +101,11 @@ export const ContributionMapWithoutTooltip: React.FC<ContributionMapProps & Size
       <Box
         className={classNames([styles.ContributionBaseInfo], {[`${styles.MiniContributionBaseInfo}`]: size === Small})}>
         <Box className={styles.TotalContributions}>
-          <SportsEsportsIcon/><span>{t(`contributionMap.totalContributions`)}：153</span>
+          <SportsEsportsIcon/><span>{t(`contributionMap.totalContributions`)}：{info.total}</span>
         </Box>
         <Box className={styles.ContinueContributions}>
           <VideogameAssetIcon/>
-          <span>{t(`contributionMap.longestContinuousContribution`)}：7 {t(`contributionMap.day`)}</span>
+          <span>{t(`contributionMap.longestContinuousContribution`)}：{info.continuance} {t(`contributionMap.day`)}</span>
         </Box>
       </Box>
       <Box className={classNames([styles.ContributionsLabel], {[`${styles.MiniContributionsLabel}`]: size === Small})}>

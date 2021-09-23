@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from config import configs
 from app.middleware import init_middleware
 from app.routers import init_router
@@ -12,11 +13,13 @@ def init_app() -> FastAPI:
         version="0.1.0",
     )
 
-    # 加载配置, 生产环境关闭 swagger 文档、debug 模式
+    # 生产环境关闭 swagger 文档, debug 模式, 将静态文件处理交付给 Caddy / Nginx 完成
     if configs.ENVIRONMENT == '.env.prod':
         app.docs_url = None
         app.redoc_url = None
         app.debug = False
+    else:
+        app.mount('/static', StaticFiles(directory="static"), name="static")
 
     # 初始化中间件
     init_middleware(app)

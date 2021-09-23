@@ -135,7 +135,7 @@ export const Render: React.FC<RenderProps> = (props) => {
                   })
                   return
                 }
-                if (!jwt_decode(auth.accessToken).create_at) {
+                if (!(jwt_decode(auth.accessToken) as any).create_at) {
                   enqueueSnackbar(t(`enqueueSnackbar.downloadWaitingForActive`), {
                     variant: "warning",
                     action: key => <IconButton
@@ -199,7 +199,7 @@ export const Render: React.FC<RenderProps> = (props) => {
                 })
                 return
               }
-              if (!jwt_decode(auth.accessToken).create_at) {
+              if (!(jwt_decode(auth.accessToken) as any).create_at) {
                 enqueueSnackbar(t(`enqueueSnackbar.praiseWaitingForLogin`), {
                   variant: "warning",
                   action: key => <IconButton

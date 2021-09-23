@@ -49,7 +49,7 @@ const ActionBar: React.FC<ActionBarProps> = ({options, actions, category}) => {
   const actionHandler = () => {
     if (actions) {
       if (auth.accessToken) {
-        const user = jwt_decode(auth.accessToken)
+        const user = jwt_decode(auth.accessToken) as any
         if (!user.create_at) {
           enqueueSnackbar(t(`enqueueSnackbar.makeArticleWaitingForActive`), {
             variant: "warning",

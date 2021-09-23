@@ -41,7 +41,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import CloseIcon from "@mui/icons-material/Close";
 
-import {ContributionMap, Timeline, UserPreview} from "../../utils";
+import {ContributionMap, ContributionMapWithoutTooltip, Timeline, UserPreview} from "../../utils";
 import {Preview} from "../preview";
 import {NotFound} from "../../404";
 
@@ -123,14 +123,69 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
       <Box className={styles.Desc}>{user.bio}</Box>
       {
         auth.accessToken ?
-          user && jwt_decode(auth.accessToken).username === user.username ?
+          user && (jwt_decode(auth.accessToken) as any).username === user.username ?
             <Button
               className={styles.EditBtn} variant={"outlined"}
               onClick={() => history.push(`/user/${user.username}/settings`)}>
               {t(`profile.editProfile`)}
             </Button> :
             <Button
-              className={styles.EditBtn} variant={"outlined"}>
+              className={styles.EditBtn} variant={"outlined"}
+              onClick={() => {
+                if (user.is_followed) {
+                  Api.http.delete(`/user/friendship/${user.uid}`, {
+                    headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                  }).then(res => {
+                    if (res.status === 200) {
+                      enqueueSnackbar(t(`enqueueSnackbar.unfollowSuccess`), {
+                        variant: "success",
+                        action: key => <IconButton
+                          disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                      })
+                      dispatch(getUser({username, auth}))
+                    }
+                  })
+                } else {
+                  if (!auth.accessToken) {
+                    enqueueSnackbar(t(`enqueueSnackbar.followWaitingForLogin`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  const auth_user = jwt_decode(auth.accessToken) as any
+                  if (!auth_user.create_at) {
+                    enqueueSnackbar(t(`enqueueSnackbar.followWaitingForActive`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  if (auth_user.uid === user.uid) {
+                    enqueueSnackbar(t(`enqueueSnackbar.followSelf`), {
+                      variant: "warning",
+                      action: key => <IconButton
+                        disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                    })
+                    return
+                  }
+                  Api.http.post(`/user/friendship/${user.uid}`, {}, {
+                    headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
+                  }).then(res => {
+                    if (res.status === 201) {
+                      enqueueSnackbar(t(`enqueueSnackbar.followSuccess`), {
+                        variant: "success",
+                        action: key => <IconButton
+                          disableRipple={true} onClick={() => closeSnackbar(key)}><CloseIcon/></IconButton>,
+                      })
+                      dispatch(getUser({username, auth}))
+                    }
+                  })
+                }
+              }}
+            >
               {user.is_followed ? t(`profile.unfollow`) : t(`profile.follow`)}
             </Button> :
           <Button
@@ -149,9 +204,9 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
       <Box className={styles.LinkInfo}>
         <LinkIcon className={styles.LinkIcon}/>
         <a
-          className={styles.LinkSpan} href={user.link ? user.link : `https://richelf.tech/${user.username}`}
+          className={styles.LinkSpan} href={user.link ? user.link : `https://richelf.tech/user/${user.username}`}
           target={'_blank'}
-          rel="noreferrer">{user.link ? user.link : `https://richelf.tech/${user.username}`}</a>
+          rel="noreferrer">{user.link ? user.link : `https://richelf.tech/user/${user.username}`}</a>
       </Box>
     </Box>
     <Box className={classNames([styles.MainContent], {[`${styles.MiniMainContent}`]: size === Small})}>
@@ -212,7 +267,9 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                 </Box>
                 <Box className={styles.ContributionMapBox}>
                   {
-                    contribution && <ContributionMap value={contribution.value} info={contribution.info} size={size}/>
+                    contribution && size === Small ?
+                      <ContributionMap value={contribution.value} info={contribution.info} size={size}/> :
+                      <ContributionMapWithoutTooltip value={contribution.value} info={contribution.info} size={size}/>
                   }
                 </Box>
                 <Box className={styles.ActivityBorder}>
@@ -271,7 +328,7 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                     variant={"outlined"} startIcon={<NearMeIcon/>}
                     onClick={() => {
                       if (auth.accessToken) {
-                        const user = jwt_decode(auth.accessToken)
+                        const user = jwt_decode(auth.accessToken) as any
                         if (!user.create_at) {
                           enqueueSnackbar(t('enqueueSnackbar.makeArticleWaitingForActive'), {
                             variant: "warning",

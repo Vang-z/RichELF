@@ -22,7 +22,8 @@ class Config(Settings):
     # 服务配置
     HOST: Optional[str] = Field(None, env="HOST")
     PORT: Optional[str] = Field(None, env="PORT")
-    SSL: Optional[str] = Field(None, env="SSL")
+    DOMAIN: Optional[str] = Field(None, env="DOMAIN")
+    STATIC_FILE_PATH: Optional[str] = Field(None, env="STATIC_FILE_PATH")
 
     # 基础配置
     PAGE_SIZE: Optional[int] = Field(None, env="PAGE_SIZE")

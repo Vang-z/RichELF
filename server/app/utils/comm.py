@@ -1,12 +1,5 @@
 from pypika import CustomFunction
-from tortoise.expressions import F
 from tortoise.functions import Function
-from config import configs
-
-
-def generate_base_url():
-    schema = 'https' if configs.SSL == '1' else 'http'
-    return f'{schema}://{configs.HOST}:{configs.PORT}'
 
 
 def update_dict(d: dict, params: dict) -> dict:

@@ -129,7 +129,7 @@ export const Content: React.FC<SizeProps> = ({size}) => {
                 startIcon={<NearMeIcon/>}
                 onClick={() => {
                   if (auth.accessToken) {
-                    const user = jwt_decode(auth.accessToken)
+                    const user = jwt_decode(auth.accessToken) as any
                     if (!user.create_at) {
                       enqueueSnackbar(t(`enqueueSnackbar.makeArticleWaitingForActive`), {
                         variant: "warning",

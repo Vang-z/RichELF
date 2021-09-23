@@ -25,9 +25,10 @@
 .TendingContent {
   display: flex;
   align-items: center;
-  margin: 0 20px;
+  margin: 0 24px;
   box-sizing: border-box;
   cursor: pointer;
+  border-bottom: 1px solid #333;
 }
 
 .TendingContent:hover {
@@ -35,18 +36,16 @@
 }
 
 .TendingKeywordIcon {
-  padding: 0 10px;
+  margin: 0 10px;
 }
 
 .TendingKeyword {
   padding: 10px 0;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 32px;
-  font-weight: 600;
   width: 100%;
   margin: 0;
   text-align: start;
-  border-bottom: 1px solid #333;
 }
 
 .TagContentContainer {

@@ -35,14 +35,14 @@ export const SearchTending: React.FC = () => {
           tending && tending.keywords.map((tending: any) => {
             return <li
               className={styles.TendingContent}
-              key={tending.id}
+              key={tending.kid}
               onClick={() => {
-                dispatch(searchSlice.actions.dispatchKeywords(tending.title))
-                history.push(`/search/${tending.title}`)
+                dispatch(searchSlice.actions.dispatchKeywords(tending.content))
+                history.push(`/search/${tending.content}`)
               }}
             >
               <TrendingUpIcon className={styles.TendingKeywordIcon}/>
-              <p className={styles.TendingKeyword}>{tending.title}</p>
+              <p className={styles.TendingKeyword}>{tending.content}</p>
             </li>
           })
         }

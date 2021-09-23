@@ -60,6 +60,18 @@
   margin-bottom: 4px;
 }
 
+.Content a {
+  position: relative;
+  top: 1px;
+  font-size: 12px;
+  text-indent: 2em;
+  color: #ccc;
+}
+
+.Goal {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
 .Done {
   text-decoration: line-through;
 }

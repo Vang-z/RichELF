@@ -14,6 +14,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import SearchIcon from '@mui/icons-material/Search';
 
+import Api from "../../../utils/api";
+
 
 export const SearchHeader: React.FC = () => {
   const dispatch = useDispatch()
@@ -38,9 +40,15 @@ export const SearchHeader: React.FC = () => {
       dispatch(searchSlice.actions.dispatchKeywords(e.target.value))
     }, 1000)
 
-  const searchClickHandler = () => {
+  const searchClickHandler = async () => {
     const input = searchEl.current.firstElementChild as HTMLInputElement
-    return history.push(`/search/${input.value.replace(/\//g, '\\')}`);
+    const keywords = input.value.replace(/\//g, '\\').trim()
+    if (keywords.length > 4) {
+      let formData = new FormData()
+      formData.append('content', keywords)
+      await Api.http.post('/search/keyword', formData)
+    }
+    return history.push(`/search/${keywords}`);
   }
 
   return <>

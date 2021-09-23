@@ -106,7 +106,8 @@ export const UserPreview: React.FC<UserPreviewProps> = (props) => {
                 })
                 return
               }
-              if (!jwt_decode(auth.accessToken).create_at) {
+              const user = jwt_decode(auth.accessToken) as any
+              if (!user.create_at) {
                 enqueueSnackbar(t(`enqueueSnackbar.followWaitingForActive`), {
                   variant: "warning",
                   action: key => <IconButton
@@ -114,7 +115,7 @@ export const UserPreview: React.FC<UserPreviewProps> = (props) => {
                 })
                 return
               }
-              if (jwt_decode(auth.accessToken).uid === userInfo.uid) {
+              if (user.uid === userInfo.uid) {
                 enqueueSnackbar(t(`enqueueSnackbar.followSelf`), {
                   variant: "warning",
                   action: key => <IconButton

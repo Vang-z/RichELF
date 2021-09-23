@@ -1,6 +1,6 @@
 import axios, {AxiosInstance} from "axios";
 
-export const BASE_URL = 'http://127.0.0.1:8080/api/v1'
+export const BASE_URL = 'https://richelf.tech/api/v1'
 
 class Api {
   public http: AxiosInstance;

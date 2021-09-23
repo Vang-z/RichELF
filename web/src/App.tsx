@@ -46,7 +46,8 @@ function App() {
               ...darkScrollbar(),
               background: "black",
               fontFamily: "flexo, sans-serif",
-              color: "#eee"
+              color: "#eee",
+              backgroundImage: "unset"
             }
           },
         },

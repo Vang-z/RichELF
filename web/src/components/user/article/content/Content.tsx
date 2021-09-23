@@ -35,7 +35,7 @@ export const Content: React.FC = () => {
   const {aid} = useParams<{ username: string, aid: string }>()
   const articleInfo = useSelector(s => s.editor)
   const auth = useSelector(s => s.auth)
-  const user = auth.accessToken ? jwt_decode(auth.accessToken) : {}
+  const user = auth.accessToken ? jwt_decode(auth.accessToken) as any : {}
   const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
   useEffect(() => {

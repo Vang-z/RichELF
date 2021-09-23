@@ -112,7 +112,7 @@ const UserPanel: React.FC<{ username: string }> = ({username}) => {
                 })
                 return
               }
-              if (!jwt_decode(auth.accessToken).create_at) {
+              if (!(jwt_decode(auth.accessToken) as any).create_at) {
                 enqueueSnackbar(t(`enqueueSnackbar.followWaitingForActive`), {
                   variant: "warning",
                   action: key => <IconButton
@@ -120,7 +120,7 @@ const UserPanel: React.FC<{ username: string }> = ({username}) => {
                 })
                 return
               }
-              if (jwt_decode(auth.accessToken).uid === userInfo.uid) {
+              if ((jwt_decode(auth.accessToken) as any).uid === userInfo.uid) {
                 enqueueSnackbar(t(`enqueueSnackbar.followSelf`), {
                   variant: "warning",
                   action: key => <IconButton

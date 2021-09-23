@@ -91,7 +91,7 @@ const CommentBox: React.FC<CommentsProps & SizeProps> = (
         <Box className={styles.CommentBox}>
           <BadgeAvatar
             className={styles.CommentAvatar}
-            src={auth.accessToken ? jwt_decode(auth.accessToken).avatar_url : avatar.default} online={false}
+            src={auth.accessToken ? (jwt_decode(auth.accessToken) as any).avatar_url : avatar.default} online={false}
             size={"small"}/>
           <Box className={styles.CommentDirIcon}/>
           <Box className={styles.CommentBorder}>
@@ -124,7 +124,7 @@ const CommentBox: React.FC<CommentsProps & SizeProps> = (
                     })
                     return
                   }
-                  if (!jwt_decode(auth.accessToken).create_at) {
+                  if (!(jwt_decode(auth.accessToken) as any).create_at) {
                     enqueueSnackbar(t(`enqueueSnackbar.commentWaitingForActive`), {
                       variant: "warning",
                       action: key => <IconButton
@@ -187,7 +187,7 @@ export const Comment: React.FC<CommentProps> = ({aid, articleAuthor, comments, c
       <Box className={styles.CommentBox}>
         <BadgeAvatar
           className={styles.CommentAvatar}
-          src={auth.accessToken ? jwt_decode(auth.accessToken).avatar_url : avatar.default} online={false}
+          src={auth.accessToken ? (jwt_decode(auth.accessToken) as any).avatar_url : avatar.default} online={false}
           size={"small"}/>
         <Box className={styles.CommentDirIcon} style={openEditor ? undefined : {display: "none"}}/>
         <Box className={styles.CommentBorder} style={openEditor ? undefined : {display: "none"}}>
@@ -220,7 +220,7 @@ export const Comment: React.FC<CommentProps> = ({aid, articleAuthor, comments, c
                   })
                   return
                 }
-                if (!jwt_decode(auth.accessToken).create_at) {
+                if (!(jwt_decode(auth.accessToken) as any).create_at) {
                   enqueueSnackbar(t(`enqueueSnackbar.commentWaitingForActive`), {
                     variant: "warning",
                     action: key => <IconButton

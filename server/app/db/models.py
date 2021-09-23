@@ -1,8 +1,8 @@
 from tortoise import fields
 from tortoise.models import Model
 from tortoise.contrib.pydantic import pydantic_model_creator
-from app.utils.comm import generate_base_url
 from uuid import uuid4
+from config import configs
 
 
 class User(Model):
@@ -37,7 +37,7 @@ class User(Model):
         ordering = ['create_at']
 
     def avatar_url(self) -> str:
-        return f'{generate_base_url()}/{self.avatar}'
+        return f'{configs.DOMAIN}/{self.avatar}'
 
     def mobile_hash(self) -> str:
         if self.mobile:

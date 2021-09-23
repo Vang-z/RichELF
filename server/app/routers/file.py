@@ -4,6 +4,7 @@ from app.db.models import File as DBFile, User, Timeline, Article
 from app.db import redis_session
 from app.utils import comm, auth
 from app.schemas import CommModel
+from config import configs
 
 router = APIRouter()
 
@@ -14,18 +15,18 @@ async def file_upload(file: UploadFile = File(...), filesize: str = Form(...), c
     if category not in ['images', 'users', 'packages']:
         raise HTTPException(detail={'msg': '请求参数错误.', 'code': comm.BUSINESS.PARAMS_ERROR},
                             status_code=status.HTTP_400_BAD_REQUEST)
-    db_file = await DBFile.filter(fid=f'{category}_{identifier}', absolute_pos=f'static/{category}/').first()
+    db_file = await DBFile.filter(fid=f'{category}_{identifier}', absolute_pos=f'static/uploads/{category}/').first()
     if db_file:
-        uri = f'{comm.generate_base_url()}/{db_file.absolute_pos}{db_file.fid}.{db_file.filename.split(".")[-1]}'
+        uri = f'{configs.DOMAIN}/{db_file.absolute_pos}{db_file.fid}.{db_file.filename.split(".")[-1]}'
         return JSONResponse(
             content={'data': uri, 'msg': '上传成功.', 'code': comm.BUSINESS.FILE_ALREADY_EXIST},
             status_code=status.HTTP_200_OK)
-    with open(f'./static/{category}/{category}_{identifier}.{file.filename.split(".")[-1]}', "wb") as f:
+    with open(f'{configs.STATIC_FILE_PATH}/{category}/{category}_{identifier}.{file.filename.split(".")[-1]}', "wb") as f:
         f.write(await file.read())
     db_file = await DBFile.create(fid=f'{category}_{identifier}', filename=file.filename, filesize=filesize,
-                                  absolute_pos=f'static/{category}/')
+                                  absolute_pos=f'static/uploads/{category}/')
     await (await User.get(uid=uid)).files.add(db_file)
-    uri = f'{comm.generate_base_url()}/{db_file.absolute_pos}{db_file.fid}.{db_file.filename.split(".")[-1]}'
+    uri = f'{configs.DOMAIN}/{db_file.absolute_pos}{db_file.fid}.{db_file.filename.split(".")[-1]}'
     return JSONResponse(content={'data': uri, 'msg': '上传成功.', 'code': comm.BUSINESS.OK},
                         status_code=status.HTTP_201_CREATED)
 
