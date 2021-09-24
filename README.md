@@ -24,7 +24,7 @@ Web 全栈项目 ✨
 
 ### 简介
 
-#### 一款基于 [```Python```](https://www.python.org/), [```React```](https://reactjs.org/) 开发的 [```Web```](https://en.wikipedia.org/wiki/Web) 项目, 使用 [```Caddy```](https://github.com/caddyserver/caddy) 作为反向代理, 自动配置 [```TLS```](https://en.wikipedia.org/wiki/Transport_Layer_Security) 证书
+> 一款基于 [```Python```](https://www.python.org/), [```React```](https://reactjs.org/) 开发的 [```Web```](https://en.wikipedia.org/wiki/Web) 项目, 使用 [```Caddy```](https://github.com/caddyserver/caddy) 作为反向代理, 自动配置 [```TLS```](https://en.wikipedia.org/wiki/Transport_Layer_Security) 证书
 
 ##
 
@@ -82,201 +82,203 @@ Web 全栈项目 ✨
 
 1. 克隆本仓库到本地
 
-  - 项目结构:
-      ```
-      RichELF
-      ├── web
-      │    ├── public/
-      │    ├── src/
-      │    ├── package.json
-      │    ├── package-lock.json
-      │    └── tsconfig.json
-      ├── server
-      │    ├── app/
-      │    ├── static/
-      │    ├── config.py
-      │    ├── main.py
-      │    ├── requirements.txt
-      │    ├── .env
-      │    └── .env.dev
-      ├── LICENCE
-      ├── LICENCE
-      └── README.md
-      ```
-    其中 ```web``` 文件夹对应前端文件, ```server``` 文件夹对应后端文件
+- 项目结构:
+    ```
+    RichELF
+    ├── web
+    │    ├── public/
+    │    ├── src/
+    │    ├── package.json
+    │    ├── package-lock.json
+    │    └── tsconfig.json
+    ├── server
+    │    ├── app/
+    │    ├── static/
+    │    ├── config.py
+    │    ├── main.py
+    │    ├── requirements.txt
+    │    ├── .env
+    │    └── .env.dev
+    ├── LICENCE
+    ├── LICENCE
+    └── README.md
+    ```
+  其中 ```web``` 文件夹对应前端文件, ```server``` 文件夹对应后端文件
 
 
 2. 打包 ```React APP``` 静态文件
 
-  - 当前项目指定 ```nodejs == 14.17.0``` 请勿随意切换其他版本
-  - 切换目录至 ```web``` , 使用 ```npm install ``` 安装项目依赖, 以来安装完成后使用 ```npm run build``` 进行打包, 打包结束后 ```web```
-    目录会生成 ``` build ``` 文件夹, 其项目结构为:
-      ```
-      build
-      ├── static
-      │    ├── css/
-      │    ├── js/
-      │    └── media/
-      ├── tinymce
-      │    ├── lang/
-      │    └── tinymce.min.js
-      ├── asset-manifest.json
-      ├── favicon.ico
-      ├── favicon.white.ico
-      ├── index.html
-      ├── logo192.png
-      ├── logo512.png
-      ├── manifest.json
-      └── robots.txt
-      ```
+- 当前项目指定 ```nodejs == 14.17.0``` 请勿随意切换其他版本
+- 切换目录至 ```web``` , 使用 ```npm install ``` 安装项目依赖, 以来安装完成后使用 ```npm run build``` 进行打包, 打包结束后 ```web```
+  目录会生成 ``` build ``` 文件夹, 其项目结构为:
+    ```
+    build
+    ├── static
+    │    ├── css/
+    │    ├── js/
+    │    └── media/
+    ├── tinymce
+    │    ├── lang/
+    │    └── tinymce.min.js
+    ├── asset-manifest.json
+    ├── favicon.ico
+    ├── favicon.white.ico
+    ├── index.html
+    ├── logo192.png
+    ├── logo512.png
+    ├── manifest.json
+    └── robots.txt
+    ```
 
 
 3. 修改服务端为生产模式
 
-  - 切换目录至 ```server``` , 创建 ```.env.prod``` 文件, 与 ```.env``` 文件同级
-  - 修改 ```.env``` 文件内容为 ```ENVIRONMENT = ".env.prod"```
-  - 向 ```.env.prod``` 文件添加以下内容
-      ```
-      # 生产环境配置文件
-  
-      # 服务配置
-      HOST = "0.0.0.0"
-      PORT = "8000"
-      DOMAIN = ""
-      STATIC_FILE_PATH = ""
-  
-      # 基础配置
-      PAGE_SIZE = 6
-  
-      # 系统秘钥
-      SECRET_KEY = ""
-      # 加密算法
-      ALGORITHM = "HS256"
-  
-      # 邮箱配置
-      EMAIL_HOST = "smtp.qq.com"
-      EMAIL_PORT = 25
-      EMAIL_HOST_USER = ""
-      EMAIL_HOST_PASSWORD = ""
-  
-      # redis配置
-      REDIS_HOST = ""
-      REDIS_PORT = ""
-      REDIS_USER = "root"
-      REDIS_PASSWORD = ""
-      REDIS_DB_NAME = "0"
-  
-      # mysql数据库配置
-      MYSQL_HOST =""
-      MYSQL_PORT = ""
-      MYSQL_USER = ""
-      MYSQL_PASSWORD = ""
-      MYSQL_DB_NAME = ""
-      ```  
+- 切换目录至 ```server``` , 创建 ```.env.prod``` 文件, 与 ```.env``` 文件同级
+- 修改 ```.env``` 文件内容为 ```ENVIRONMENT = ".env.prod"```
+- 向 ```.env.prod``` 文件添加以下内容
+    ```
+    # 生产环境配置文件
 
-    - ```DOMAIN```: ```https://example.com``` 服务器域名
-    - ```STATIC_FILE_PATH```: ```/usr/share/caddy/static/uploads``` 系统路径, 后文会提及该路径的作用
-    - ```SECRET_KEY ```: ```HS256秘钥``` 在 ```Ubuntu``` 中输入 ```openssl rand -hex 32``` 获得, 注意请勿直接使用 ```.env.dev``` 中的秘钥,
-      否则带来的损失自行承担
-    - ```EMAIL_HOST_USER ```: 预发送系统邮件的QQ邮箱
-    - ```EMAIL_HOST_PASSWORD  ```: 此处并非上文邮箱的密码, 需要进入邮箱官网 ```设置 => 账户 => POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务```
-      开启 ```POP3/SMTP服务```, ```IMAP/SMTP服务```, 最后生成授权码， 将该授权码填入此处
-    - ```REDIS_HOST```: 服务器 ```redis``` 主机号
-    - ```REDIS_PORT```: 服务器 ```redis``` 端口号
-    - ```REDIS_PASSWORD```: 服务器 ```redis``` 登陆密码
-    - ```MYSQL_HOST```: 服务器 ```mysql``` 主机号
-    - ```MYSQL_PORT```: 服务器 ```mysql``` 端口号
-    - ```MYSQL_USER```: 服务器 ```mysql``` 用户名
-    - ```MYSQL_PASSWORD```: 服务器 ```mysql``` 用户密码
-    - ```MYSQL_DB_NAME```: 数据库名称, 与下文创建时数据库名称保持一致
+    # 服务配置
+    HOST = "0.0.0.0"
+    PORT = "8000"
+    DOMAIN = ""
+    STATIC_FILE_PATH = ""
+
+    # 基础配置
+    PAGE_SIZE = 6
+
+    # 系统秘钥
+    SECRET_KEY = ""
+    # 加密算法
+    ALGORITHM = "HS256"
+
+    # 邮箱配置
+    EMAIL_HOST = "smtp.qq.com"
+    EMAIL_PORT = 25
+    EMAIL_HOST_USER = ""
+    EMAIL_HOST_PASSWORD = ""
+
+    # redis配置
+    REDIS_HOST = ""
+    REDIS_PORT = ""
+    REDIS_USER = "root"
+    REDIS_PASSWORD = ""
+    REDIS_DB_NAME = "0"
+
+    # mysql数据库配置
+    MYSQL_HOST =""
+    MYSQL_PORT = ""
+    MYSQL_USER = ""
+    MYSQL_PASSWORD = ""
+    MYSQL_DB_NAME = ""
+    ```  
+
+  - ```DOMAIN```: ```https://example.com``` 服务器域名
+  - ```STATIC_FILE_PATH```: ```/usr/share/caddy/static/uploads``` 系统路径, 后文会提及该路径的作用
+  - ```SECRET_KEY ```: ```HS256秘钥``` 在 ```Ubuntu``` 中输入 ```openssl rand -hex 32``` 获得, 注意请勿直接使用 ```.env.dev``` 中的秘钥,
+    否则带来的损失自行承担
+  - ```EMAIL_HOST_USER ```: 预发送系统邮件的QQ邮箱
+  - ```EMAIL_HOST_PASSWORD  ```: 此处并非上文邮箱的密码, 需要进入邮箱官网 ```设置 => 账户 => POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务```
+    开启 ```POP3/SMTP服务```, ```IMAP/SMTP服务```, 最后生成授权码， 将该授权码填入此处
+  - ```REDIS_HOST```: 服务器 ```redis``` 主机号
+  - ```REDIS_PORT```: 服务器 ```redis``` 端口号
+  - ```REDIS_PASSWORD```: 服务器 ```redis``` 登陆密码
+  - ```MYSQL_HOST```: 服务器 ```mysql``` 主机号
+  - ```MYSQL_PORT```: 服务器 ```mysql``` 端口号
+  - ```MYSQL_USER```: 服务器 ```mysql``` 用户名
+  - ```MYSQL_PASSWORD```: 服务器 ```mysql``` 用户密码
+  - ```MYSQL_DB_NAME```: 数据库名称, 与下文创建时数据库名称保持一致
 
 
 4. 登陆服务器, 部署项目
 
-  - 登陆服务器创建数据库, 注意 ```字符集``` 设置为 ```utf8mb4```, ```排序规则``` 设置为 ```utf8mb4_0900_ai_ci```
-  - 上传 ```server``` 文件夹至服务器, 例如 ```/home/ubuntu``` 目录下
-  - 切换目录至 ```server```, 使用 ```pip install -r requirements.txt``` 安装项目依赖, 安装完成后还需执行 ```pip install uvloop==0.16.0```
-    安装 ```linux``` 额外需要的依赖
-  - 配置反向代理服务, 此处使用 ```Caddy``` 作为代理服务器
+- 登陆服务器创建数据库, 注意 ```字符集``` 设置为 ```utf8mb4```, ```排序规则``` 设置为 ```utf8mb4_0900_ai_ci```
+- 上传 ```server``` 文件夹至服务器, 例如 ```/home/ubuntu``` 目录下
+- 切换目录至 ```server```, 使用 ```pip install -r requirements.txt``` 安装项目依赖, 安装完成后还需执行 ```pip install uvloop==0.16.0```
+  安装 ```linux``` 额外需要的依赖
+- 配置反向代理服务, 此处使用 ```Caddy``` 作为代理服务器
 
-    - 执行以下命令安装 ```Caddy```
+  - 执行以下命令安装 ```Caddy```
 
+    ```
+    sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+    sudo apt update
+    sudo apt install caddy
+    ```
+
+  - 创建上文提到的服务端静态文件夹 ```/usr/share/caddy/static/uploads```, 使用 ```Caddy``` 来处理所有的静态资源请求, 避免直接对后端服务器进行请求
+
+  - 编辑 ```Caddy``` 配置文件
+
+    ```
+    cd /etc/caddy
+    sudo vim Caddyfile
+    ```
+    输入以下内容, 请将 ```example.com``` 替换为您的域名
+    ```
+    www.example.com {
+        redir https://example.com
+    }
+
+    example.com {
+        encode gzip
+
+        root * /usr/share/caddy /home/ubuntu/richelf_server/static
+
+        reverse_proxy /api* 127.0.0.1:8000
+
+        @notAPI {
+           not {
+                path /api*
+           }
+
+           file {
+               try_files {path} /index.html
+           }
+        }
+
+        rewrite @notAPI {http.matchers.file.relative}
+
+        file_server
+
+        log {
+            output file /var/log/caddy/log.log
+       }
+    }
+    ```
+  - 执行 ```caddy reload``` 载入编辑好的配置文件
+  - 将之前打包好的 ```React APP``` 上传至 ```/usr/share/caddy``` 目录下
+
+- 创建后端服务
+
+  - 执行以下命令创建项目服务
       ```
-      sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
-      curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
-      curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
-      sudo apt update
-      sudo apt install caddy
+      cd /etc/systemd/system
+      sudo vim yourname_server.service
       ```
-
-    - 编辑 ```Caddy``` 配置文件
-
+    输入以下内容, 注: 此处 ```service``` 名称可自由替换, 但请勿与系统服务重复
       ```
-      cd /etc/caddy
-      sudo vim Caddyfile
+      [Unit]
+      Description=Gunicorn instance to serve RichELF SERVER
+      After=network.target
+
+      [Service]
+      User=ubuntu
+      Group=www-data
+      WorkingDirectory=/home/ubuntu/server
+      ExecStart=/home/ubuntu/.local/bin/gunicorn -w 8 -k uvicorn.workers.UvicornWorker main:app
+
+      [Install]
+      WantedBy=multi-user.target
       ```
-      输入以下内容, 请将 ```example.com``` 替换为您的域名
-      ```
-      www.example.com {
-          redir https://example.com
-      }
+    - ```User```: ```Ubuntu``` 用户名, 默认为 ```Ubuntu```
+    - ```WorkingDirectory```: 前文提到的上传 ```server``` 文件夹的路径
+    - ```ExecStart```: 执行 ```whereis gunicorn``` 查看 ```gunicorn``` 地址, 若与上文中的地址不一致, 将上文地址替换, ```8``` 为服务器核心数, 按需配置
 
-      example.com {
-          encode gzip
+- 启动服务
 
-          root * /usr/share/caddy /home/ubuntu/richelf_server/static
-
-          reverse_proxy /api* 127.0.0.1:8000
-
-          @notAPI {
-             not {
-                  path /api*
-             }
-
-             file {
-                 try_files {path} /index.html
-             }
-          }
-
-          rewrite @notAPI {http.matchers.file.relative}
-
-          file_server
-
-          log {
-              output file /var/log/caddy/log.log
-         }
-      }
-      ```
-    - 执行 ```caddy reload``` 载入编辑好的配置文件
-    - 将之前打包好的 ```React APP``` 上传至 ```/usr/share/caddy``` 目录下
-
-  - 创建后端服务
-
-    - 执行以下命令创建项目服务
-        ```
-        cd /etc/systemd/system
-        sudo vim yourname_server.service
-        ```
-      输入以下内容, 注: 此处 ```service``` 名称可自由替换, 但请勿与系统服务重复
-        ```
-        [Unit]
-        Description=Gunicorn instance to serve RichELF SERVER
-        After=network.target
-
-        [Service]
-        User=ubuntu
-        Group=www-data
-        WorkingDirectory=/home/ubuntu/server
-        ExecStart=/home/ubuntu/.local/bin/gunicorn -w 8 -k uvicorn.workers.UvicornWorker main:app
-
-        [Install]
-        WantedBy=multi-user.target
-        ```
-      - ```User```: ```Ubuntu``` 用户名, 默认为 ```Ubuntu```
-      - ```WorkingDirectory```: 前文提到的上传 ```server``` 文件夹的路径
-      - ```ExecStart```: 执行 ```whereis gunicorn``` 查看 ```gunicorn``` 地址, 若与上文中的地址不一致, 将上文地址替换, ```8``` 为服务器核心数, 按需配置
-
-  - 启动服务
-
-    - 执行 ```sudo systemctl start yourname_server.service``` 启动后端服务
-    - 执行 ```systemctl status yourname_server.service``` 查看后端服务, 若 ```Active``` 为 ```running``` 则代表配置完成
+  - 执行 ```sudo systemctl start yourname_server.service``` 启动后端服务
+  - 执行 ```systemctl status yourname_server.service``` 查看后端服务, 若 ```Active``` 为 ```running``` 则代表配置完成
