@@ -268,8 +268,8 @@ export const ProfileContent: React.FC<SizeProps & { username: string }> = ({size
                 <Box className={styles.ContributionMapBox}>
                   {
                     contribution && size === Small ?
-                      <ContributionMap value={contribution.value} info={contribution.info} size={size}/> :
-                      <ContributionMapWithoutTooltip value={contribution.value} info={contribution.info} size={size}/>
+                      <ContributionMapWithoutTooltip value={contribution.value} info={contribution.info} size={size}/> :
+                      <ContributionMap value={contribution.value} info={contribution.info} size={size}/>
                   }
                 </Box>
                 <Box className={styles.ActivityBorder}>

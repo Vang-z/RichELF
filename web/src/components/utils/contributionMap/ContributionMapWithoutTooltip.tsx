@@ -111,10 +111,10 @@ export const ContributionMapWithoutTooltip: React.FC<ContributionMapProps & Size
       <Box className={classNames([styles.ContributionsLabel], {[`${styles.MiniContributionsLabel}`]: size === Small})}>
         <span>{t(`contributionMap.less`)}</span>
         <svg width={72} height={24}>
-          <rect fill={panelColor[0]} width="11" height="11" rx={2.5} x={5} y={6}/>
+          <rect fill={panelColor[1]} width="11" height="11" rx={2.5} x={5} y={6}/>
           <rect fill={panelColor[2]} width="11" height="11" rx={2.5} x={22} y={6}/>
           <rect fill={panelColor[3]} width="11" height="11" rx={2.5} x={39} y={6}/>
-          <rect fill={panelColor[5]} width="11" height="11" rx={2.5} x={56} y={6}/>
+          <rect fill={panelColor[4]} width="11" height="11" rx={2.5} x={56} y={6}/>
         </svg>
         <span>{t(`contributionMap.more`)}</span>
       </Box>
