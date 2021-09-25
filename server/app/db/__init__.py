@@ -9,17 +9,31 @@ MYSQL_HOST = configs.MYSQL_HOST
 MYSQL_PORT = configs.MYSQL_PORT
 MYSQL_DB_NAME = configs.MYSQL_DB_NAME
 CHARSET = 'utf8mb4'
+POOL_RECYCLE = 3600
+
 REDIS_PASSWORD = configs.REDIS_PASSWORD
 REDIS_HOST = configs.REDIS_HOST
 REDIS_PORT = configs.REDIS_PORT
 REDIS_DB_NAME = configs.REDIS_DB_NAME
 
-# Mysql URL配置
-DATABASE_URL = f'mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB_NAME}?charset={CHARSET}'
+MYSQL_CONFIG = {
+    'engine': 'tortoise.backends.mysql',
+    'credentials': {
+        'host': MYSQL_HOST,
+        'port': MYSQL_PORT,
+        'user': MYSQL_USER,
+        'password': MYSQL_PASSWORD,
+        'database': MYSQL_DB_NAME,
+        'charset': CHARSET,
+        'pool_recycle': POOL_RECYCLE
+    }
+}
 
 # Mysql 迁移配置
 TORTOISE_ORM = {
-    "connections": {"default": DATABASE_URL},
+    "connections": {
+        'default': MYSQL_CONFIG
+    },
     "apps": {
         "models": {
             "models": ["aerich.models", "app.db.models"],
@@ -35,7 +49,7 @@ def init_db(app: FastAPI):
         add_exception_handlers=True,
         config={
             'connections': {
-                'default': DATABASE_URL
+                'default': MYSQL_CONFIG
             },
             'apps': {
                 'models': {
