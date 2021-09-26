@@ -169,7 +169,7 @@ export const BadgeAvatar: React.FC<BadgeAvatarProps & SizeProps> = ({src, online
   }
   if (screenSize === Small) {
     return <Box className={className === undefined ? styles.BadgeContainer : className}>
-      <object>
+      <span>
         <Link to={`/user/${user}`}>
           <Badge
             className={styles.Badge}
@@ -181,7 +181,7 @@ export const BadgeAvatar: React.FC<BadgeAvatarProps & SizeProps> = ({src, online
               classes={size === Small ? {root: styles.BadgeSmall} : size === Large ? {root: styles.BadgeLarge} : undefined}/>
           </Badge>
         </Link>
-      </object>
+      </span>
     </Box>
   }
 
@@ -191,7 +191,7 @@ export const BadgeAvatar: React.FC<BadgeAvatarProps & SizeProps> = ({src, online
       classes={{
         tooltip: styles.Tooltip,
       }}>
-      <object>
+      <span>
         <Link to={`/user/${user}`}>
           <Badge
             className={styles.Badge}
@@ -203,7 +203,7 @@ export const BadgeAvatar: React.FC<BadgeAvatarProps & SizeProps> = ({src, online
               classes={size === Small ? {root: styles.BadgeSmall} : size === Large ? {root: styles.BadgeLarge} : undefined}/>
           </Badge>
         </Link>
-      </object>
+      </span>
     </Tooltip>
   </Box>
 }
