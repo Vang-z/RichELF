@@ -105,7 +105,6 @@ export const Render: React.FC<RenderProps> = (props) => {
             <SyntaxHighlighter
               style={gml}
               language={props.lang}
-              showLineNumbers={true}
               children={codeSamples.shift()}
               id={key}
             />
@@ -143,7 +142,7 @@ export const Render: React.FC<RenderProps> = (props) => {
                   })
                   return
                 }
-                window.open(`http://127.0.0.1:8080/api/v1/file/${props.file?.fid}/${props.aid}/${btoa(auth.accessToken)}`)
+                window.open(`https://richelf.tech/api/v1/file/${props.file?.fid}/${props.aid}/${btoa(auth.accessToken)}`)
               }
             }}
           >

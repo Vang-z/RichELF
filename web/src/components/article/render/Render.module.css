@@ -93,3 +93,8 @@
 .Render ul {
   padding-left: 20px;
 }
+
+.Render img {
+  max-width: 100%;
+  height: auto;
+}

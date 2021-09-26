@@ -51,7 +51,7 @@ export const renderCopyHandler = (e: any) => {
     const preList = pre.innerText.split('\n')
     let preStr = ''
     for (let i = 0; i < preList.length; i++) {
-      preStr = preStr + preList[i].slice(1, preList[i].length) + '\n'
+      preStr = preStr + preList[i] + '\n'
     }
     const el = document.createElement('textarea');
     el.value = preStr;

@@ -140,7 +140,7 @@ export const Content: React.FC = () => {
               formData.append('lang', articleInfo.lang)
               formData.append('content', articleInfo.content)
               formData.append('s', articleInfo.publishAt ? '1' : '0')
-              formData.append('file', articleInfo.file ? articleInfo.file.fid : '')
+              articleInfo.file && articleInfo.file.fid && formData.append('file', articleInfo.file.fid)
               const res = await Api.http.put(`/article/${aid}`, formData, {
                 headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
               })
@@ -170,7 +170,7 @@ export const Content: React.FC = () => {
               formData.append('lang', articleInfo.lang)
               formData.append('content', articleInfo.content)
               formData.append('s', '1')
-              formData.append('file', articleInfo.file ? articleInfo.file.fid : '')
+              articleInfo.file && articleInfo.file.fid && formData.append('file', articleInfo.file.fid)
               const res = await Api.http.put(`/article/${aid}`, formData, {
                 headers: {'Authorization': auth.accessToken ? `${auth.tokenType} ${auth.accessToken}` : 'Bearer'}
               })

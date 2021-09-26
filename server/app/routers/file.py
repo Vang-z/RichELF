@@ -21,7 +21,8 @@ async def file_upload(file: UploadFile = File(...), filesize: str = Form(...), c
         return JSONResponse(
             content={'data': uri, 'msg': '上传成功.', 'code': comm.BUSINESS.FILE_ALREADY_EXIST},
             status_code=status.HTTP_200_OK)
-    with open(f'{configs.STATIC_FILE_PATH}/{category}/{category}_{identifier}.{file.filename.split(".")[-1]}', "wb") as f:
+    with open(f'{configs.STATIC_FILE_PATH}/{category}/{category}_{identifier}.{file.filename.split(".")[-1]}',
+              "wb") as f:
         f.write(await file.read())
     db_file = await DBFile.create(fid=f'{category}_{identifier}', filename=file.filename, filesize=filesize,
                                   absolute_pos=f'static/uploads/{category}/')
@@ -47,7 +48,8 @@ async def file_download(identifier: str, aid: str, token: str):
         if not redis_session.get(f'download_dataset_{aid}_{uid}'):
             await Timeline.create(creator_id=uid, action=5, file_id=identifier, article_id=article.aid)
             redis_session.setex(name=f'download_dataset_{aid}_{uid}', time=60 * 60 * 24, value=1)
-        return FileResponse(f'{db_file.absolute_pos}{db_file.fid}.{db_file.filename.split(".")[-1]}',
-                            media_type='application/octet-stream', filename=db_file.filename)
+        return FileResponse(
+            f'{configs.STATIC_FILE_PATH.split("static")[0]}{db_file.absolute_pos}{db_file.fid}.{db_file.filename.split(".")[-1]}',
+            media_type='application/octet-stream', filename=db_file.filename)
     raise HTTPException(detail={'msg': '文件不存在.', 'code': comm.BUSINESS.FILE_NOT_EXIST},
                         status_code=status.HTTP_404_NOT_FOUND)

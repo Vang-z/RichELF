@@ -107,8 +107,6 @@ export const Editor: React.FC<EditorProps> = ({height, width}) => {
     `textpattern`, `toc`, `wordcount`, `autoresize`
   ]
   const toolbar = [
-    // 'undo redo | removeformat | formatselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent',
-    // 'numlist bullist | codesample emoticons charmap | ltr rtl | fontselect | fontsizeselect',
     {name: 'history', items: ['undo', 'redo']},
     {name: 'clear', items: ['removeformat']},
     {name: 'formatselect', items: ['formatselect']},
@@ -128,6 +126,8 @@ export const Editor: React.FC<EditorProps> = ({height, width}) => {
       apiKey={APIKEY}
       init={{
         ...baseInitProps,
+        relative_urls: false,
+        remove_script_host : false,
         entity_encoding: 'raw',
         menubar: menubar,
         menu: menu,
