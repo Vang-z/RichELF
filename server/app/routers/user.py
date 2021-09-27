@@ -460,6 +460,7 @@ async def contribution(username: str):
         continuance = 0
         continuances = []
         dates = [datetime.strptime(d['date'], "%Y/%m/%d") for d in contribution]
+        dates.sort()
         match_date = dates.pop(0)
         for date in dates:
             if abs((date - match_date).days) == 1:
