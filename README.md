@@ -197,6 +197,7 @@ Web 全栈项目 ✨
 - 上传 ```server``` 文件夹至服务器, 例如 ```/home/ubuntu``` 目录下
 - 切换目录至 ```server```, 使用 ```pip install -r requirements.txt``` 安装项目依赖, 安装完成后还需执行 ```pip install uvloop==0.16.0```
   安装 ```linux``` 额外需要的依赖
+- 输入 ```aerich init -t app.db.TORTOISE_ORM``` 命令初始化数据库迁移, 再输入 ```aerich init-db``` 完成数据库迁移
 - 配置反向代理服务, 此处使用 ```Caddy``` 作为代理服务器
 
   - 执行以下命令安装 ```Caddy```
