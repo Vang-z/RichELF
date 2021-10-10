@@ -18,6 +18,9 @@ Web 全栈项目 ✨
   <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FVang-z%2FRichELF?ref=badge_shield">
     <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FVang-z%2FRichELF.svg?type=shield" alt="FOSSA Status"/>
   </a>
+  <a href="https://www.codacy.com/gh/Vang-z/RichELF/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Vang-z/RichELF&amp;utm_campaign=Badge_Grade">
+    <img src="https://app.codacy.com/project/badge/Grade/394d1fc704ad49348f59f1e615e8da20" alt="Code Quality"/>
+  </a>
 </p>
 
 ##
